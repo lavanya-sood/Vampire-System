@@ -8,7 +8,7 @@ import os
 
 @app.route('/')
 def welcome():
-    session['url'] = url_for('mainpage')
+    session['url'] = url_for('inventory')
     return render_template("welcome.html")
 
 #inventory
@@ -16,7 +16,7 @@ def welcome():
 def inventory():
 
         if (System().check_login() == False):
-            session['url'] = url_for('mainpage')
+            session['url'] = url_for('inventory')
             remessy = "You were redirected to login"
             return redirect(url_for('login',remess=remessy))
     return render_template('inventory.html')
