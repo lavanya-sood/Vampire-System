@@ -14,7 +14,7 @@
               "type": "AB",
               "quantity": "500",
               "expiry_date":"2019-10-13",
-              "input_date":"2019-09-07",
+              "input_date":"",
               "test_status":"tested",
               "source":"Coogee Hospital"
           },
@@ -68,7 +68,7 @@
                 "type": "AB",
                 "quantity": "500",
                 "expiry_date":"2019-12-10",
-                "input_date":"2019-09-07",
+                "input_date":"",
                 "test_status":"tested",
                 "source":"Kingsford Hospital"
           },
@@ -95,7 +95,7 @@
                 "type": "AB",
                 "quantity": "500",
                 "expiry_date":"2019-12-10",
-                "input_date":"2019-10-07",
+                "input_date":"",
                 "test_status":"not-tested",
                 "source":"Batmobile"
           },
@@ -113,7 +113,7 @@
                 "type": "A",
                 "quantity": "500",
                 "expiry_date":"2019-11-01",
-                "input_date":"2019-09-03",
+                "input_date":"",
                 "test_status":"not-tested",
                 "source":"Batmobile"
           },
@@ -158,7 +158,7 @@
                 "type": "AB",
                 "quantity": "250",
                 "expiry_date":"2019-10-10",
-                "input_date":"2019-09-03",
+                "input_date":"",
                 "test_status":"not-tested",
                 "source":"Batmobile"
             },
@@ -185,7 +185,7 @@
                   "type": "AB",
                   "quantity": "500",
                   "expiry_date":"2019-12-10",
-                  "input_date":"2019-09-07",
+                  "input_date":"",
                   "test_status":"tested",
                   "source":"Balmain Hospital"
             },
@@ -212,7 +212,7 @@
                 "type": "O",
                 "quantity": "500",
                 "expiry_date":"2019-10-10",
-                "input_date":"2019-09-07",
+                "input_date":"",
                 "test_status":"not-tested",
                 "source":"Batmobile"
             },
@@ -248,7 +248,7 @@
                   "type": "A",
                   "quantity": "500",
                   "expiry_date":"2019-10-10",
-                  "input_date":"2019-09-03",
+                  "input_date":"",
                   "test_status":"tested",
                   "source":"Coogee Hospital"
               },
@@ -257,7 +257,7 @@
                     "type": "O",
                     "quantity": "500",
                     "expiry_date":"2019-07-10",
-                    "input_date":"2019-04-07",
+                    "input_date":"",
                     "test_status":"not-tested",
                     "source":"Batmobile"
               },
