@@ -1,7 +1,19 @@
-<!DOCTYPE html>
-<head>
-</head>
-<body>
-</body>
+{% extends 'base.html' %}
+{% block body %}
+ <h1> Login </h1>
+<form class="pure-form pure-form-aligned" method = "POST">
+    <fieldset>
+    	<a class = "error">{{message}}</a>
+        <div class="pure-control-group">
+            <input name="email" type="text" placeholder="Email" class = "pure-input-rounded">
+        </div>
+        <div class="pure-control-group">
+            <input name="password" type="password" placeholder="Password" class = "pure-input-rounded">
+        </div>
+         <button class="pure-button">
+           Login
+        </button>
+    </fieldset>
+</form>
 
-</html>
+{% endblock %}

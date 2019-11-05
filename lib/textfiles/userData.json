@@ -1,0 +1,103 @@
+{
+    "user": [
+       {
+            "username": "drusilla",
+            "email": "drusilla@gmail.com",
+            "name":"Vampire Employee",
+            "password": "drusilla",
+            "login": "False",
+            "role": "Employee",
+            "requests": []
+        },
+        {
+            "username": "buffy",
+            "email": "buffy@gmail.com",
+            "name":"Vampire Employee",
+            "password": "buffy",
+            "login": "False",
+            "role": "Employee",
+            "requests": []
+        }, 
+        {
+            "username": "stefan",
+            "email": "stefan@gmail.com",
+            "name":"Vampire Employee",
+            "password": "stefan",
+            "login": "False",
+            "role": "Employee",
+            "requests": []
+        }, 
+        {
+            "username": "sookie",
+            "email": "sookie@gmail.com",
+            "name":"Vampire Employee",
+            "password": "sookie",
+            "login": "False",
+            "role": "Employee",
+            "requests": []
+        }, 
+        {
+            "username": "klaus",
+            "email": "klaus@gmail.com",
+            "name":"Vampire Employee",
+            "password": "klaus",
+            "login": "False",
+            "role": "Employee",
+            "requests": []
+        },  
+        {
+        	"username": "coogeeh",
+            "email": "coogee@gmail.com",
+            "name":"Coogee Hospital",
+            "password": "coogeeh",
+            "login": "False",
+            "role": "facility",
+            "requests": []
+        },
+        {
+        	"username": "coogeeh",
+            "email": "coogeeh@gmail.com",
+            "name":"Coogee Hospital",
+            "password": "coogeeh",
+            "login": "False",
+            "role": "facility",
+            "requests": []
+        },
+        {
+        	"username": "newtownh",
+            "email": "newtownh@gmail.com",
+            "name":"Newtown Hospital",
+            "password": "coogeeh",
+            "login": "False",
+            "role": "facility",
+            "requests": []
+        },
+        {
+        	"username": "balmainh",
+            "email": "balmainh@gmail.com",
+            "name":"Balmain Hospital",
+            "password": "balmainh",
+            "login": "False",
+            "role": "facility",
+            "requests": []
+        },
+        {
+        	"username": "kingstonh",
+            "email": "kingstonh@gmail.com",
+            "name":"Kingston Hospital",
+            "password": "kingstonh",
+            "login": "False",
+            "role": "facility",
+            "requests": []
+        },
+        {
+        	"username": "randwickh",
+            "email": "randwickh@gmail.com",
+            "name":"Randwick Hospital",
+            "password": "randwickh",
+            "login": "False",
+            "role": "facility",
+            "requests": []
+        }
+    ]
+}
