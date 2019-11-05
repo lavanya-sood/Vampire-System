@@ -19,7 +19,7 @@ def inventory():
             session['url'] = url_for('inventory')
             remessy = "You were redirected to login"
             return redirect(url_for('login',remess=remessy))
-    return render_template('inventory.html')
+        return render_template('inventory.html')
 
 @app.route('/login/<remess>', methods=['GET', 'POST'])
 def login(remess):
