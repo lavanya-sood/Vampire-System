@@ -57,13 +57,16 @@ def delivered():
     #when send is clicked: delete from list OR change status to tested
     return render_template("delivered.html", deliveredBlood = deliveredBlood)
 
+#  requests from medical facilities
+@app.route('/requests')
+def requests():
+    mf_requests = VampireSystem().getMedicalFacilityRequests()
+    return render_template("requests.html",mf_requests = mf_requests)
+
 @app.route('/warning')
 def warning():
     return render_template("warning.html")
 
-@app.route('/requests')
-def requests():
-    return render_template("requests.html")
 
 @app.route('/logout')
 def logout():

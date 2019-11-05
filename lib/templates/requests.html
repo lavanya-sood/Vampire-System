@@ -1,12 +1,52 @@
-{% extends "base.html" %}
-{% block body %}
 
 <head>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css"
+    integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47"
+    crossorigin="anonymous">
+    <style>
+          .button-success,
+          .button-error {
+              color: white;
+              border-radius: 4px;
+              text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+          }
 
+          .button-success {
+              background: rgb(28, 184, 65); /* this is a green */
+          }
+
+          .button-error {
+            background: rgb(223, 117, 20); /* this is an orange */
+          }
+</style>
 </head>
 <body>
+  <table class="pure-table">
+  <form method = "POST">
+    <thead>
+      <td>Medical Facility</td>
+      <td>Request Blood Type</td>
+      <td>Quantity (mL) </td>
+      <td>Stock Availability</td>
+      <td>Action</td>
+    </thead>
+    <tbody>
+      {% for n in range(mf_requests|length) %}
+      <tr>
+        <td>{{mf_requests[n].medical_facility}}
+        <td>{{mf_requests[n].blood_type}}
+        <td>{{mf_requests[n].quantity}}
+        <td>{{mf_requests[n].fulfillable}}
+        <td>
+          {%if mf_requests[n].fulfillable == "yes" %}
+            <button class="button-success pure-button" name = "send" value = {{n}}>Send</button>
+          {% else %}
+          <button class="button-error pure-button" name = "decline" value = {{n}}>Decline</button>
+          {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </form>
+  </table>
 
 </body>
-
-{% endblock %}
-
