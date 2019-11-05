@@ -22,6 +22,7 @@
 </head>
 <body>
   <table class="pure-table">
+  <form method = "POST">
     <thead>
       <td>Type</td>
       <td>Expiry Date (Year-Month-Day)</td>
@@ -31,22 +32,23 @@
       <td>Action</td>
     </thead>
     <tbody>
-      {% for blood in deliveredBlood %}
+      {% for n in range(deliveredBlood | length) %}
       <tr>
-        <td>{{blood.type}}
-        <td>{{blood.expiryDate}}
-        <td>{{blood.quantity}}
-        <td>{{blood.source}}
-        <td>{{blood.testStatus}}
+        <td>{{deliveredBlood[n].type}}
+        <td>{{deliveredBlood[n].expiryDate}}
+        <td>{{deliveredBlood[n].quantity}}
+        <td>{{deliveredBlood[n].source}}
+        <td>{{deliveredBlood[n].testStatus}}
         <td>
-          {%if blood.testStatus == "tested" %}
-            <button class="button-success pure-button">Add to Factory</button>
+          {%if deliveredBlood[n].testStatus == "tested" %}
+            <button class="button-success pure-button" name = "add" value = {{n}}>Add to Factory</button>
           {% else %}
-            <button class="button-error pure-button">Send to Pathology</button>
+            <button class="button-error pure-button" name = "send" value = {{n}}>Send to Pathology</button>
 
           {% endif %}
       </tr>
       {% endfor %}
     </tbody>
+  </form>
   </table>
 </body>

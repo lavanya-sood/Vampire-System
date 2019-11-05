@@ -84,9 +84,18 @@ class VampireSystem:
 			data = json.load(json_file)
 		for b in data['blood']:
 			if b['test_status'] != "added":
-				object = Blood(b['donor_name'], b['type'], b['quantity'], b['expiry_date'], b['input_date'], b['test_status'], b['source'])
+				object = Blood(b['donor_name'], b['type'], b['quantity'], b['expiry_date'], b['input_date'], b['test_status'], b['source'], b['id'])
 				deliveredBlood.append(object)
 		return deliveredBlood
+
+	def updateBloodStatus(self, blood, newStatus):
+		with open(bloodDir, 'r') as f:
+			datastore = json.load(f)
+			for element in datastore["blood"]:
+				if element["id"] == blood.id:
+					element['test_status'] = newStatus
+					with open(bloodDir, 'w') as file:
+						file.write(json.dumps(datastore, indent = 4))
 
 	def getTestedBlood(self) :
 		deliveredBlood = self.getDeliveredBlood()

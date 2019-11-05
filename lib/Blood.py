@@ -1,6 +1,6 @@
 class Blood():
 
-        def __init__(self, donor_name, type, quantity,expiry_date,input_date,test_status,source):
+        def __init__(self, donor_name, type, quantity,expiry_date,input_date,test_status,source, id):
             self._donorName = donor_name
             self._type = type
             self._quantity = quantity
@@ -8,11 +8,18 @@ class Blood():
             self._inputDate = input_date
             self._testStatus = test_status
             self._source = source
+            self._id = id
 
         @property
         def donorName(self):
             return self._donorName
 
+        def setStatus(self, new):
+            self._testStatus = new
+
+        @property
+        def id(self):
+            return self._id
         @property
         def source(self):
             return self._source

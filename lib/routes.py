@@ -38,12 +38,23 @@ def login(remess):
         return render_template("login.html", message=message,remessa="Welcome to the login page")
     return render_template("login.html", message=message, remessa=remess)
 
-@app.route('/delivered')
+@app.route('/delivered', methods=['GET', 'POST'])
 def delivered():
     #shows list of blood + respective action button
     deliveredBlood = VampireSystem().getDeliveredBlood()
     testedBlood = VampireSystem().getTestedBlood()
     notTestedBlood = VampireSystem().getNotTestedBlood()
+    if request.method == "POST":
+        if "add" in request.form:
+            index = int(request.form['add'])
+            deliveredBlood[index].setStatus("added")
+            VampireSystem().updateBloodStatus(deliveredBlood[index], "added")
+            #dump to file, retrieve again
+            deliveredBlood = VampireSystem().getDeliveredBlood()
+        elif "send" in request.form:
+            index = request.form['send']
+    #when add is clicked: add to factory (change status to added) reload page
+    #when send is clicked: delete from list OR change status to tested
     return render_template("delivered.html", deliveredBlood = deliveredBlood)
 
 @app.route('/warning')
