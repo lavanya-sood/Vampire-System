@@ -1,10 +1,12 @@
 from lib.server import app
 from flask import request, Request, Flask, flash, redirect, render_template, \
      request, url_for, send_from_directory, session
-from lib.system import System
+from lib.VampireSystem import VampireSystem
 from flask_login import LoginManager,login_user, current_user, login_required, logout_user
 import json
 import os
+
+#notes: change system to VampireSystem and copy methods from seng2021
 
 @app.route('/')
 def welcome():
@@ -14,11 +16,10 @@ def welcome():
 #inventory
 @app.route('/inventory', methods=['POST', 'GET'])
 def inventory():
-
-        if (System().check_login() == False):
-            session['url'] = url_for('inventory')
-            remessy = "You were redirected to login"
-            return redirect(url_for('login',remess=remessy))
+    if (System().check_login() == False):
+        session['url'] = url_for('inventory')
+        remessy = "You were redirected to login"
+        return redirect(url_for('login',remess=remessy))
     return render_template('inventory.html')
 
 @app.route('/login/<remess>', methods=['GET', 'POST'])
@@ -28,7 +29,7 @@ def login(remess):
     if request.method == 'POST':
         email = request.form["email"]
         password = request.form["password"]
-        message = System().check_user(email, password)
+        message = VampireSystem().check_user(email, password)
         if message is "":
             if 'url' in session:
                 return redirect(session['url'])
@@ -39,7 +40,11 @@ def login(remess):
 
 @app.route('/delivered')
 def delivered():
-    return render_template("delivered.html")
+    #shows list of blood + respective action button
+    deliveredBlood = VampireSystem().getDeliveredBlood()
+    testedBlood = VampireSystem().getTestedBlood()
+    notTestedBlood = VampireSystem().getNotTestedBlood()
+    return render_template("delivered.html", deliveredBlood = deliveredBlood)
 
 @app.route('/warning')
 def warning():

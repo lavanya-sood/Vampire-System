@@ -1,11 +1,52 @@
-{% extends "base.html" %}
-{% block body %}
 
 <head>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css"
+  integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47"
+  crossorigin="anonymous">
+  <style>
+        .button-success,
+        .button-error {
+            color: white;
+            border-radius: 4px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        }
 
+        .button-success {
+            background: rgb(28, 184, 65); /* this is a green */
+        }
+
+        .button-error {
+          background: rgb(223, 117, 20); /* this is an orange */
+        }
+  </style>
 </head>
 <body>
+  <table class="pure-table">
+    <thead>
+      <td>Type</td>
+      <td>Expiry Date (Year-Month-Day)</td>
+      <td>Quantity (mL) </td>
+      <td>From</td>
+      <td>Status</td>
+      <td>Action</td>
+    </thead>
+    <tbody>
+      {% for blood in deliveredBlood %}
+      <tr>
+        <td>{{blood.type}}
+        <td>{{blood.expiryDate}}
+        <td>{{blood.quantity}}
+        <td>{{blood.source}}
+        <td>{{blood.testStatus}}
+        <td>
+          {%if blood.testStatus == "tested" %}
+            <button class="button-success pure-button">Add to Factory</button>
+          {% else %}
+            <button class="button-error pure-button">Send to Pathology</button>
 
+          {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </body>
-
-{% endblock %}
