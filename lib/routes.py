@@ -13,14 +13,39 @@ def welcome():
     session['url'] = url_for('inventory')
     return render_template("welcome.html")
 
-#inventory
+
 @app.route('/inventory', methods=['POST', 'GET'])
 def inventory():
-    if (System().check_login() == False):
-        session['url'] = url_for('inventory')
-        remessy = "You were redirected to login"
-        return redirect(url_for('login',remess=remessy))
-    return render_template('inventory.html')
+    # if (System().check_login() == False):
+    #     session['url'] = url_for('inventory')
+    #     remessy = "You were redirected to login"
+    #     return redirect(url_for('login',remess=remessy))
+    if request.method == "POST":
+        if "view_order" in request.form:
+            order = request.form["view_order"]
+            if order == "date_added":
+                title = "View Inventory by Date Added"
+                blood =  VampireSystem().sortBloodbyAddedDate()
+            elif order == "expiry_date":
+                title = "View Inventory by Expiry Date"
+                blood = VampireSystem().sortBloodbyExpiryDate()
+            elif order == "quantity":
+                title = "View Inventory by Quantity"                
+                blood = VampireSystem().sortBloodbyQuantity()
+            elif order == "blood_type":    
+                title = "View Inventory by Blood Type"
+                blood = VampireSystem().sortBloodbyType()
+            return render_template("inventory.html", blood=blood, title=title)
+        
+        elif "delete" in request.form:
+            index = int(request.form["delete"])
+            VampireSystem().deletefromBloodInventory(index)
+            expired_blood = VampireSystem().getExpiredBlood()
+            return render_template("inventory.html", blood=expired_blood, title="Expired Blood")
+    
+
+    expired_blood = VampireSystem().getExpiredBlood()
+    return render_template("inventory.html", blood=expired_blood, title="Expired Blood")
 
 @app.route('/login/<remess>', methods=['GET', 'POST'])
 def login(remess):

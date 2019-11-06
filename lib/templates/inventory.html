@@ -1,8 +1,86 @@
-{% extends 'base.html' %}
-{% block body %}
 
-<div>
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css"
+    integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47"
+    crossorigin="anonymous">
+    <style>
+          .button-success,
+          .button-error {
+              color: white;
+              border-radius: 4px;
+              text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+          }
 
+          .button-success {
+              background: rgb(28, 184, 65); /* this is a green */
+          }
 
-</div>
-{% endblock %}
+          .button-error {
+            background: rgb(223, 117, 20); /* this is an orange */
+          }
+
+#header{
+  text-align: center;
+  padding: 3px;
+
+}
+#nav{
+  float: left;
+  margin-left: 20px;
+}
+#content{
+  float: right;
+  margin-right: 20px;
+
+}
+</style>
+</head>
+<body>
+  <div id="header"><h1>{{title}}</h1></div>
+  <div id="nav">
+    <form method = "POST">  
+    <div><h4>View inventory by </h4></div>
+    <ul>
+    <div><input id="date_added" type="radio" name="view_order" value="date_added">  
+    <label >Date Added</label> </div>
+    <div><input id="expiry_date" type="radio" name="view_order" value="expiry_date">  
+    <label >Expiry Date</label> </div>
+    <div><input id="quantity" type="radio" name="view_order" value="quantity">  
+    <label >Quantity</label> </div>
+    <div><input id="blood_type" type="radio" name="view_order" value="blood_type">  
+    <label >Blood Type</label>  </div>
+    </ul> 
+    <button class="button-success pure-button" name="apply">Apply</button>  
+    </form>
+  </div>
+  <div id="content">
+  <table class="pure-table">
+  <form method = "POST">
+    <thead>
+      <td>Donor Name</td>
+      <td>Request Blood Type</td>
+      <td>Quantity (mL) </td>
+      <!-- <td>Date Added</td> -->
+      <td>Expiry Date</td>
+      <td>Source</td>
+      <td>Action</td>
+    </thead>
+    <tbody>
+      {% for n in range(blood|length) %}
+      <tr>
+        <td>{{blood[n].donor_name}}
+        <td>{{blood[n].type}}
+        <td>{{blood[n].quantity}}
+        <!-- <td>{{blood[n].dinput_date}}   -->
+        <td>{{blood[n].expiry_date}}
+        <td>{{blood[n].source}} 
+        <td>
+          <button class="button-error pure-button" name = "delete" value = {{n}}>Delete</button>
+        </td>  
+      </tr>
+      {% endfor %}
+    </tbody>
+  </form>
+  </table></div>
+
+</body>
