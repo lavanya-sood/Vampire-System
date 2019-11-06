@@ -353,7 +353,87 @@ class VampireSystem:
 
 	def getValidBlood(self) :
 	    return validBlood
+	
 
+
+	def getExpiredBlood(self):
+		expiredBlood = []
+		with open(bloodDir, "r") as json_file:
+			data = json.load(json_file)
+		now = datetime.now()	
+		for b in data['blood']:
+			d = datetime.strptime(b["expiry_date"], "%Y-%m-%d")
+			if d < now:
+				expiredBlood.append(b)	
+		return expiredBlood
+
+	def sortBloodbyType(self): # may find a better algorithm for sorting
+		blood = []
+		typeA = []
+		typeB = []
+		typeAB = []
+		typeO = []
+		with open(bloodDir, "r") as json_file:
+			data = json.load(json_file)
+		for b in data['blood']:	
+			if b["type"] == "A":
+				typeA.append(b)
+			elif b["type"] == "B":	
+				typeB.append(b)
+			elif b["type"] == "AB":	
+				typeAB.append(b)	
+			elif b["type"] == "O":	
+				typeO.append(b)	
+		return typeA + typeB + typeAB + typeO	
+
+	def sortBloodbyQuantity(self):
+		with open(bloodDir, "r") as json_file:
+			data = json.load(json_file)
+		blood = data['blood']	
+		n = len(blood)
+		for i in range(n) :
+			for j in range(0, n-i-1):
+				if blood[j]["quantity"] > blood[j+1]["quantity"] :
+					blood[j], blood[j+1] = blood[j+1], blood[j]
+		return blood
+
+
+	def sortBloodbyExpiryDate(self):
+		with open(bloodDir, "r") as json_file:
+			data = json.load(json_file)
+		blood = data['blood']	
+		n = len(blood)
+		for i in range(n) :
+			for j in range(0, n-i-1):
+				if blood[j]["expiry_date"] > blood[j+1]["expiry_date"] :
+					blood[j], blood[j+1] = blood[j+1], blood[j]
+		return blood	
+
+	def sortBloodbyAddedDate(self):
+		with open(bloodDir, "r") as json_file:
+			data = json.load(json_file)
+		blood = data['blood']	
+		n = len(blood)
+		for i in range(n) :
+			for j in range(0, n-i-1):
+				if blood[j]["input_date"] > blood[j+1]["input_date"] :
+					blood[j], blood[j+1] = blood[j+1], blood[j]
+		return blood
+
+	def deletefromBloodInventory(self, index):
+		# with open(bloodDir, 'w') as dest_file:
+		# 	with open(bloodDir, 'r') as source_file:
+		# 		datastore = json.load(source_file)
+		# 		blood = datastore["blood"]
+		# 		del blood[index]
+		# 		dest_file.write(json.dumps(element))
+
+		with open(bloodDir, 'r') as f:
+			datastore = json.load(f)
+			del datastore["blood"][index]
+			
+			with open(bloodDir, 'w') as file:
+				file.write(json.dumps(datastore, indent = 4))
 
     #def getExpiredBlood(self) :
 	#	return self._expiredBlood
@@ -365,3 +445,7 @@ class VampireSystem:
 
     #def getVampireRequests(self) :
     #    return self._vampireRequests
+
+
+
+    

@@ -3,10 +3,10 @@
         {
             "donor_name": "Harry",
             "type": "O",
-            "quantity": "500",
+            "quantity": "750",
             "expiry_date": "2019-10-10",
             "input_date": "2019-09-07",
-            "test_status": "tested",
+            "test_status": "added",
             "source": "Coogee Hospital",
             "id": 0
         },
@@ -26,17 +26,17 @@
             "quantity": "250",
             "expiry_date": "2019-10-10",
             "input_date": "2019-08-07",
-            "test_status": "tested",
+            "test_status": "added",
             "source": "Balmain Hospital",
             "id": 2
         },
         {
             "donor_name": "Steve",
             "type": "O",
-            "quantity": "500",
+            "quantity": "600",
             "expiry_date": "2019-07-10",
             "input_date": "2019-05-02",
-            "test_status": "tested",
+            "test_status": "added",
             "source": "Randwick Hospital",
             "id": 3
         },
@@ -53,7 +53,7 @@
         {
             "donor_name": "Coles",
             "type": "O",
-            "quantity": "500",
+            "quantity": "700",
             "expiry_date": "2019-10-10",
             "input_date": "2019-09-07",
             "test_status": "tested",
@@ -73,7 +73,7 @@
         {
             "donor_name": "Emily",
             "type": "AB",
-            "quantity": "500",
+            "quantity": "200",
             "expiry_date": "2019-12-10",
             "input_date": "",
             "test_status": "tested",
