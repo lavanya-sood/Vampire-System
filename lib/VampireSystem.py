@@ -49,6 +49,18 @@ class VampireSystem:
 			data = json.load(json_file)
 			getRequests(data['requests'])
 
+	def logout_user(self):
+		with open(userDir, 'r') as f:
+			datastore = json.load(f)
+		for element in datastore["user"]:
+			if element["login"] == "True":
+				element["login"] = "False"
+				with open(userDir, 'w') as f:
+					f.write(json.dumps(datastore,indent= 4))
+			return "You have successfully logged out"
+		return ""
+
+
 	def check_user(self, email, password):
 		user = ""
 		with open(userDir, 'r') as f:
@@ -58,7 +70,7 @@ class VampireSystem:
 				element["login"] = "True"
 				with open(userDir, 'w') as f:
 					f.write(json.dumps(datastore,indent= 4))
-				return "YAY"
+				return ""
 			else:
 				message = "You have entered an invalid email/password"
 		return "You have entered an invalid email/password"
@@ -120,6 +132,20 @@ class VampireSystem:
 			object = User(u['username'],u['email'],u['password'],u['name'],u['role'])
 			users.append(object)
 		return users
+
+	def get_username(self):
+		with open(userDir, 'r') as f:
+			datastore = json.load(f)
+		for element in datastore["user"]:
+			if element["login"] == "True":
+				return element["username"]
+
+	def get_user_email(self):
+		with open(userDir, 'r') as f:
+			datastore = json.load(f)
+			for element in datastore["user"]:
+				if element["login"] == "True":
+					return element["email"]
 
 	def getDeliveredBlood(self) :
 		deliveredBlood = []

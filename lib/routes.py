@@ -9,8 +9,14 @@ import os
 
 @app.route('/')
 def welcome():
-    session['url'] = url_for('welcome')
-    return render_template("welcome.html")
+    loginstatus = False
+    loginemployee = False
+    if(VampireSystem().check_login() == True):
+        loginstatus = True
+    if (VampireSystem().check_employeeLogin() == True):
+        loginemployee = True
+    #session['url'] = url_for('welcome')
+    return render_template("welcome.html",loginstatus=loginstatus,loginemployee=loginemployee)
 
 # #inventory
 # @app.route('/inventory', methods=['POST', 'GET'])
@@ -47,12 +53,21 @@ def login():
         password = request.form["password"]
         message = VampireSystem().check_user(email, password)
         if message is "":
-            if 'url' in session:
-                return redirect(session['url'])
-            return redirect(url_for('inventory', check = check))
-
+            # if 'url' in session:
+            #     
+            #     return redirect(session['url'])
+            print("LOGGED IN----")
+            return redirect(url_for('welcome'))
+        print("fail IN----")
         return render_template("login.html", message=message)
     return render_template("login.html", message=message)
+
+@app.route('/logout')
+def logout():
+    CurrentUser = VampireSystem().get_username()
+    message = ""
+    message = VampireSystem().logout_user()
+    return redirect(url_for('login'))
 
 # @app.route('/delivered')
 # def delivered():

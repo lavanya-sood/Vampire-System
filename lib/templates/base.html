@@ -15,22 +15,72 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
+<style>
+
+body {
+	text-align:center;
+	background-color: black;
+	color: white;
+	margin-top: 5px !important;
+	height: 100%;
+	width:100%;
+}
+
+#navbarinfo {
+	background-color: #802828;
+	color: white;
+}
+
+.nav-light {
+	color: white;
+}
+
+.nav-item {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#welcome {
+  font-size: 100px;
+}
+
+</style>
 </head>
 
 
 <body> 
-<h1>  Vampire System </h1>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<h1>  Blood System </h1>
+<h5> Vampire pvt ltd.</h5>
+<nav class="navbar navbar-expand-lg navbar-dark" id = "navbarinfo">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
+      {% if loginemployee %}
+        <li class="nav-item active">
+          <a class="nav-link" href= {{url_for('logout')}}>Check Database <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href= {{url_for('logout')}}>Logout <span class="sr-only">(current)</span></a>
+        </li>
+      {% elif loginstatus %}
+      	<li class="nav-item active">
+        	<a class="nav-link" href= {{url_for('logout')}}>Make Request <span class="sr-only">(current)</span></a>
+      	</li>
+      {% else %}
       <li class="nav-item active">
         <a class="nav-link" href= {{url_for('login')}}>Login <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item dropdown">
+      {% endif %}
+      <!-- <li class="nav-item active">
+      <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+      </li> -->
+      <!-- <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Dropdown
         </a>
@@ -40,12 +90,8 @@
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
-      </li>
+      </li> -->
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
   </div>
 </nav>
 
