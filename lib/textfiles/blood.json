@@ -16,7 +16,7 @@
             "quantity": "500",
             "expiry_date": "2019-10-13",
             "input_date": "",
-            "test_status": "added",
+            "test_status": "tested",
             "source": "Coogee Hospital",
             "id": 1
         },
@@ -136,7 +136,7 @@
             "quantity": "500",
             "expiry_date": "2019-10-10",
             "input_date": "2019-09-07",
-            "test_status": "added",
+            "test_status": "tested",
             "source": "Coogee Hospital",
             "id": 13
         },
@@ -246,7 +246,7 @@
             "quantity": "500",
             "expiry_date": "2019-10-11",
             "input_date": "2019-06-07",
-            "test_status": "added",
+            "test_status": "tested",
             "source": "Balmain Hospital",
             "id": 24
         },

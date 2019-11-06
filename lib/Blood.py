@@ -14,8 +14,8 @@ class Blood():
         def donorName(self):
             return self._donorName
 
-        def setStatus(self, new):
-            self._testStatus = new
+        def setInputDate(self, time):
+            self._inputDate = time
 
         @property
         def id(self):

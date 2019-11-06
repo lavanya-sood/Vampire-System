@@ -1,11 +1,184 @@
-{% extends "base.html" %}
-{% block body %}
-
 <head>
-
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css"
+  integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47"
+  crossorigin="anonymous">
+  <style>
+        .button-secondary,
+        .button-error {
+            color: white;
+            border-radius: 4px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+            
+        }
+        .button-secondary {
+            background: rgb(66, 184, 221); /* this is a light blue */
+        }
+        .button-error {
+            background: rgb(202, 60, 60); /* this is a maroon */
+        }
+        .button-xlarge {
+            font-size: 125%;
+        }
+        .selected {
+          border: 1px solid #0000ff;
+        }
+  </style>
+  <script>
+    function selectBloodType() {
+        var type = document.getElementById("type");
+        var expiry = document.getElementById("expiry");
+        var volume = document.getElementById("volume");
+        type.classList.add("pure-button-disabled");
+        expiry.classList.remove("pure-button-disabled");
+        volume.classList.remove("pure-button-disabled");
+        var div = document.getElementById("search");
+        div.innerHTML = "";
+    
+        var A = document.createElement("INPUT");
+        var B = document.createElement("INPUT");
+        var AB = document.createElement("INPUT");
+        var O = document.createElement("INPUT");
+        A.className = "button-error";
+        A.classList.add("pure-button");
+        B.className = "button-error";
+        B.classList.add("pure-button");
+        AB.className = "button-error";
+        AB.classList.add("pure-button");
+        O.className = "button-error";
+        O.classList.add("pure-button");
+        A.value = "A";
+        B.value = "B";
+        AB.value = "AB";
+        O.value = "O";
+        A.setAttribute('name', 'A');
+        B.setAttribute('name', 'B');
+        AB.setAttribute('name', 'AB');
+        O.setAttribute('name', 'O');
+        A.type = "submit";
+        B.type = "submit";
+        AB.type = "submit";
+        O.type = "submit";
+        div.appendChild(A);
+        div.appendChild(B);
+        div.appendChild(AB);
+        div.appendChild(O);
+    }
+    
+    function selectExpiryDate() {
+        var type = document.getElementById("type");
+        var expiry = document.getElementById("expiry");
+        var volume = document.getElementById("volume");
+        type.classList.remove("pure-button-disabled");
+        expiry.classList.add("pure-button-disabled");
+        volume.classList.remove("pure-button-disabled");
+        var div = document.getElementById("search");
+        div.innerHTML = "";
+        
+        var startLabel = document.createElement("LABEL");
+        startLabel.innerHTML = "Start Date";
+        div.appendChild(startLabel);
+        
+        var startExpiry = document.createElement("INPUT");
+        startExpiry.setAttribute("type", "date");
+        startExpiry.name = "start";
+        div.appendChild(startExpiry);
+        
+        var endLabel = document.createElement("LABEL");
+        endLabel.innerHTML = "End Date";
+        div.appendChild(endLabel);
+        
+        var endExpiry = document.createElement("INPUT");
+        endExpiry.setAttribute("type", "date");
+        endExpiry.name = "end";
+        div.appendChild(endExpiry); 
+        
+        var submit = document.createElement("INPUT");
+        submit.type = "submit"
+        submit.className = "button-error";
+        submit.classList.add("pure-button");
+        submit.setAttribute('name', "expirySubmit");
+        submit.innerHTML = "Submit";
+        div.appendChild(submit);
+    }
+    
+    function selectVolume() {
+        var type = document.getElementById("type");
+        var expiry = document.getElementById("expiry");
+        var volume = document.getElementById("volume");
+        type.classList.remove("pure-button-disabled");
+        expiry.classList.remove("pure-button-disabled");
+        volume.classList.add("pure-button-disabled");
+        var div = document.getElementById("search");
+        div.innerHTML = "";
+        
+        var fieldset = document.createElement("FIELDSET");
+        div.appendChild(fieldset);
+        
+        var minimum = document.createElement("INPUT");
+        minimum.setAttribute("placeholder", "Min Volume");
+        minimum.name = "minimum";
+        fieldset.appendChild(minimum);
+        
+        var maximum = document.createElement("INPUT");
+        maximum.setAttribute("placeholder", "Max Volume");
+        maximum.name = "maximum";
+        fieldset.appendChild(maximum);
+        
+        var submit = document.createElement("INPUT");
+        submit.type = "submit";
+        submit.className = "button-error";
+        submit.classList.add("pure-button");
+        submit.setAttribute('name', "volumeSubmit");
+        submit.innerHTML = "Submit"
+        fieldset.appendChild(submit);
+     }
+  </script>
 </head>
 <body>
-
+  <form method = "POST">
+  <button class="button-xlarge button-secondary pure-button" id = "type" type = "button" onClick = selectBloodType()>By Type</button>
+  <button class="button-xlarge button-secondary pure-button" id = "expiry" type = "button" onClick = selectExpiryDate()>By Expiry Date</button>
+  <button class="button-xlarge button-secondary pure-button" id = "volume" type = "button"onClick = selectVolume()>By Volume</button>
+  <div id = "search"></div>
+  {% if results|length != 0 and volume == 0 %}
+  <p> Results for {{ searchtype }} </p>
+  <table class="pure-table" id = results>
+    <thead>
+      <td>Type</td>
+      <td>Input Date (Year-Month-Day)</td>
+      <td>Expiry Date (Year-Month-Day)</td>
+      <td>Quantity (mL) </td>
+      <td>From</td>
+    </thead>
+    <tbody>
+      {% for n in range(results | length) %}
+      <tr>
+        <td>{{results[n].type}}
+        <td>{{results[n].inputDate}}
+        <td>{{results[n].expiryDate}}
+        <td>{{results[n].quantity}}
+        <td>{{results[n].source}}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </form>
+  </table>
+  {% elif volume == 1 and results|length != 0%}
+     <p> Results for {{ searchtype }} </p>
+     <table class="pure-table" id = results>
+     <thead>
+       <td>Type</td>
+       <td>Quantity (mL) </td>
+     </thead>
+     <tbody>
+      {% for key, value in results.items() %}
+      <tr>
+        <td>{{key}}
+        <td>{{value}}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </form>
+  </table>
+  {% endif %}
 </body>
-
-{% endblock %}

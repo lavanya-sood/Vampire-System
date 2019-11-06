@@ -1,4 +1,5 @@
 from lib.server import app
+from datetime import datetime
 from flask import request, Request, Flask, flash, redirect, render_template, \
      request, url_for, send_from_directory, session
 from lib.VampireSystem import VampireSystem
@@ -46,9 +47,11 @@ def delivered():
     notTestedBlood = VampireSystem().getNotTestedBlood()
     if request.method == "POST":
         if "add" in request.form:
+            date = datetime.date(datetime.now())
             index = int(request.form['add'])
-            deliveredBlood[index].setStatus("added")
-            VampireSystem().updateBloodStatus(deliveredBlood[index], "added")
+            #changed updating status to added, instead the input_date is added with the current date
+            deliveredBlood[index].setInputDate(date)
+            VampireSystem().updateInputDate(deliveredBlood[index])
             #dump to file, retrieve again
             deliveredBlood = VampireSystem().getDeliveredBlood()
         elif "send" in request.form:
@@ -81,6 +84,29 @@ def register():
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
+    if request.method == "POST":
+        if 'A' in request.form:
+            results = VampireSystem().searchBloodType('A')
+            return render_template("searchResults.html", results = results, searchtype = "blood type A", volume = 0)
+        elif 'B' in request.form:
+            results = VampireSystem().searchBloodType('B')
+            return render_template("searchResults.html", results = results, searchtype = "blood type B", volume = 0)
+        elif 'AB' in request.form:
+            results = VampireSystem().searchBloodType('AB')
+            return render_template("searchResults.html", results = results, searchtype = "blood type AB", volume = 0)
+        elif 'O' in request.form:
+            results = VampireSystem().searchBloodType('O')
+            return render_template("searchResults.html", results = results, searchtype = "blood type O", volume = 0)
+        elif 'expirySubmit' in request.form:
+            start = request.form['start']
+            end = request.form['end']
+            results = VampireSystem().searchBloodExpiry(start, end)
+            return render_template("searchResults.html", results = results, searchtype = "expiry dates between " + start + " - " + end, volume = 0)
+        elif 'volumeSubmit' in request.form:
+            minimum = request.form['minimum']
+            maximum = request.form['maximum']
+            results = VampireSystem().searchBloodVolume(minimum, maximum)
+            return render_template("searchResults.html", results = results, searchtype = "volumes between " + minimum + " - " + maximum, volume = 1)
     return render_template("searchResults.html")
 
 

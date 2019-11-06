@@ -85,17 +85,27 @@ class VampireSystem:
 		with open(bloodDir, "r") as json_file:
 			data = json.load(json_file)
 		for b in data['blood']:
-			if b['test_status'] != "added":
+			if b['input_date'] == "":
 				object = Blood(b['donor_name'], b['type'], b['quantity'], b['expiry_date'], b['input_date'], b['test_status'], b['source'], b['id'])
 				deliveredBlood.append(object)
 		return deliveredBlood
 
-	def updateBloodStatus(self, blood, newStatus):
+	def updateBloodStatus(self, blood, newStatus) :
 		with open(bloodDir, 'r') as f:
 			datastore = json.load(f)
 			for element in datastore["blood"]:
 				if element["id"] == blood.id:
 					element['test_status'] = newStatus
+					with open(bloodDir, 'w') as file:
+						file.write(json.dumps(datastore, indent = 4))
+	
+	def updateInputDate(self, blood) :
+		date = str(datetime.date(datetime.now()))
+		with open(bloodDir, 'r') as f:
+			datastore = json.load(f)
+			for element in datastore["blood"]:
+				if element["id"] == blood.id:
+					element['input_date'] = date
 					with open(bloodDir, 'w') as file:
 						file.write(json.dumps(datastore, indent = 4))
 
@@ -116,15 +126,15 @@ class VampireSystem:
 		return notTestedBlood
 
 	def getFactoryBlood(self) :
-		f = []
+		factoryBlood = []
 		with open(bloodDir, "r") as json_file:
 			data = json.load(json_file)
 		for b in data['blood']:
-			if b['test_status'] == "added":
+			if b['input_date'] != "":
 				object = Blood(b['donor_name'], b['type'], b['quantity'], b['expiry_date'],
 				b['input_date'],b['test_status'],b['source'],b['id'])
-				f.append(object)
-		return f
+				factoryBlood.append(object)
+		return factoryBlood
 
 
 	def getMedicalFacility(self, data) :
@@ -199,9 +209,10 @@ class VampireSystem:
 
 	def calculateFactoryBloodType(self, bloodType) :
 		sum = 0;
+		factoryBlood = self.getFactoryBlood()
 		for b in factoryBlood:
-		    if (bloodType == b.getType()) :
-		        sum += b.getQuantity()
+		    if (bloodType == b.type) :
+		        sum += int(b.quantity)
 
 		return sum
 
@@ -303,15 +314,46 @@ class VampireSystem:
 
 
 	def searchBloodType(self, bloodtype) :
-		pass
-
+		results = []
+		factoryBlood = self.getFactoryBlood()
+		for blood in factoryBlood:
+		    if blood.type == bloodtype:
+		        results.append(blood)
+		return results
 
 	def searchBloodExpiry(self, start, end) :
-		pass
+		startYear = start[:4]
+		startMonth = start[5:7]
+		startDay = start[8:]
+		endYear = end[:4]
+		endMonth = end[5:7]
+		endDay = end[8:]
+		newStart = startYear + startMonth + startDay
+		newStart = int(newStart) 
+		newEnd = endYear + endMonth + endDay
+		newEnd = int(newEnd) 
+		results = []
+		factoryBlood = self.getFactoryBlood()
+		for blood in factoryBlood:
+		    year = blood.expiryDate[:4]
+		    month = blood.expiryDate[5:7]
+		    day = blood.expiryDate[8:]
+		    date = year + month + day
+		    date = int(date)
+		    if (date >= newStart and date <= newEnd):
+		        results.append(blood)
+		return results
 
-
-	def searchBloodVolume(self, min, max) :
-		pass
+	def searchBloodVolume(self, minimum, maximum) :
+	    minimum = int(minimum)
+	    maximum = int(maximum)
+	    bloodTypes = ['A', 'B', 'AB', 'O']
+	    results = {}
+	    for b in bloodTypes:
+	        sum = self.calculateFactoryBloodType(b)
+	        if ( sum >= minimum and sum <= maximum):
+	            results[b] = sum
+	    return results
 
 
 	def getEmployees(self) :
