@@ -63,7 +63,9 @@
       <!-- <td>Date Added</td> -->
       <td>Expiry Date</td>
       <td>Source</td>
+      {%if title == "Expired Blood"%}
       <td>Action</td>
+      {% endif %}
     </thead>
     <tbody>
       {% for n in range(blood|length) %}
@@ -75,7 +77,9 @@
         <td>{{blood[n].expiry_date}}
         <td>{{blood[n].source}} 
         <td>
+          {%if title == "Expired Blood"%}
           <button class="button-error pure-button" name = "delete" value = {{n}}>Delete</button>
+          {% endif %}
         </td>  
       </tr>
       {% endfor %}

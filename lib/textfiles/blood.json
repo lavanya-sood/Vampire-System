@@ -289,16 +289,6 @@
             "test_status": "not-tested",
             "source": "Batmobile",
             "id": 28
-        },
-        {
-            "donor_name": "Jane",
-            "type": "AB",
-            "quantity": "500",
-            "expiry_date": "2019-09-10",
-            "input_date": "2019-06-07",
-            "test_status": "tested",
-            "source": "Newtown Hospital",
-            "id": 29
         }
     ]
 }
