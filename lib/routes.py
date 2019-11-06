@@ -67,8 +67,6 @@ def login(remess):
 def delivered():
     #shows list of blood + respective action button
     deliveredBlood = VampireSystem().getDeliveredBlood()
-    testedBlood = VampireSystem().getTestedBlood()
-    notTestedBlood = VampireSystem().getNotTestedBlood()
     if request.method == "POST":
         if "add" in request.form:
             index = int(request.form['add'])
@@ -78,6 +76,10 @@ def delivered():
             deliveredBlood = VampireSystem().getDeliveredBlood()
         elif "send" in request.form:
             index = request.form['send']
+            #coded for now: will change status to tested
+            index = int(request.form['send'])
+            deliveredBlood[index].setStatus("tested")
+            VampireSystem().updateBloodStatus(deliveredBlood[index], "added")
     #when add is clicked: add to factory (change status to added) reload page
     #when send is clicked: delete from list OR change status to tested
     return render_template("delivered.html", deliveredBlood = deliveredBlood)
@@ -90,7 +92,14 @@ def requests():
 
 @app.route('/warning')
 def warning():
-    return render_template("warning.html")
+    lowBlood = VampireSystem().getLowBlood()
+    normalBlood = VampireSystem().getNormalBlood()
+    requestSent = VampireSystem().getRequestSent()
+    if request.method == "POST":
+        type = request.form['request']
+        requestSent = VampireSystem().updateRequestSent(type)
+    return render_template("warning.html", lowBlood = lowBlood,
+    normalBlood = normalBlood, requestSent = requestSent)
 
 
 @app.route('/logout')

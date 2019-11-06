@@ -26,12 +26,21 @@ class VampireSystem:
 	expiredBlood = []
 	medicalFacilities = []
 	vampireRequests = []
-	requested_id = []
+	requestSent = {}
+	bloodTypes = ["A", "B", "AB", "O"]
+	for type in bloodTypes:
+		requestSent[type] = False
 
 	def __init__(self):
 		pass
 
-	# prob dont need this func? -nicole
+	def getRequestSent(self):
+		return self.requestSent
+
+	def updateRequestSent(self, type):
+		self.requestSent[type] = True
+		return self.requestSent
+
 	def loadJson(self): #split into get respective functions
 		with open(employeeDir, "r") as json_file:
 			data = json.load(json_file)
@@ -116,16 +125,36 @@ class VampireSystem:
 		return notTestedBlood
 
 	def getFactoryBlood(self) :
-		f = []
+		factoryBlood = []
 		with open(bloodDir, "r") as json_file:
 			data = json.load(json_file)
 		for b in data['blood']:
 			if b['test_status'] == "added":
-				object = Blood(b['donor_name'], b['type'], b['quantity'], b['expiry_date'],
-				b['input_date'],b['test_status'],b['source'],b['id'])
-				f.append(object)
-		return f
+					object = Blood(b['donor_name'], b['type'], b['quantity'], b['expiry_date'], b['input_date'], b['test_status'], b['source'], b['id'])
+					factoryBlood.append(object)
+		return factoryBlood
 
+	def getLowBlood(self):
+		dict = {}
+		for type in self.bloodTypes:
+			if (int(self.getQuantity(type)) < 3000):
+				dict[type] = self.getQuantity(type)
+		return dict
+
+	def getNormalBlood(self):
+		dict = {}
+		for type in self.bloodTypes:
+			if (int(self.getQuantity(type)) >= 3000):
+				dict[type] = self.getQuantity(type)
+		return dict
+
+	def getQuantity(self, type):
+		sum = 0
+		blood = self.getFactoryBlood();
+		for b in blood:
+			if b.type == type:
+				sum = sum + int(b.quantity)
+		return sum
 
 	def getMedicalFacility(self, data) :
 		for m in data:
