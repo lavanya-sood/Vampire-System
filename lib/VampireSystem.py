@@ -6,6 +6,7 @@ from datetime import datetime
 #from .medicalFacility import MedicalFacility
 #from .requests import Requests
 from lib.Blood import Blood
+from lib.Request import Request
 import json
 import os
 import ast
@@ -160,7 +161,7 @@ class VampireSystem:
 			object = MedicalFacility(m['name'])
 			addMedicalFacility(object)
 
-
+    # get requests from medical facilities
 	def getRequests(self, data) :
 		for r in data:
 			object = Requests(m['name'], m['type'], m['quantity'])
@@ -169,7 +170,26 @@ class VampireSystem:
 			else:
 				sortRequests(object)
 
+	# check if request can be fulfilled
+	def checkRequest(self,type,quantity,id):
+		factoryBlood = self.getFactoryBlood()
+		for n in factoryBlood:
+			if (n.type == type and n.quantity >= quantity and n.id not in id):
+				id.append(n.id)
+				return "yes",id
+		return "no",id
 
+	def getMedicalFacilityRequests(self) :
+		mf_requests = []
+		id = []
+		with open(requestDir, "r") as json_file:
+			data = json.load(json_file)
+		for b in data['request']:
+			fulfil,id = self.checkRequest(b['type'], b['quantity'],id)
+			object = Request(b['medical_facility'], b['type'], b['quantity'], fulfil)
+			mf_requests.append(object)
+			print (id)
+		return mf_requests
 
 	def sortRequests(self, object) :
 		for m in self._medicalFacilities:
@@ -325,6 +345,10 @@ class VampireSystem:
 
 	def getEmployees(self) :
 	    return employees
+	#
+	#
+	# def getFactoryBlood(self) :
+	#     return factoryBlood
 
 
 	def getValidBlood(self) :
