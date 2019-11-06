@@ -2,6 +2,7 @@ from lib.server import app
 from flask import request, Request, Flask, flash, redirect, render_template, \
      request, url_for, send_from_directory, session
 from lib.system import System
+from lib.VampireSystem import VampireSystem
 from flask_login import LoginManager,login_user, current_user, login_required, logout_user
 import json
 import os
@@ -44,7 +45,7 @@ def login():
     if request.method == 'POST':
         email = request.form["email"]
         password = request.form["password"]
-        message = System().check_user(email, password)
+        message = VampireSystem().check_user(email, password)
         if message is "":
             if 'url' in session:
                 return redirect(session['url'])

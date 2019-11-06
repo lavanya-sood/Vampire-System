@@ -1,103 +1,92 @@
 {
     "user": [
-       {
+        {
             "username": "drusilla",
             "email": "drusilla@gmail.com",
-            "name":"Vampire Employee",
+            "name": "Vampire Employee",
             "password": "drusilla",
             "login": "False",
-            "role": "Employee",
-            "requests": []
+            "role": "Employee"
         },
         {
             "username": "buffy",
             "email": "buffy@gmail.com",
-            "name":"Vampire Employee",
+            "name": "Vampire Employee",
             "password": "buffy",
-            "login": "False",
-            "role": "Employee",
-            "requests": []
-        }, 
+            "login": "True",
+            "role": "Employee"
+        },
         {
             "username": "stefan",
             "email": "stefan@gmail.com",
-            "name":"Vampire Employee",
+            "name": "Vampire Employee",
             "password": "stefan",
             "login": "False",
-            "role": "Employee",
-            "requests": []
-        }, 
+            "role": "Employee"
+        },
         {
             "username": "sookie",
             "email": "sookie@gmail.com",
-            "name":"Vampire Employee",
+            "name": "Vampire Employee",
             "password": "sookie",
             "login": "False",
-            "role": "Employee",
-            "requests": []
-        }, 
+            "role": "Employee"
+        },
         {
             "username": "klaus",
             "email": "klaus@gmail.com",
-            "name":"Vampire Employee",
+            "name": "Vampire Employee",
             "password": "klaus",
             "login": "False",
-            "role": "Employee",
-            "requests": []
-        },  
+            "role": "Employee"
+        },
         {
-        	"username": "coogeeh",
+            "username": "coogeeh",
             "email": "coogee@gmail.com",
-            "name":"Coogee Hospital",
+            "name": "Coogee Hospital",
             "password": "coogeeh",
             "login": "False",
-            "role": "facility",
-            "requests": []
+            "role": "facility"
         },
         {
-        	"username": "coogeeh",
+            "username": "coogeeh",
             "email": "coogeeh@gmail.com",
-            "name":"Coogee Hospital",
+            "name": "Coogee Hospital",
             "password": "coogeeh",
             "login": "False",
-            "role": "facility",
-            "requests": []
+            "role": "facility"
         },
         {
-        	"username": "newtownh",
+            "username": "newtownh",
             "email": "newtownh@gmail.com",
-            "name":"Newtown Hospital",
+            "name": "Newtown Hospital",
             "password": "coogeeh",
             "login": "False",
-            "role": "facility",
-            "requests": []
+            "role": "facility"
         },
         {
-        	"username": "balmainh",
+            "username": "balmainh",
             "email": "balmainh@gmail.com",
-            "name":"Balmain Hospital",
+            "name": "Balmain Hospital",
             "password": "balmainh",
             "login": "False",
-            "role": "facility",
-            "requests": []
+            "role": "facility"
         },
         {
-        	"username": "kingstonh",
+            "username": "kingstonh",
             "email": "kingstonh@gmail.com",
-            "name":"Kingston Hospital",
+            "name": "Kingston Hospital",
             "password": "kingstonh",
             "login": "False",
-            "role": "facility",
-            "requests": []
+            "role": "facility"
         },
         {
-        	"username": "randwickh",
+            "username": "randwickh",
             "email": "randwickh@gmail.com",
-            "name":"Randwick Hospital",
+            "name": "Randwick Hospital",
             "password": "randwickh",
             "login": "False",
-            "role": "facility",
-            "requests": []
+            "role": "facility"
         }
     ]
 }

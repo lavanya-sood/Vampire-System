@@ -4,14 +4,13 @@ import json
 
 class User(UserMixin,ABC):
 
-        def __init__(self, email, password, name, role):
+        def __init__(self, username, email, password, name, role):
             self._id = self._generate_id()
             self.username = username
             self._email = email
             self._password = password
             self._name = name
             self._role = role
-            self._requests = []
 
         @property
         def email(self):
@@ -48,9 +47,6 @@ class User(UserMixin,ABC):
         def _generate_id(self):
             User.__id += 1
             return User.__id
-
-        def add_requests(self,request):
-            self._request.append(request)
 
         @classmethod
         def set_id(cls, id):
