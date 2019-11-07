@@ -56,11 +56,24 @@
   <div id="content">
   <table class="pure-table">
   <form method = "POST">
+    {% if title == "View Inventory by Blood Type" %}
+    <thead>
+      <td>Blood Type</td>
+      <td>Total Quantity in the Inventory (mL) </td>
+    </thead>
+    <tbody>
+    {% for n in range(blood|length) %}
+      <tr>
+        <td>{{blood[n].type}}</td>
+        <td>{{blood[n].quantity}}</td>
+      </tr>
+    {% endfor %}</tbody>   
+    {% else %}
     <thead>
       <td>Donor Name</td>
       <td>Blood Type</td>
       <td>Quantity (mL) </td>
-      <!-- <td>Date Added</td> -->
+      <td>Date Added</td>
       <td>Expiry Date</td>
       <td>Source</td>
       {%if title == "Expired Blood"%}
@@ -73,17 +86,17 @@
         <td>{{blood[n].donor_name}}
         <td>{{blood[n].type}}
         <td>{{blood[n].quantity}}
-        <!-- <td>{{blood[n].dinput_date}}   -->
+        <td>{{blood[n].input_date}}  
         <td>{{blood[n].expiry_date}}
         <td>{{blood[n].source}} 
-        <td>
-          {%if title == "Expired Blood"%}
-          <button class="button-error pure-button" name = "delete" value = {{n}}>Delete</button>
-          {% endif %}
+        {%if title == "Expired Blood"%}
+          <td><button class="button-error pure-button" name = "delete" value = {{n}}>Delete</button>
+        {% endif %}
         </td>  
       </tr>
       {% endfor %}
     </tbody>
+    {% endif %}
   </form>
   </table></div>
 
