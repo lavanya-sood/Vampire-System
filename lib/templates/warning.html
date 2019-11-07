@@ -1,11 +1,67 @@
-{% extends "base.html" %}
-{% block body %}
-
 <head>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css"
+  integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47"
+  crossorigin="anonymous">
+  <style>
+        .button-disable,
+        .button-warning {
+            color: white;
+            border-radius: 4px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        }
 
+        .button-disable {
+            background: rgb(192,192,192); /* this is a grey */
+        }
+
+        .button-warning {
+          background: rgb(223, 117, 20); /* this is an orange */
+        }
+  </style>
 </head>
 <body>
+  <h1>Warning for Blood Levels</h1>
+  <h2> Here's all the blood types about to run out </h2>
+  <table class="pure-table">
+  <form method = "POST">
+    <thead>
+      <td>Type</td>
+      <td>Quantity Left (mL)</td>
+      <td>Action</td>
+    </thead>
+    <tbody>
+      {% for key,value in lowBlood.items() %}
+      <tr>
+        <td>{{key}}
+        <td>{{value}}
+        <td>
+          {% if requestSent[key] == False %}
+            <button class="button-warning pure-button" name = "request" value = {{key}}>Request More</button>
+          {% else %}
+          <button class="button-warning pure-button" name = "request" value = {{key}} disabled>Request Sent</button>
+          {%endif%}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </form>
+  </table>
 
+  <h2> Here's all the rest of the blood types </h2>
+  <table class="pure-table">
+    <thead>
+      <td>Type</td>
+      <td>Quantity Left (mL)</td>
+      <td>Action</td>
+    </thead>
+    <tbody>
+      {% for key,value in normalBlood.items() %}
+      <tr>
+        <td>{{key}}
+        <td>{{value}}
+        <td>
+            <button class="button-warning pure-button" name = "request" value = {{key}} disabled>Request More</button>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </body>
-
-{% endblock %}

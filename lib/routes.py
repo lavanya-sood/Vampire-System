@@ -11,20 +11,50 @@ import os
 
 @app.route('/')
 def welcome():
-    session['url'] = url_for('inventory')
-    return render_template("welcome.html")
+    loginstatus = False
+    loginemployee = False
+    if(VampireSystem().check_login() == True):
+        loginstatus = True
+    if (VampireSystem().check_employeeLogin() == True):
+        loginemployee = True
+    #session['url'] = url_for('welcome')
+    return render_template("welcome.html",loginstatus=loginstatus,loginemployee=loginemployee)
 
-#inventory
 @app.route('/inventory', methods=['POST', 'GET'])
 def inventory():
-    if (System().check_login() == False):
-        session['url'] = url_for('inventory')
-        remessy = "You were redirected to login"
-        return redirect(url_for('login',remess=remessy))
-    return render_template('inventory.html')
+    # if (System().check_login() == False):
+    #     session['url'] = url_for('inventory')
+    #     remessy = "You were redirected to login"
+    #     return redirect(url_for('login',remess=remessy))
+    if request.method == "POST":
+        if "view_order" in request.form:
+            order = request.form["view_order"]
+            if order == "date_added":
+                title = "View Inventory by Date Added"
+                blood =  VampireSystem().sortBloodbyAddedDate()
+            elif order == "expiry_date":
+                title = "View Inventory by Expiry Date"
+                blood = VampireSystem().sortBloodbyExpiryDate()
+            elif order == "quantity":
+                title = "View Inventory by Quantity"                
+                blood = VampireSystem().sortBloodbyQuantity()
+            elif order == "blood_type":    
+                title = "View Inventory by Blood Type"
+                blood = VampireSystem().sortBloodbyType()
+            return render_template("inventory.html", blood=blood, title=title)
+        
+        elif "delete" in request.form:
+            index = int(request.form["delete"])
+            VampireSystem().deletefromBloodInventory(index)
+            expired_blood = VampireSystem().getExpiredBlood()
+            return render_template("inventory.html", blood=expired_blood, title="Expired Blood")
+    
 
-@app.route('/login/<remess>', methods=['GET', 'POST'])
-def login(remess):
+    expired_blood = VampireSystem().getExpiredBlood()
+    return render_template("inventory.html", blood=expired_blood, title="Expired Blood")
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
     message = ""
     email = ""
     if request.method == 'POST':
@@ -32,19 +62,17 @@ def login(remess):
         password = request.form["password"]
         message = VampireSystem().check_user(email, password)
         if message is "":
-            if 'url' in session:
-                return redirect(session['url'])
-            return redirect(url_for('inventory', check = check))
+            print("LOGGED IN----")
+            return redirect(url_for('welcome'))
+        print("fail IN----")
+        return render_template("login.html", message=message)
+    return render_template("login.html", message=message)
 
-        return render_template("login.html", message=message,remessa="Welcome to the login page")
-    return render_template("login.html", message=message, remessa=remess)
 
 @app.route('/delivered', methods=['GET', 'POST'])
 def delivered():
     #shows list of blood + respective action button
     deliveredBlood = VampireSystem().getDeliveredBlood()
-    testedBlood = VampireSystem().getTestedBlood()
-    notTestedBlood = VampireSystem().getNotTestedBlood()
     if request.method == "POST":
         if "add" in request.form:
             date = datetime.date(datetime.now())
@@ -56,6 +84,10 @@ def delivered():
             deliveredBlood = VampireSystem().getDeliveredBlood()
         elif "send" in request.form:
             index = request.form['send']
+            #coded for now: will change status to tested
+            index = int(request.form['send'])
+            deliveredBlood[index].setStatus("tested")
+            VampireSystem().updateBloodStatus(deliveredBlood[index], "added")
     #when add is clicked: add to factory (change status to added) reload page
     #when send is clicked: delete from list OR change status to tested
     return render_template("delivered.html", deliveredBlood = deliveredBlood)
@@ -66,17 +98,24 @@ def requests():
     mf_requests = VampireSystem().getMedicalFacilityRequests()
     return render_template("requests.html",mf_requests = mf_requests)
 
-@app.route('/warning')
+@app.route('/warning', methods=['GET', 'POST'])
 def warning():
-    return render_template("warning.html")
+    lowBlood = VampireSystem().getLowBlood()
+    normalBlood = VampireSystem().getNormalBlood()
+    requestSent = VampireSystem().getRequestSent()
+    if request.method == "POST":
+        type = request.form['request']
+        requestSent = VampireSystem().updateRequestSent(type)
+    return render_template("warning.html", lowBlood = lowBlood,
+    normalBlood = normalBlood, requestSent = requestSent)
 
 
 @app.route('/logout')
 def logout():
-    CurrentUser = System().get_username()
+    CurrentUser = VampireSystem().get_username()
     message = ""
-    message = System().logout_user()
-    return redirect(url_for('login',remess="Welcome back to the login page"))
+    message = VampireSystem().logout_user()
+    return redirect(url_for('login'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -108,27 +147,3 @@ def search():
             results = VampireSystem().searchBloodVolume(minimum, maximum)
             return render_template("searchResults.html", results = results, searchtype = "volumes between " + minimum + " - " + maximum, volume = 1)
     return render_template("searchResults.html")
-
-
-@app.route('/otherProfile/<user>', methods = ['POST', 'GET'])
-def otherProfile(user):
-    if (System().check_login() == False):
-        session['url'] = url_for('otherProfile', user = user)
-        remessy = "You were redirected to login"
-        return redirect(url_for('login',remess=remessy))
-    User = System().get_user(user)
-    CurrentUser = System().get_username()
-    return render_template("otherProfile.html", User = User)
-
-@app.route('/profile', methods = ['POST', 'GET'])
-def profile():
-    if (System().check_login() == False):
-        session['url'] = url_for('profile')
-        remessy = "You were redirected to login"
-        return redirect(url_for('login',remess=remessy))
-    CurrentUser = System().get_username()
-    user = System().get_user(CurrentUser)
-    return render_template("profile.html", user = user)
-
-
-#end
