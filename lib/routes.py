@@ -40,7 +40,7 @@ def inventory():
                 blood = VampireSystem().sortBloodbyQuantity()
             elif order == "blood_type":    
                 title = "View Inventory by Blood Type"
-                blood = VampireSystem().sortBloodbyType()
+                blood = VampireSystem().getBloodQuantitybyType()
             return render_template("inventory.html", blood=blood, title=title)
         
         elif "delete" in request.form:

@@ -298,24 +298,12 @@ class VampireSystem:
 				expiredBlood.append(b)	
 		return expiredBlood
 
-	def sortBloodbyType(self): # may find a better algorithm for sorting
+	def getBloodQuantitybyType(self): # may find a better algorithm for sorting
 		blood = []
-		typeA = []
-		typeB = []
-		typeAB = []
-		typeO = []
-		with open(bloodDir, "r") as json_file:
-			data = json.load(json_file)
-		for b in data['blood']:	
-			if b["type"] == "A":
-				typeA.append(b)
-			elif b["type"] == "B":	
-				typeB.append(b)
-			elif b["type"] == "AB":	
-				typeAB.append(b)	
-			elif b["type"] == "O":	
-				typeO.append(b)	
-		return typeA + typeB + typeAB + typeO	
+		for type in self.bloodTypes:
+			blood.append(dict(type=type, quantity=self.getQuantity(type)))
+		return blood
+	
 
 	def sortBloodbyQuantity(self):
 		with open(bloodDir, "r") as json_file:
