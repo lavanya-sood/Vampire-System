@@ -11,13 +11,14 @@ from collections import Counter
 
 currDir = os.getcwd()
 #productsDir = currDir + "/lib/textfiles/products.json"
+user_dataDir = currDir + "/lib/textfiles/userData.json"
 
 now = datetime.datetime.now()
 
 class System:
     #product_data = {}
     #request_data = {}
-    #user_data = {}
+    user_data = {}
 
     def __init__(self):
         pass

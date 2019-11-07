@@ -1,7 +1,103 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
+
+<!-- SENG 2021 Project -->
+<!-- Team name : TeleTubbies -->
+
+<html>
+
 <head>
+<title> Vampire </title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<!--link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous"-->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+<style>
+
+body {
+	text-align:center;
+	background-color: black;
+	color: white;
+	margin-top: 5px !important;
+	height: 100%;
+	width:100%;
+}
+
+.pure-form {
+		
+		border: none;
+		background: #802828;
+		width: 50%;
+		height: 430px;
+		margin: auto;
+		margin-top: 100px;
+		border-radius: 25px;
+		padding-top: 50px;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+	}
+	.pure-control-group {
+		padding: 3px;
+		padding-bottom: 13.5px;
+	}
+
+	#login-button {
+		background-color: #4a0101; 
+		border: none;
+		color: white;
+		padding: 15px 32px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+	}
+
+	#login-button:hover {
+		background-color: white; 
+		color: #4a0101;
+	}
+
+</style>
+
+
 </head>
-<body>
+<body> 
+<!-- <form class="pure-form pure-form-aligned" method = "POST">
+    <fieldset>
+    	<a class = "error">{{message}}</a>
+        <div class="pure-control-group">
+            <input name="email" type="text" placeholder="Email" class = "pure-input-rounded">
+        </div>
+        <div class="pure-control-group">
+            <input name="password" type="password" placeholder="Password" class = "pure-input-rounded">
+        </div>
+         <button class="pure-button">
+           Login
+        </button>
+    </fieldset>
+</form> -->
+
+<form class="pure-form pure-form-stacked"  method = "POST">
+ <h1> Login </h1>
+    <fieldset> 
+        <div class="pure-control-group">
+        <!-- <label for="email">Email</label> -->
+        <h4> Email</h4>
+        <input name="email" type="text" placeholder="Email" class = "pure-input-rounded">
+        </div>
+        <div class="pure-control-group">
+        <h4> Password</h4>
+        <input name="password" type="password" placeholder="Password" class = "pure-input-rounded">
+        </div>
+        <br>
+        <button class="pure-button pure-button-primary" id = "login-button">Sign in</button>
+        <!-- <h5 class = "inactive"><a class = "underlineHover" href="{{url_for('login')}}"> Not yet registered? </a></h5> -->
+        <h5 class = "error">{{message}}</h5>
+    </fieldset>
+</form>
+
 </body>
 
-</html>
+
