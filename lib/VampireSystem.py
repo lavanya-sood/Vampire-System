@@ -57,7 +57,8 @@ class VampireSystem:
 				element["login"] = "False"
 				with open(userDir, 'w') as f:
 					f.write(json.dumps(datastore,indent= 4))
-			return "You have successfully logged out"
+				print("HI YYYYY")
+				return "You have successfully logged out"
 		return ""
 
 
