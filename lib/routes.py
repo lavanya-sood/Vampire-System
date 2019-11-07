@@ -45,11 +45,6 @@ def welcome():
 #         return render_template("login.html", message=message,remessa="Welcome to the login page")
 #     return render_template("login.html", message=message, remessa=remess)
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    session['url'] = url_for('inventory')
-    return render_template("welcome.html")
-
 
 @app.route('/inventory', methods=['POST', 'GET'])
 def inventory():
@@ -84,8 +79,8 @@ def inventory():
     expired_blood = VampireSystem().getExpiredBlood()
     return render_template("inventory.html", blood=expired_blood, title="Expired Blood")
 
-@app.route('/login/<remess>', methods=['GET', 'POST'])
-def login(remess):
+@app.route('/login', methods=['GET', 'POST'])
+def login():
     message = ""
     email = ""
     if request.method == 'POST':
