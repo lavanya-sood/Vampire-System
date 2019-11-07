@@ -90,7 +90,7 @@ def requests():
     mf_requests = VampireSystem().getMedicalFacilityRequests()
     return render_template("requests.html",mf_requests = mf_requests)
 
-@app.route('/warning')
+@app.route('/warning', methods=['GET', 'POST'])
 def warning():
     lowBlood = VampireSystem().getLowBlood()
     normalBlood = VampireSystem().getNormalBlood()
