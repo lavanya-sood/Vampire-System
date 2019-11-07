@@ -3,6 +3,7 @@ from datetime import datetime
 from flask import request, Request, Flask, flash, redirect, render_template, \
      request, url_for, send_from_directory, session
 from lib.VampireSystem import VampireSystem
+from lib.BloodSystem import BloodSystem
 from flask_login import LoginManager,login_user, current_user, login_required, logout_user
 import json
 import os
@@ -31,26 +32,26 @@ def inventory():
             order = request.form["view_order"]
             if order == "date_added":
                 title = "View Inventory by Date Added"
-                blood =  VampireSystem().sortBloodbyAddedDate()
+                blood =  BloodSystem().sortBloodbyAddedDate()
             elif order == "expiry_date":
                 title = "View Inventory by Expiry Date"
-                blood = VampireSystem().sortBloodbyExpiryDate()
+                blood = BloodSystem().sortBloodbyExpiryDate()
             elif order == "quantity":
                 title = "View Inventory by Quantity"                
-                blood = VampireSystem().sortBloodbyQuantity()
+                blood = BloodSystem().sortBloodbyQuantity()
             elif order == "blood_type":    
                 title = "View Inventory by Blood Type"
-                blood = VampireSystem().getBloodQuantitybyType()
+                blood = BloodSystem().getBloodQuantitybyType()
             return render_template("inventory.html", blood=blood, title=title)
         
         elif "delete" in request.form:
             index = int(request.form["delete"])
-            VampireSystem().deletefromBloodInventory(index)
-            expired_blood = VampireSystem().getExpiredBlood()
+            BloodSystem().deletefromBloodInventory(index)
+            expired_blood = BloodSystem().getExpiredBlood()
             return render_template("inventory.html", blood=expired_blood, title="Expired Blood")
     
 
-    expired_blood = VampireSystem().getExpiredBlood()
+    expired_blood = BloodSystem().getExpiredBlood()
     return render_template("inventory.html", blood=expired_blood, title="Expired Blood")
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -100,8 +101,8 @@ def requests():
 
 @app.route('/warning', methods=['GET', 'POST'])
 def warning():
-    lowBlood = VampireSystem().getLowBlood()
-    normalBlood = VampireSystem().getNormalBlood()
+    lowBlood = BloodSystem().getLowBlood()
+    normalBlood = BloodSystem().getNormalBlood()
     requestSent = VampireSystem().getRequestSent()
     if request.method == "POST":
         type = request.form['request']
