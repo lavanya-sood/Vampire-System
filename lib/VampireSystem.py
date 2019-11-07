@@ -5,9 +5,13 @@ from datetime import datetime
 #from .deliveredBlood import DeliveredBlood
 #from .medicalFacility import MedicalFacility
 #from .requests import Requests
+
 #from lib.Blood import Blood
 #from lib.Request import Request
 from lib.user import User
+
+from lib.Blood import Blood
+from lib.Request import Request
 import json
 import os
 import ast
@@ -20,6 +24,7 @@ requestDir = currDir + "/lib/textfiles/request.json"
 medicalFacilityDir = currDir + "/lib/textfiles/medicalFacility.json"
 userDir = currDir + "/lib/textfiles/userData.json"
 
+
 class VampireSystem:
 	employees = []
 	deliveredBlood = []
@@ -28,17 +33,30 @@ class VampireSystem:
 	expiredBlood = []
 	medicalFacilities = []
 	vampireRequests = []
+
 	requested_id = []
 	users = []
+	requestSent = {}
+	bloodTypes = ["A", "B", "AB", "O"]
+	for type in bloodTypes:
+		requestSent[type] = False
+
 
 	def __init__(self):
 		pass
 
-	# prob dont need this func? -nicole
+	def getRequestSent(self):
+		return self.requestSent
+
+	def updateRequestSent(self, type):
+		self.requestSent[type] = True
+		return self.requestSent
+
 	def loadJson(self): #split into get respective functions
-		with open('userData.json') as json_file:
+		with open(employeeDir, "r") as json_file:
 			data = json.load(json_file)
-			getUser(data['user'])
+			getEmployees(data['employee'])
+
 		with open('blood.json') as json_file:
 			data = json.load(json_file)
 			getBlood(data['blood'])
@@ -48,6 +66,7 @@ class VampireSystem:
 		with open('requests.json') as json_file:
 			data = json.load(json_file)
 			getRequests(data['requests'])
+
 
 	def logout_user(self):
 		with open(userDir, 'r') as f:
@@ -119,11 +138,37 @@ class VampireSystem:
 		vampireRequests.append(object)
 
 
+
+	def addEmployee(self, object):
+		employees.append(object)
+
+	def addDeliveredBlood(self, object):
+		deliveredBlood.append(object)
+
+
+	def addFactoryBlood(self, object):
+		factoryBlood.append(object)
+
+
+	def addValidBlood(self, object) :
+		validBlood.append(object)
+
+
+	def addExpiryBlood(self, object) :
+		expiredBlood.append(object)
+
+
+	def addMedicalFacilities(self, object) :
+		medicalFacilities.append(object)
+
+
+	def addVampireRequests(self, object) :
+		vampireRequests.append(object)
+
 	def getEmployees(self, data) :
 		for e in data:
 			object = Employee(e['email'], e['password'])
 			addEmployee(object);
-
 
 	def getUsers(self):
 		users = []
@@ -184,16 +229,36 @@ class VampireSystem:
 		return notTestedBlood
 
 	def getFactoryBlood(self) :
-		f = []
+		factoryBlood = []
 		with open(bloodDir, "r") as json_file:
 			data = json.load(json_file)
 		for b in data['blood']:
 			if b['test_status'] == "added":
-				object = Blood(b['donor_name'], b['type'], b['quantity'], b['expiry_date'],
-				b['input_date'],b['test_status'],b['source'],b['id'])
-				f.append(object)
-		return f
+					object = Blood(b['donor_name'], b['type'], b['quantity'], b['expiry_date'], b['input_date'], b['test_status'], b['source'], b['id'])
+					factoryBlood.append(object)
+		return factoryBlood
 
+	def getLowBlood(self):
+		dict = {}
+		for type in self.bloodTypes:
+			if (int(self.getQuantity(type)) < 3000):
+				dict[type] = self.getQuantity(type)
+		return dict
+
+	def getNormalBlood(self):
+		dict = {}
+		for type in self.bloodTypes:
+			if (int(self.getQuantity(type)) >= 3000):
+				dict[type] = self.getQuantity(type)
+		return dict
+
+	def getQuantity(self, type):
+		sum = 0
+		blood = self.getFactoryBlood();
+		for b in blood:
+			if b.type == type:
+				sum = sum + int(b.quantity)
+		return sum
 
 	def getMedicalFacility(self, data) :
 		for m in data:
@@ -311,6 +376,8 @@ class VampireSystem:
 		    i = i + 1
 		return minIndex
 
+
+
 	def removeFactoryBlood(self) :
 		pass
 
@@ -351,6 +418,85 @@ class VampireSystem:
 	    return validBlood
 
 
+	def getExpiredBlood(self):
+		expiredBlood = []
+		with open(bloodDir, "r") as json_file:
+			data = json.load(json_file)
+		now = datetime.now()	
+		for b in data['blood']:
+			d = datetime.strptime(b["expiry_date"], "%Y-%m-%d")
+			if d < now:
+				expiredBlood.append(b)	
+		return expiredBlood
+
+	def sortBloodbyType(self): # may find a better algorithm for sorting
+		blood = []
+		typeA = []
+		typeB = []
+		typeAB = []
+		typeO = []
+		with open(bloodDir, "r") as json_file:
+			data = json.load(json_file)
+		for b in data['blood']:	
+			if b["type"] == "A":
+				typeA.append(b)
+			elif b["type"] == "B":	
+				typeB.append(b)
+			elif b["type"] == "AB":	
+				typeAB.append(b)	
+			elif b["type"] == "O":	
+				typeO.append(b)	
+		return typeA + typeB + typeAB + typeO	
+
+	def sortBloodbyQuantity(self):
+		with open(bloodDir, "r") as json_file:
+			data = json.load(json_file)
+		blood = data['blood']	
+		n = len(blood)
+		for i in range(n) :
+			for j in range(0, n-i-1):
+				if blood[j]["quantity"] > blood[j+1]["quantity"] :
+					blood[j], blood[j+1] = blood[j+1], blood[j]
+		return blood
+
+
+	def sortBloodbyExpiryDate(self):
+		with open(bloodDir, "r") as json_file:
+			data = json.load(json_file)
+		blood = data['blood']	
+		n = len(blood)
+		for i in range(n) :
+			for j in range(0, n-i-1):
+				if blood[j]["expiry_date"] > blood[j+1]["expiry_date"] :
+					blood[j], blood[j+1] = blood[j+1], blood[j]
+		return blood	
+
+	def sortBloodbyAddedDate(self):
+		with open(bloodDir, "r") as json_file:
+			data = json.load(json_file)
+		blood = data['blood']	
+		n = len(blood)
+		for i in range(n) :
+			for j in range(0, n-i-1):
+				if blood[j]["input_date"] > blood[j+1]["input_date"] :
+					blood[j], blood[j+1] = blood[j+1], blood[j]
+		return blood
+
+	def deletefromBloodInventory(self, index):
+		# with open(bloodDir, 'w') as dest_file:
+		# 	with open(bloodDir, 'r') as source_file:
+		# 		datastore = json.load(source_file)
+		# 		blood = datastore["blood"]
+		# 		del blood[index]
+		# 		dest_file.write(json.dumps(element))
+
+		with open(bloodDir, 'r') as f:
+			datastore = json.load(f)
+			del datastore["blood"][index]
+			
+			with open(bloodDir, 'w') as file:
+				file.write(json.dumps(datastore, indent = 4))
+
     #def getExpiredBlood(self) :
 	#	return self._expiredBlood
 
@@ -361,6 +507,7 @@ class VampireSystem:
 
     #def getVampireRequests(self) :
     #    return self._vampireRequests
-	
-	
 
+
+
+    

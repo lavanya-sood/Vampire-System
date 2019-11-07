@@ -1,18 +1,28 @@
 class Blood():
 
-        def __init__(self, donor_name, type, quantity,expiry_date,input_date,test_status,source):
-            self._donor_name = donor_name
+        def __init__(self, donor_name, type, quantity,expiry_date,input_date,test_status,source, id):
+            self._donorName = donor_name
             self._type = type
             self._quantity = quantity
-            self._expiry_date = expiry_date
-            self._input_date = input_date
-            self._test_status = test_status
+            self._expiryDate = expiry_date
+            self._inputDate = input_date
+            self._testStatus = test_status
             self._source = source
+            self._id = id
 
         @property
-        def donor_name(self):
-            return self._donor_name
+        def donorName(self):
+            return self._donorName
 
+        def setStatus(self, new):
+            self._testStatus = new
+
+        @property
+        def id(self):
+            return self._id
+        @property
+        def source(self):
+            return self._source
         @property
         def type(self):
             return self._type
@@ -22,13 +32,13 @@ class Blood():
             return self._quantity
 
         @property
-        def expiry_date(self):
-            return self._expiry_date
+        def expiryDate(self):
+            return self._expiryDate
 
         @property
-        def input_date(self):
-            return self._input_date
+        def inputDate(self):
+            return self._inputDate
 
         @property
-        def test_status(self):
-            return self._test_status
+        def testStatus(self):
+            return self._testStatus

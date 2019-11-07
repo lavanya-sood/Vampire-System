@@ -1,6 +1,6 @@
 {
     "request": [
-        
+
         {
             "medical_facility": "Coogee Hospital",
             "type": "O",
@@ -9,22 +9,22 @@
         {
             "medical_facility": "Randwick Hospital",
             "type": "A",
-            "quantity": "350"
+            "quantity": "250"
         },
         {
             "medical_facility": "Newtown Hospital",
             "type": "AB",
-            "quantity": "670"
+            "quantity": "250"
         },
         {
             "medical_facility": "Alexandria Hospital",
             "type": "A",
-            "quantity": "490"        	
+            "quantity": "490"
         },
         {
             "medical_facility": "Kingston Hospital",
             "type": "B",
-            "quantity": "800"  
+            "quantity": "800"
         },
         {
             "medical_facility": "Randwick Hospital",
@@ -44,12 +44,12 @@
         {
             "medical_facility": "Kingston Hospital",
             "type": "A",
-            "quantity": "450"        	
+            "quantity": "450"
         },
         {
             "medical_facility": "Alexandria Hospital",
             "type": "B",
-            "quantity": "760"  
-        }        
+            "quantity": "760"
+        }
     ]
-}        
+}
