@@ -173,18 +173,14 @@ class VampireSystem:
 		req_id = mf_req.id
 		i = 0
 		if newStatus == "yes":
-
 			with open(bloodDir, 'r') as f:
 				datastore = json.load(f)
 				for element in datastore["blood"]:
 					if (element["id"] in blood_id):
-						print ("delete")
-						print (element)
 						datastore["blood"].remove(element)
-						element['delivered_status'] = newStatus
-				with open(bloodDir, 'w') as file:
-					file.write(json.dumps(datastore, indent = 4))
-					print (datastore)
+						#element['delivered_status'] = newStatus
+						with open(bloodDir, 'w') as file:
+							file.write(json.dumps(datastore, indent = 4))
 		with open(requestDir, "r") as json_file:
 			data = json.load(json_file)
 		for b in data['request']:
@@ -227,7 +223,7 @@ class VampireSystem:
 		for b in data['request']:
 			if (b['status'] == ""):
 				fulfil,id,list = self.checkRequest(b['type'], b['quantity'],id)
-				#print (list)
+				print (list)
 				object = Request(b['medical_facility'], b['type'], b['quantity'], fulfil,list,b['id'])
 				mf_requests.append(object)
 		return mf_requests
