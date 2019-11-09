@@ -171,13 +171,20 @@ class VampireSystem:
 		#remove the req and chg status of blood
 		blood_id = mf_req.blood_list
 		req_id = mf_req.id
-		with open(bloodDir, 'r') as f:
-			datastore = json.load(f)
-			for element in datastore["blood"]:
-				if (element["id"] in blood_id):
-					element['delivered_status'] = newStatus
-					with open(bloodDir, 'w') as file:
-						file.write(json.dumps(datastore, indent = 4))
+		i = 0
+		if newStatus == "yes":
+
+			with open(bloodDir, 'r') as f:
+				datastore = json.load(f)
+				for element in datastore["blood"]:
+					if (element["id"] in blood_id):
+						print ("delete")
+						print (element)
+						datastore["blood"].remove(element)
+						element['delivered_status'] = newStatus
+				with open(bloodDir, 'w') as file:
+					file.write(json.dumps(datastore, indent = 4))
+					print (datastore)
 		with open(requestDir, "r") as json_file:
 			data = json.load(json_file)
 		for b in data['request']:

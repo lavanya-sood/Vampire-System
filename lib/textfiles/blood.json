@@ -1,17 +1,6 @@
 {
     "blood": [
         {
-            "donor_name": "Harry",
-            "type": "O",
-            "quantity": 500,
-            "expiry_date": "2020-02-10",
-            "input_date": "2019-09-07",
-            "test_status": "tested",
-            "source": "Coogee Hospital",
-            "id": 0,
-            "delivered_status": "yes"
-        },
-        {
             "donor_name": "John",
             "type": "AB",
             "quantity": 500,
@@ -53,17 +42,6 @@
             "test_status": "tested",
             "source": "Coogee Hospital",
             "id": 4,
-            "delivered_status": ""
-        },
-        {
-            "donor_name": "Coles",
-            "type": "O",
-            "quantity": 500,
-            "expiry_date": "2019-12-10",
-            "input_date": "2019-09-07",
-            "test_status": "tested",
-            "source": "Alexandria Hospital",
-            "id": 5,
             "delivered_status": ""
         },
         {
@@ -155,39 +133,6 @@
             "delivered_status": "no"
         },
         {
-            "donor_name": "John",
-            "type": "AB",
-            "quantity": 250,
-            "expiry_date": "2019-12-13",
-            "input_date": "2019-09-07",
-            "test_status": "tested",
-            "source": "Coogee Hospital",
-            "id": 14,
-            "delivered_status": ""
-        },
-        {
-            "donor_name": "Louisa",
-            "type": "A",
-            "quantity": 250,
-            "expiry_date": "2020-09-10",
-            "input_date": "2019-08-07",
-            "test_status": "tested",
-            "source": "Balmain Hospital",
-            "id": 15,
-            "delivered_status": ""
-        },
-        {
-            "donor_name": "Carol",
-            "type": "O",
-            "quantity": 500,
-            "expiry_date": "2020-07-10",
-            "input_date": "2019-05-02",
-            "test_status": "tested",
-            "source": "Randwick Hospital",
-            "id": 16,
-            "delivered_status": "no"
-        },
-        {
             "donor_name": "Sarah",
             "type": "AB",
             "quantity": 250,
@@ -197,28 +142,6 @@
             "source": "Batmobile",
             "id": 17,
             "delivered_status": "no"
-        },
-        {
-            "donor_name": "Coles",
-            "type": "O",
-            "quantity": 500,
-            "expiry_date": "2019-12-10",
-            "input_date": "2019-09-07",
-            "test_status": "tested",
-            "source": "Kingston Hospital",
-            "id": 18,
-            "delivered_status": ""
-        },
-        {
-            "donor_name": "Nichols",
-            "type": "B",
-            "quantity": 250,
-            "expiry_date": "2020-08-10",
-            "input_date": "2019-06-07",
-            "test_status": "tested",
-            "source": "Kingston Hospital",
-            "id": 19,
-            "delivered_status": ""
         },
         {
             "donor_name": "Elisa",
