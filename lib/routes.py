@@ -37,19 +37,19 @@ def inventory():
                 title = "View Inventory by Expiry Date"
                 blood = BloodSystem().sortBloodbyExpiryDate()
             elif order == "quantity":
-                title = "View Inventory by Quantity"                
+                title = "View Inventory by Quantity"
                 blood = BloodSystem().sortBloodbyQuantity()
-            elif order == "blood_type":    
+            elif order == "blood_type":
                 title = "View Inventory by Blood Type"
                 blood = BloodSystem().getBloodQuantitybyType()
             return render_template("inventory.html", blood=blood, title=title)
-        
+
         elif "delete" in request.form:
             index = int(request.form["delete"])
             BloodSystem().deletefromBloodInventory(index)
             expired_blood = BloodSystem().getExpiredBlood()
             return render_template("inventory.html", blood=expired_blood, title="Expired Blood")
-    
+
 
     expired_blood = BloodSystem().getExpiredBlood()
     return render_template("inventory.html", blood=expired_blood, title="Expired Blood")
@@ -87,16 +87,26 @@ def delivered():
             index = request.form['send']
             #coded for now: will change status to tested
             index = int(request.form['send'])
-            deliveredBlood[index].setStatus("tested")
+            deliveredBlood[index].setTestStatus("tested")
             VampireSystem().updateBloodStatus(deliveredBlood[index], "added")
     #when add is clicked: add to factory (change status to added) reload page
     #when send is clicked: delete from list OR change status to tested
     return render_template("delivered.html", deliveredBlood = deliveredBlood)
 
 #  requests from medical facilities
-@app.route('/requests')
+@app.route('/requests', methods=['GET', 'POST'])
 def requests():
     mf_requests = VampireSystem().getMedicalFacilityRequests()
+    #factoryBlood = BloodSystem().getFactoryBlood()
+    if request.method == "POST":
+        if "send" in request.form:
+            index = int(request.form['send'])
+            VampireSystem().updateDeliveredStatus(mf_requests[index],"yes")
+            mf_requests = VampireSystem().getMedicalFacilityRequests()
+        elif "decline" in request.form:
+            index = int(request.form['decline'])
+            VampireSystem().updateDeliveredStatus(mf_requests[index],"no")
+            mf_requests = VampireSystem().getMedicalFacilityRequests()
     return render_template("requests.html",mf_requests = mf_requests)
 
 @app.route('/warning', methods=['GET', 'POST'])

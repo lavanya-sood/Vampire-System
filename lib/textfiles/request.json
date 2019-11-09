@@ -1,55 +1,74 @@
 {
     "request": [
-
         {
             "medical_facility": "Coogee Hospital",
             "type": "O",
-            "quantity": "500"
+            "quantity": 500,
+            "id": 0,
+            "status": "yes"
         },
         {
             "medical_facility": "Randwick Hospital",
             "type": "A",
-            "quantity": "250"
+            "quantity": 250,
+            "id": 1,
+            "status": ""
         },
         {
             "medical_facility": "Newtown Hospital",
             "type": "AB",
-            "quantity": "250"
+            "quantity": 250,
+            "id": 2,
+            "status": ""
         },
         {
             "medical_facility": "Alexandria Hospital",
             "type": "A",
-            "quantity": "490"
+            "quantity": 500,
+            "id": 3,
+            "status": ""
         },
         {
             "medical_facility": "Kingston Hospital",
             "type": "B",
-            "quantity": "800"
+            "quantity": 750,
+            "id": 4,
+            "status": ""
         },
         {
             "medical_facility": "Randwick Hospital",
             "type": "AB",
-            "quantity": "200"
+            "quantity": 500,
+            "id": 5,
+            "status": ""
         },
         {
             "medical_facility": "Newtown Hospital",
             "type": "A",
-            "quantity": "900"
+            "quantity": 750,
+            "id": 6,
+            "status": ""
         },
         {
             "medical_facility": "Coogee Hospital",
             "type": "AB",
-            "quantity": "100"
+            "quantity": 1000,
+            "id": 7,
+            "status": ""
         },
         {
             "medical_facility": "Kingston Hospital",
             "type": "A",
-            "quantity": "450"
+            "quantity": 250,
+            "id": 8,
+            "status": ""
         },
         {
             "medical_facility": "Alexandria Hospital",
             "type": "B",
-            "quantity": "760"
+            "quantity": 250,
+            "id": 9,
+            "status": ""
         }
     ]
 }

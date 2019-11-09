@@ -3,10 +3,12 @@ from datetime import datetime
 from lib.user import User
 from lib.Blood import Blood
 from lib.Request import Request
+from lib.BloodSystem import BloodSystem
 import json
 import os
 import ast
 import operator
+from datetime import date
 
 currDir = os.getcwd()
 bloodDir = currDir + "/lib/textfiles/blood.json"
@@ -119,7 +121,7 @@ class VampireSystem:
 			data = json.load(json_file)
 		for b in data['blood']:
 			if b['input_date'] == "":
-				object = Blood(b['donor_name'], b['type'], b['quantity'], b['expiry_date'], b['input_date'], b['test_status'], b['source'], b['id'])
+				object = Blood(b['donor_name'], b['type'], b['quantity'], b['expiry_date'], b['input_date'], b['test_status'], b['source'], b['id'],b['delivered_status'])
 				deliveredBlood.append(object)
 		return deliveredBlood
 
@@ -131,7 +133,8 @@ class VampireSystem:
 					element['test_status'] = newStatus
 					with open(bloodDir, 'w') as file:
 						file.write(json.dumps(datastore, indent = 4))
-	
+
+
 	def updateInputDate(self, blood) :
 		date = str(datetime.date(datetime.now()))
 		with open(bloodDir, 'r') as f:
@@ -164,14 +167,50 @@ class VampireSystem:
 			object = MedicalFacility(m['name'])
 			addMedicalFacility(object)
 
+	def updateDeliveredStatus(self, mf_req, newStatus) :
+		#remove the req and chg status of blood
+		blood_id = mf_req.blood_list
+		req_id = mf_req.id
+		with open(bloodDir, 'r') as f:
+			datastore = json.load(f)
+			for element in datastore["blood"]:
+				if (element["id"] in blood_id):
+					element['delivered_status'] = newStatus
+					with open(bloodDir, 'w') as file:
+						file.write(json.dumps(datastore, indent = 4))
+		with open(requestDir, "r") as json_file:
+			data = json.load(json_file)
+		for b in data['request']:
+			if b['id'] == req_id:
+				b['status'] = newStatus
+				with open(requestDir, 'w') as file:
+					file.write(json.dumps(data, indent = 4))
 	# check if request can be fulfilled
 	def checkRequest(self,type,quantity,id):
-		factoryBlood = self.getFactoryBlood()
+		factoryBlood = BloodSystem().getFactoryBlood()
+		count = 0
+		today = date.today()
+		datenow = today.strftime("%Y-%m-%d")
+		list = []
+		# check expiry date in string
 		for n in factoryBlood:
-			if (n.type == type and n.quantity >= quantity and n.id not in id):
+			if (n.type == type and n.quantity == quantity and n.id not in id
+			and n.expiryDate > datenow and n.deliveredStatus != "yes"):
 				id.append(n.id)
-				return "yes",id
-		return "no",id
+				list.append(n.id)
+				return "yes",id,list
+		# calculate how many packets needed
+		req_qtt = quantity
+		for n in factoryBlood:
+				if (n.type == type and req_qtt >= n.quantity and n.id not in id
+					and req_qtt > 0 and n.expiryDate > datenow and n.deliveredStatus != "yes"):
+					count = count + 1;
+					req_qtt = req_qtt - n.quantity
+					id.append(n.id)
+					list.append(n.id)
+		if (count > 0 and req_qtt == 0):
+			return "yes",id,list
+		return "no",id,list
 
 	def getMedicalFacilityRequests(self) :
 		mf_requests = []
@@ -179,10 +218,11 @@ class VampireSystem:
 		with open(requestDir, "r") as json_file:
 			data = json.load(json_file)
 		for b in data['request']:
-			fulfil,id = self.checkRequest(b['type'], b['quantity'],id)
-			object = Request(b['medical_facility'], b['type'], b['quantity'], fulfil)
-			mf_requests.append(object)
-			print (id)
+			if (b['status'] == ""):
+				fulfil,id,list = self.checkRequest(b['type'], b['quantity'],id)
+				#print (list)
+				object = Request(b['medical_facility'], b['type'], b['quantity'], fulfil,list,b['id'])
+				mf_requests.append(object)
 		return mf_requests
 
 	def sortRequests(self, object) :
@@ -230,9 +270,9 @@ class VampireSystem:
 		endMonth = end[5:7]
 		endDay = end[8:]
 		newStart = startYear + startMonth + startDay
-		newStart = int(newStart) 
+		newStart = int(newStart)
 		newEnd = endYear + endMonth + endDay
-		newEnd = int(newEnd) 
+		newEnd = int(newEnd)
 		results = []
 		factoryBlood = self.getFactoryBlood()
 		for blood in factoryBlood:
@@ -254,4 +294,3 @@ class VampireSystem:
 	        if ( sum >= minimum and sum <= maximum):
 	            results[b] = sum
 	    return results
-

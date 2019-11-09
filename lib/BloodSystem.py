@@ -16,18 +16,23 @@ userDir = currDir + "/lib/textfiles/userData.json"
 
 class BloodSystem():
 	bloodTypes = ["A", "B", "AB", "O"]
-	
 
-	def getFactoryBlood(self) :
+	def getFactoryBlood(self):
 		factoryBlood = []
 		with open(bloodDir, "r") as json_file:
 			data = json.load(json_file)
 		for b in data['blood']:
 			if b['input_date'] != "":
-				object = Blood(b['donor_name'], b['type'], b['quantity'], b['expiry_date'],
-				b['input_date'],b['test_status'],b['source'],b['id'])
+				object = Blood(b['donor_name'], b['type'], b['quantity'], b['expiry_date'],b['input_date'],b['test_status'],b['source'],b['id'],b['delivered_status'])
 				factoryBlood.append(object)
 		return factoryBlood
+
+	# def updateDeliveredStatus(self,id):
+	# 	with open(bloodDir, "r") as json_file:
+	# 		data = json.load(json_file)
+	# 	for b in data['blood']:
+	# 		if b['id'] == id:
+	# 			b['delivered_status'] = "yes"
 
 	def getLowBlood(self):
 		dict = {}
@@ -55,11 +60,11 @@ class BloodSystem():
 		expiredBlood = []
 		with open(bloodDir, "r") as json_file:
 			data = json.load(json_file)
-		now = datetime.now()	
+		now = datetime.now()
 		for b in data['blood']:
 			d = datetime.strptime(b["expiry_date"], "%Y-%m-%d")
 			if d < now:
-				expiredBlood.append(b)	
+				expiredBlood.append(b)
 		return expiredBlood
 
 	def getBloodQuantitybyType(self): # may find a better algorithm for sorting
@@ -67,12 +72,12 @@ class BloodSystem():
 		for type in self.bloodTypes:
 			blood.append(dict(type=type, quantity=self.getQuantity(type)))
 		return blood
-	
+
 
 	def sortBloodbyQuantity(self):
 		with open(bloodDir, "r") as json_file:
 			data = json.load(json_file)
-		blood = data['blood']	
+		blood = data['blood']
 		n = len(blood)
 		for i in range(n) :
 			for j in range(0, n-i-1):
@@ -84,18 +89,18 @@ class BloodSystem():
 	def sortBloodbyExpiryDate(self):
 		with open(bloodDir, "r") as json_file:
 			data = json.load(json_file)
-		blood = data['blood']	
+		blood = data['blood']
 		n = len(blood)
 		for i in range(n) :
 			for j in range(0, n-i-1):
 				if blood[j]["expiry_date"] > blood[j+1]["expiry_date"] :
 					blood[j], blood[j+1] = blood[j+1], blood[j]
-		return blood	
+		return blood
 
 	def sortBloodbyAddedDate(self):
 		with open(bloodDir, "r") as json_file:
 			data = json.load(json_file)
-		blood = data['blood']	
+		blood = data['blood']
 		n = len(blood)
 		for i in range(n) :
 			for j in range(0, n-i-1):
@@ -107,6 +112,6 @@ class BloodSystem():
 		with open(bloodDir, 'r') as f:
 			datastore = json.load(f)
 			del datastore["blood"][index]
-			
+
 			with open(bloodDir, 'w') as file:
 				file.write(json.dumps(datastore, indent = 4))
