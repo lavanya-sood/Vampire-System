@@ -202,7 +202,7 @@
             "donor_name": "Coles",
             "type": "O",
             "quantity": 500,
-            "expiry_date": "2019-12-10",
+            "expiry_date": "2019-12-31",
             "input_date": "2019-09-07",
             "test_status": "tested",
             "source": "Kingston Hospital",
