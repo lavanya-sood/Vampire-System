@@ -15,3 +15,72 @@ medicalFacilityDir = currDir + "/lib/textfiles/medicalFacility.json"
 userDir = currDir + "/lib/textfiles/userData.json"
 
 class UserSystem:
+	vampireRequests = []
+
+	def logout_user(self):
+		with open(userDir, 'r') as f:
+			datastore = json.load(f)
+		for element in datastore["user"]:
+			if element["login"] == "True":
+				element["login"] = "False"
+				with open(userDir, 'w') as f:
+					f.write(json.dumps(datastore,indent= 4))
+				print("HI YYYYY")
+				return "You have successfully logged out"
+		return ""
+
+	def check_user(self, email, password):
+		user = ""
+		with open(userDir, 'r') as f:
+			datastore = json.load(f)
+		for element in datastore["user"]:
+			if element["email"] == email and element["password"] == password:
+				element["login"] = "True"
+				with open(userDir, 'w') as f:
+					f.write(json.dumps(datastore,indent= 4))
+				return ""
+			else:
+				message = "You have entered an invalid email/password"
+		return "You have entered an invalid email/password"
+
+	def check_login(self):
+		with open(userDir, 'r') as f:
+			datastore = json.load(f)
+			for element in datastore["user"]:
+				if element["login"] == "True":
+					return True
+		return False
+
+	def check_employeeLogin(self):
+		with open(userDir, 'r') as f:
+			datastore = json.load(f)
+			for element in datastore["user"]:
+				if element["login"] == "True" and element["role"] == "Employee":
+					return True
+		return False
+
+	def getUsers(self):
+			users = []
+			with open(userDir,"r") as json_file:
+				data = json.load(json_file)
+			for u in data['user']:
+				object = User(u['username'],u['email'],u['password'],u['name'],u['role'])
+				users.append(object)
+			return users
+
+	def get_username(self):
+		with open(userDir, 'r') as f:
+			datastore = json.load(f)
+		for element in datastore["user"]:
+			if element["login"] == "True":
+				return element["username"]
+
+	def get_user_email(self):
+		with open(userDir, 'r') as f:
+			datastore = json.load(f)
+			for element in datastore["user"]:
+				if element["login"] == "True":
+					return element["email"]
+
+
+	

@@ -3,6 +3,7 @@ from datetime import datetime
 from flask import request, Request, Flask, flash, redirect, render_template, \
      request, url_for, send_from_directory, session
 from lib.VampireSystem import VampireSystem
+from lib.UserSystem import UserSystem
 from lib.BloodSystem import BloodSystem
 from flask_login import LoginManager,login_user, current_user, login_required, logout_user
 import json
@@ -14,9 +15,9 @@ import os
 def welcome():
     loginstatus = False
     loginemployee = False
-    if(VampireSystem().check_login() == True):
+    if(UserSystem().check_login() == True):
         loginstatus = True
-    if (VampireSystem().check_employeeLogin() == True):
+    if (UserSystem().check_employeeLogin() == True):
         loginemployee = True
     #session['url'] = url_for('welcome')
     return render_template("welcome.html",loginstatus=loginstatus,loginemployee=loginemployee)
@@ -27,6 +28,13 @@ def inventory():
     #     session['url'] = url_for('inventory')
     #     remessy = "You were redirected to login"
     #     return redirect(url_for('login',remess=remessy))
+    loginstatus = False
+    loginemployee = False
+    if(UserSystem().check_login() == True):
+        loginstatus = True
+    if (UserSystem().check_employeeLogin() == True):
+        loginemployee = True
+
     if request.method == "POST":
         if "view_order" in request.form:
             order = request.form["view_order"]
@@ -48,11 +56,11 @@ def inventory():
             index = int(request.form["delete"])
             BloodSystem().deletefromBloodInventory(index)
             expired_blood = BloodSystem().getExpiredBlood()
-            return render_template("inventory.html", blood=expired_blood, title="Expired Blood")
+            return render_template("inventory.html", blood=expired_blood, title="Expired Blood",loginstatus=loginstatus,loginemployee=loginemployee)
 
 
     expired_blood = BloodSystem().getExpiredBlood()
-    return render_template("inventory.html", blood=expired_blood, title="Expired Blood")
+    return render_template("inventory.html", blood=expired_blood, title="Expired Blood",loginstatus=loginstatus,loginemployee=loginemployee)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -61,7 +69,7 @@ def login():
     if request.method == 'POST':
         email = request.form["email"]
         password = request.form["password"]
-        message = VampireSystem().check_user(email, password)
+        message = UserSystem().check_user(email, password)
         if message is "":
             print("LOGGED IN----")
             return redirect(url_for('welcome'))
@@ -72,6 +80,14 @@ def login():
 
 @app.route('/delivered', methods=['GET', 'POST'])
 def delivered():
+
+    loginstatus = False
+    loginemployee = False
+    if(UserSystem().check_login() == True):
+        loginstatus = True
+    if (UserSystem().check_employeeLogin() == True):
+        loginemployee = True
+         
     #shows list of blood + respective action button
     deliveredBlood = VampireSystem().getDeliveredBlood()
     if request.method == "POST":
@@ -91,7 +107,7 @@ def delivered():
             VampireSystem().updateBloodStatus(deliveredBlood[index], "added")
     #when add is clicked: add to factory (change status to added) reload page
     #when send is clicked: delete from list OR change status to tested
-    return render_template("delivered.html", deliveredBlood = deliveredBlood)
+    return render_template("delivered.html", deliveredBlood = deliveredBlood,loginstatus=loginstatus,loginemployee=loginemployee)
 
 #  requests from medical facilities
 @app.route('/requests', methods=['GET', 'POST'])
@@ -111,6 +127,13 @@ def requests():
 
 @app.route('/warning', methods=['GET', 'POST'])
 def warning():
+    loginstatus = False
+    loginemployee = False
+    if(UserSystem().check_login() == True):
+        loginstatus = True
+    if (UserSystem().check_employeeLogin() == True):
+        loginemployee = True
+
     lowBlood = BloodSystem().getLowBlood()
     normalBlood = BloodSystem().getNormalBlood()
     requestSent = VampireSystem().getRequestSent()
@@ -118,14 +141,14 @@ def warning():
         type = request.form['request']
         requestSent = VampireSystem().updateRequestSent(type)
     return render_template("warning.html", lowBlood = lowBlood,
-    normalBlood = normalBlood, requestSent = requestSent)
+    normalBlood = normalBlood, requestSent = requestSent ,loginstatus=loginstatus,loginemployee=loginemployee)
 
 
 @app.route('/logout')
 def logout():
-    CurrentUser = VampireSystem().get_username()
+    CurrentUser = UserSystem().get_username()
     message = ""
-    message = VampireSystem().logout_user()
+    message = UserSystem().logout_user()
     return redirect(url_for('login'))
 
 @app.route('/register', methods=['GET', 'POST'])
