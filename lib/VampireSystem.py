@@ -247,14 +247,6 @@ class VampireSystem:
 				m.addRequest(object)
 				return;
 
-	def calculateFactoryBloodType(self, bloodType) :
-		sum = 0;
-		factoryBlood = self.getFactoryBlood()
-		for b in factoryBlood:
-		    if (bloodType == b.type) :
-		        sum += int(b.quantity)
-		return sum
-
 	def findLowBloodTypes(self) :
 		blood = calculateAllBloodType()
 		lowBlood = {}
@@ -269,44 +261,3 @@ class VampireSystem:
 			addVampireRequests(object)
 		else:
 			sortRequests(object)
-
-	def searchBloodType(self, bloodtype) :
-		results = []
-		factoryBlood = self.getFactoryBlood()
-		for blood in factoryBlood:
-		    if blood.type == bloodtype:
-		        results.append(blood)
-		return results
-
-	def searchBloodExpiry(self, start, end) :
-		startYear = start[:4]
-		startMonth = start[5:7]
-		startDay = start[8:]
-		endYear = end[:4]
-		endMonth = end[5:7]
-		endDay = end[8:]
-		newStart = startYear + startMonth + startDay
-		newStart = int(newStart)
-		newEnd = endYear + endMonth + endDay
-		newEnd = int(newEnd)
-		results = []
-		factoryBlood = self.getFactoryBlood()
-		for blood in factoryBlood:
-		    year = blood.expiryDate[:4]
-		    month = blood.expiryDate[5:7]
-		    day = blood.expiryDate[8:]
-		    date = year + month + day
-		    date = int(date)
-		    if (date >= newStart and date <= newEnd):
-		        results.append(blood)
-		return results
-
-	def searchBloodVolume(self, minimum, maximum) :
-	    minimum = int(minimum)
-	    maximum = int(maximum)
-	    results = {}
-	    for b in self.bloodTypes:
-	        sum = self.calculateFactoryBloodType(b)
-	        if ( sum >= minimum and sum <= maximum):
-	            results[b] = sum
-	    return results
