@@ -117,12 +117,27 @@ class BloodSystem():
 				file.write(json.dumps(datastore, indent = 4))
 	
 	def searchBloodType(self, bloodtype):
-	    results = []
 	    factoryBlood = self.getFactoryBlood()
-	    for blood in factoryBlood:
-	        if blood.type == bloodtype:
-	            results.append(blood)
-	    return results
+	    amount = self.countBloodType(factoryBlood, bloodtype)
+	    return self.getBloodType(factoryBlood, bloodtype, amount)
+	
+	def countBloodType(self, factoryBlood, bloodtype): 
+	    amount = 0
+	    i = 0
+	    while i < len(factoryBlood):
+	        if factoryBlood[i].type == bloodtype: 
+	            amount += 1
+	        i += 1
+	    return amount
+	    
+	def getBloodType(self, factoryBlood, bloodtype, amount):
+	    result = []
+	    i = 0
+	    while i < len(factoryBlood):
+	        if factoryBlood[i].type == bloodtype:
+	            result.append(factoryBlood[i])
+	        i += 1
+	    return result
 
 	def searchBloodExpiry(self, start, end):
 		startYear = start[:4]
