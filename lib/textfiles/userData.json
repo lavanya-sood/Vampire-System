@@ -13,7 +13,7 @@
             "email": "buffy@gmail.com",
             "name": "Vampire Employee",
             "password": "buffy",
-            "login": "True",
+            "login": "False",
             "role": "Employee"
         },
         {
@@ -87,6 +87,6 @@
             "password": "randwickh",
             "login": "False",
             "role": "facility"
-        }
+        },
     ]
 }

@@ -236,7 +236,7 @@ class VampireSystem:
 
 	def calculateFactoryBloodType(self, bloodType) :
 		sum = 0;
-		factoryBlood = self.getFactoryBlood()
+		factoryBlood = BloodSystem().getFactoryBlood()
 		for b in factoryBlood:
 		    if (bloodType == b.type) :
 		        sum += int(b.quantity)
@@ -259,7 +259,7 @@ class VampireSystem:
 
 	def searchBloodType(self, bloodtype) :
 		results = []
-		factoryBlood = self.getFactoryBlood()
+		factoryBlood = BloodSystem().getFactoryBlood()
 		for blood in factoryBlood:
 		    if blood.type == bloodtype:
 		        results.append(blood)
@@ -277,7 +277,7 @@ class VampireSystem:
 		newEnd = endYear + endMonth + endDay
 		newEnd = int(newEnd)
 		results = []
-		factoryBlood = self.getFactoryBlood()
+		factoryBlood =  BloodSystem().getFactoryBlood()
 		for blood in factoryBlood:
 		    year = blood.expiryDate[:4]
 		    month = blood.expiryDate[5:7]

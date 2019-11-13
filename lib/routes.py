@@ -50,7 +50,7 @@ def inventory():
             elif order == "blood_type":
                 title = "View Inventory by Blood Type"
                 blood = BloodSystem().getBloodQuantitybyType()
-            return render_template("inventory.html", blood=blood, title=title)
+            return render_template("inventory.html", blood=blood, title=title,loginstatus=loginstatus,loginemployee=loginemployee)
 
         elif "delete" in request.form:
             index = int(request.form["delete"])
@@ -123,7 +123,7 @@ def requests():
             index = int(request.form['decline'])
             VampireSystem().updateDeliveredStatus(mf_requests[index],"no")
             mf_requests = VampireSystem().getMedicalFacilityRequests()
-    return render_template("requests.html",mf_requests = mf_requests)
+    return render_template("requests.html",mf_requests = mf_requests,loginstatus=loginstatus,loginemployee=loginemployee)
 
 @app.route('/warning', methods=['GET', 'POST'])
 def warning():
@@ -153,31 +153,62 @@ def logout():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template("signup.html")
+    email = ""
+    password = ""
+    message = ""
+    if request.method == 'POST':
+        newemail = request.form["email"]
+        newpassword = request.form["password"]
+        newusername = request.form["username"]
+        newname = request.form["name"]
+        role = request.form["role"]
+        
+        print(role)
+        if newemail is "" or newpassword is "" or newusername is "" or newname is "" :
+            return render_template("signup.html", message="Complete all the fields in the form")
+        check = UserSystem().check_username_unique(newusername)
+        if check == 1:
+            return render_template("signup.html",  message="This username is in use")
+        check = UserSystem().check_email_unique(newemail)
+        if check == 1:
+            return render_template("signup.html",  message="This email is in use")
+        UserSystem().create_user(newusername,newname,newemail, newpassword, role)
+
+        # if 'url' in session:
+        #     return redirect(session['url'])
+        return redirect(url_for('welcome'))
+    return render_template("signup.html",message="")
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
+    loginstatus = False
+    loginemployee = False
+    if(UserSystem().check_login() == True):
+        loginstatus = True
+    if (UserSystem().check_employeeLogin() == True):
+        loginemployee = True
     if request.method == "POST":
         if 'A' in request.form:
             results = VampireSystem().searchBloodType('A')
-            return render_template("searchResults.html", results = results, searchtype = "blood type A", volume = 0)
+            return render_template("searchResults.html", results = results, searchtype = "blood type A", volume = 0,loginstatus=loginstatus,loginemployee=loginemployee)
+
         elif 'B' in request.form:
             results = VampireSystem().searchBloodType('B')
-            return render_template("searchResults.html", results = results, searchtype = "blood type B", volume = 0)
+            return render_template("searchResults.html", results = results, searchtype = "blood type B", volume = 0,loginstatus=loginstatus,loginemployee=loginemployee)
         elif 'AB' in request.form:
             results = VampireSystem().searchBloodType('AB')
-            return render_template("searchResults.html", results = results, searchtype = "blood type AB", volume = 0)
+            return render_template("searchResults.html", results = results, searchtype = "blood type AB", volume = 0,loginstatus=loginstatus,loginemployee=loginemployee)
         elif 'O' in request.form:
             results = VampireSystem().searchBloodType('O')
-            return render_template("searchResults.html", results = results, searchtype = "blood type O", volume = 0)
+            return render_template("searchResults.html", results = results, searchtype = "blood type O", volume = 0,loginstatus=loginstatus,loginemployee=loginemployee)
         elif 'expirySubmit' in request.form:
             start = request.form['start']
             end = request.form['end']
             results = VampireSystem().searchBloodExpiry(start, end)
-            return render_template("searchResults.html", results = results, searchtype = "expiry dates between " + start + " - " + end, volume = 0)
+            return render_template("searchResults.html", results = results, searchtype = "expiry dates between " + start + " - " + end, volume = 0,loginstatus=loginstatus,loginemployee=loginemployee)
         elif 'volumeSubmit' in request.form:
             minimum = request.form['minimum']
             maximum = request.form['maximum']
             results = VampireSystem().searchBloodVolume(minimum, maximum)
-            return render_template("searchResults.html", results = results, searchtype = "volumes between " + minimum + " - " + maximum, volume = 1)
-    return render_template("searchResults.html")
+            return render_template("searchResults.html", results = results, searchtype = "volumes between " + minimum + " - " + maximum, volume = 1,loginstatus=loginstatus,loginemployee=loginemployee)
+    return render_template("searchResults.html",loginstatus=loginstatus,loginemployee=loginemployee)

@@ -81,6 +81,40 @@ class UserSystem:
 			for element in datastore["user"]:
 				if element["login"] == "True":
 					return element["email"]
+	
+	def show_users(self):
+		with open(userDir, "r") as user_database:
+			user = json.load(user_database)
+		return user["user"]
 
+	def check_username_unique(self, username):
+		users = self.show_users()
+		for u in users:
+			if username == u["username"]:
+				return 1
+		return 0
+
+	def check_email_unique(self, email):
+		users = self.show_users()
+		for u in users:
+			if email == u["email"]:
+				return 1
+		return 0
+
+	def create_user(self,username,name,email, password,role):
+		data = {
+		"username":username,
+		"email": email,
+		"name": name,
+		"password": password,
+		"login": "True",
+		"role":role,
+		}
+		with open(userDir, 'r') as f:
+			datastore = json.load(f)
+		datastore["user"].append(data)
+		with open(userDir, "w") as file:
+			json.dump(datastore, file,indent= 4)
+		return ""
 
 	

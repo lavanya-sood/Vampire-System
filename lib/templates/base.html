@@ -76,8 +76,11 @@ body {
         </li>
       {% elif loginstatus %}
       	<li class="nav-item active">
-        	<a class="nav-link" href= {{url_for('logout')}}>Make Request <span class="sr-only">(current)</span></a>
+        	<a class="nav-link" href= {{url_for('search')}}> Search Database <span class="sr-only">(current)</span></a>
       	</li>
+        <li class="nav-item active">
+          <a class="nav-link" href= {{url_for('logout')}}>Logout <span class="sr-only">(current)</span></a>
+        </li>
       {% else %}
       <li class="nav-item active">
         <a class="nav-link" href= {{url_for('login')}}>Login <span class="sr-only">(current)</span></a>
