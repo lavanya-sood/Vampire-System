@@ -183,19 +183,50 @@ class BloodSystem():
 	    return result
 
 	def searchBloodVolume(self, minimum, maximum):
-	    minimum = int(minimum)
-	    maximum = int(maximum)
-	    results = {}
-	    for b in self.bloodTypes:
-	        sum = self.calculateFactoryBloodType(b)
-	        if ( sum >= minimum and sum <= maximum):
-	            results[b] = sum
-	    return results
+	    try: 
+	        minimum = int(minimum)
+	        maximum = int(maximum)
+	    except ValueError:
+	        return {}
+	    factoryBlood = self.getFactoryBlood()
+	    amountA = self.countBloodType(factoryBlood, "A")
+	    amountB = self.countBloodType(factoryBlood, "B")
+	    amountAB = self.countBloodType(factoryBlood, "AB")
+	    amountO = self.countBloodType(factoryBlood, "O")
+	    A = self.getBloodType(factoryBlood, "A", amountA)
+	    B = self.getBloodType(factoryBlood, "B", amountB)
+	    AB = self.getBloodType(factoryBlood, "AB", amountAB)
+	    O = self.getBloodType(factoryBlood, "O", amountO)
+	    sumA = self.sumBloodQuantity(A)
+	    sumB = self.sumBloodQuantity(B)
+	    sumAB = self.sumBloodQuantity(AB)
+	    sumO = self.sumBloodQuantity(O)
+	    bloodTypeQuantity = {}
+	    bloodTypeQuantity["A"] = sumA
+	    bloodTypeQuantity["B"] = sumB
+	    bloodTypeQuantity["AB"] = sumAB
+	    bloodTypeQuantity["O"] = sumO
+	    amount = self.countBloodVolume(bloodTypeQuantity, minimum, maximum)
+	    return self.getBloodVolume(bloodTypeQuantity, minimum, maximum, amount)
 	
-	def calculateFactoryBloodType(self, bloodType):
-		sum = 0;
-		factoryBlood = self.getFactoryBlood()
-		for b in factoryBlood:
-		    if (bloodType == b.type) :
-		        sum += int(b.quantity)
-		return sum
+	def sumBloodQuantity(self, bloodType):
+		amount = 0
+		i = 0
+		while i < len(bloodType):
+		    amount += bloodType[i].quantity
+		    i += 1
+		return amount
+	
+	def countBloodVolume(self, blood, minimum, maximum):
+	    amount = 0
+	    for key, value in blood.items():
+	        if value >= minimum and value <= maximum:
+	            amount += 1
+	    return amount
+	    
+	def getBloodVolume(self, blood, minimum, maximum, amount):
+	    result = {}
+	    for key, value in blood.items():
+	        if value >= minimum and value <= maximum:
+	            result[key] = value
+	    return result
