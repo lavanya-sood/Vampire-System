@@ -150,11 +150,13 @@ def search():
         elif 'expirySubmit' in request.form:
             start = request.form['start']
             end = request.form['end']
-            results = BloodSystem().searchBloodExpiry(start, end)
-            return render_template("searchResults.html", results = results, searchtype = "expiry dates between " + start + " - " + end, volume = 0)
+            if start != "" and end != "":
+                results = BloodSystem().searchBloodExpiry(start, end)
+                return render_template("searchResults.html", results = results, searchtype = "expiry dates between " + start + " - " + end, volume = 0)
         elif 'volumeSubmit' in request.form:
             minimum = request.form['minimum']
             maximum = request.form['maximum']
-            results = BloodSystem().searchBloodVolume(minimum, maximum)
-            return render_template("searchResults.html", results = results, searchtype = "volumes between " + minimum + " - " + maximum, volume = 1)
+            if minimum != "" and maximum != "":
+                results = BloodSystem().searchBloodVolume(minimum, maximum)
+                return render_template("searchResults.html", results = results, searchtype = "volumes between " + minimum + " - " + maximum, volume = 1)
     return render_template("searchResults.html")

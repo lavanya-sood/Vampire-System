@@ -140,27 +140,47 @@ class BloodSystem():
 	    return result
 
 	def searchBloodExpiry(self, start, end):
-		startYear = start[:4]
-		startMonth = start[5:7]
-		startDay = start[8:]
-		endYear = end[:4]
-		endMonth = end[5:7]
-		endDay = end[8:]
-		newStart = startYear + startMonth + startDay
-		newStart = int(newStart)
-		newEnd = endYear + endMonth + endDay
-		newEnd = int(newEnd)
-		results = []
-		factoryBlood = self.getFactoryBlood()
-		for blood in factoryBlood:
-		    year = blood.expiryDate[:4]
-		    month = blood.expiryDate[5:7]
-		    day = blood.expiryDate[8:]
-		    date = year + month + day
-		    date = int(date)
-		    if (date >= newStart and date <= newEnd):
-		        results.append(blood)
-		return results
+	    startYear = start[:4]
+	    startMonth = start[5:7]
+	    startDay = start[8:]
+	    endYear = end[:4]
+	    endMonth = end[5:7]
+	    endDay = end[8:]
+	    newStart = startYear + startMonth + startDay
+	    newStart = int(newStart)
+	    newEnd = endYear + endMonth + endDay
+	    newEnd = int(newEnd)
+	    factoryBlood = self.getFactoryBlood()
+	    amount = self.countBloodExpiry(factoryBlood, newStart, newEnd)
+	    return self.getBloodExpiry(factoryBlood, newStart, newEnd, amount)
+		
+	def countBloodExpiry(self, factoryBlood, minimum, maximum):
+	    amount = 0
+	    i = 0
+	    while i < len(factoryBlood):
+	        year = factoryBlood[i].expiryDate[:4]
+	        month = factoryBlood[i].expiryDate[5:7]
+	        day = factoryBlood[i].expiryDate[8:]
+	        date = year + month + day
+	        date = int(date)
+	        if date >= minimum and date <= maximum: 
+	            amount += 1
+	        i += 1
+	    return amount
+	    
+	def getBloodExpiry(self, factoryBlood, minimum, maximum, amount):
+	    result = []
+	    i = 0
+	    while i < len(factoryBlood):
+	        year = factoryBlood[i].expiryDate[:4]
+	        month = factoryBlood[i].expiryDate[5:7]
+	        day = factoryBlood[i].expiryDate[8:]
+	        date = year + month + day
+	        date = int(date)
+	        if date >= minimum and date <= maximum: 
+	            result.append(factoryBlood[i])
+	        i += 1
+	    return result
 
 	def searchBloodVolume(self, minimum, maximum):
 	    minimum = int(minimum)
