@@ -15,10 +15,11 @@ medicalFacilityDir = currDir + "/lib/textfiles/medicalFacility.json"
 userDir = currDir + "/lib/textfiles/userData.json"
 
 class BloodSystem():
-    requestSent = {}
+	requestSent = {}
 	bloodTypes = ["A", "B", "AB", "O"]
-	for type in bloodTypes:
-		requestSent[type] = False
+	
+	# for type in bloodTypes:
+	# 	requestSent[type] = False
 
 
 	def getRequestSent(self):
@@ -27,8 +28,6 @@ class BloodSystem():
 	def updateRequestSent(self, type):
 		self.requestSent[type] = True
 		return self.requestSent
-
-	bloodTypes = ["A", "B", "AB", "O"]
 
 	def getFactoryBlood(self):
 		factoryBlood = []
@@ -71,11 +70,10 @@ class BloodSystem():
 
 	def getExpiredBlood(self):
 		expiredBlood = []
-		with open(bloodDir, "r") as json_file:
-			data = json.load(json_file)
+		data = self.getFactoryBlood()
 		now = datetime.now()
-		for b in data['blood']:
-			d = datetime.strptime(b["expiry_date"], "%Y-%m-%d")
+		for b in data:
+			d = datetime.strptime(b.expiryDate, "%Y-%m-%d")
 			if d < now:
 				expiredBlood.append(b)
 		return expiredBlood
