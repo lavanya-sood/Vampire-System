@@ -228,6 +228,9 @@ class VampireSystem:
 			return "yes",id,list
 		return "no",id,list
 
+	#def addRequest(self,facility,type,quantity,id):
+
+
 	def getMedicalFacilityRequests(self) :
 		mf_requests = []
 		id = []
