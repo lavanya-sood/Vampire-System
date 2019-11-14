@@ -4,6 +4,7 @@ from flask import request, Request, Flask, flash, redirect, render_template, \
      request, url_for, send_from_directory, session
 from lib.VampireSystem import VampireSystem
 from lib.BloodSystem import BloodSystem
+from lib.Search import Search
 from flask_login import LoginManager,login_user, current_user, login_required, logout_user
 import json
 import os
@@ -134,29 +135,31 @@ def register():
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
+    factoryBlood = BloodSystem().getFactoryBlood()
+    search = Search(factoryBlood)
     if request.method == "POST":
         if 'A' in request.form:
-            results = BloodSystem().searchBloodType('A')
+            results = search.searchBloodType('A')
             return render_template("searchResults.html", results = results, searchtype = "blood type A", volume = 0)
         elif 'B' in request.form:
-            results = BloodSystem().searchBloodType('B')
+            results = search.searchBloodType('B')
             return render_template("searchResults.html", results = results, searchtype = "blood type B", volume = 0)
         elif 'AB' in request.form:
-            results = BloodSystem().searchBloodType('AB')
+            results = search.searchBloodType('AB')
             return render_template("searchResults.html", results = results, searchtype = "blood type AB", volume = 0)
         elif 'O' in request.form:
-            results = BloodSystem().searchBloodType('O')
+            results = search.searchBloodType('O')
             return render_template("searchResults.html", results = results, searchtype = "blood type O", volume = 0)
         elif 'expirySubmit' in request.form:
             start = request.form['start']
             end = request.form['end']
             if start != "" and end != "":
-                results = BloodSystem().searchBloodExpiry(start, end)
+                results = search.searchBloodExpiry(start, end)
                 return render_template("searchResults.html", results = results, searchtype = "expiry dates between " + start + " - " + end, volume = 0)
         elif 'volumeSubmit' in request.form:
             minimum = request.form['minimum']
             maximum = request.form['maximum']
             if minimum != "" and maximum != "":
-                results = BloodSystem().searchBloodVolume(minimum, maximum)
+                results = search.searchBloodVolume(minimum, maximum)
                 return render_template("searchResults.html", results = results, searchtype = "volumes between " + minimum + " - " + maximum, volume = 1)
     return render_template("searchResults.html")
