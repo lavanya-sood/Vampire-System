@@ -138,7 +138,7 @@
             "quantity": 500,
             "expiry_date": "2019-12-01",
             "input_date": "",
-            "test_status": "added",
+            "test_status": "tested",
             "source": "Batmobile",
             "id": 12,
             "delivered_status": ""
