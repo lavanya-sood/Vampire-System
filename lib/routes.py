@@ -5,6 +5,7 @@ from flask import request, Request, Flask, flash, redirect, render_template, \
 from lib.VampireSystem import VampireSystem
 from lib.UserSystem import UserSystem
 from lib.BloodSystem import BloodSystem
+from lib.Search import Search
 from flask_login import LoginManager,login_user, current_user, login_required, logout_user
 import json
 import os
@@ -193,6 +194,8 @@ def register():
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
+    factoryBlood = BloodSystem().getFactoryBlood()
+    search = Search(factoryBlood)
     loginstatus = False
     loginemployee = False
     if(UserSystem().check_login() == True):
@@ -201,26 +204,25 @@ def search():
         loginemployee = True
     if request.method == "POST":
         if 'A' in request.form:
-            results = VampireSystem().searchBloodType('A')
+            results = search.searchBloodType('A')
             return render_template("searchResults.html", results = results, searchtype = "blood type A", volume = 0,loginstatus=loginstatus,loginemployee=loginemployee)
-
         elif 'B' in request.form:
-            results = VampireSystem().searchBloodType('B')
+            results = search.searchBloodType('B')
             return render_template("searchResults.html", results = results, searchtype = "blood type B", volume = 0,loginstatus=loginstatus,loginemployee=loginemployee)
         elif 'AB' in request.form:
-            results = VampireSystem().searchBloodType('AB')
+            results = search.searchBloodType('AB')
             return render_template("searchResults.html", results = results, searchtype = "blood type AB", volume = 0,loginstatus=loginstatus,loginemployee=loginemployee)
         elif 'O' in request.form:
-            results = VampireSystem().searchBloodType('O')
+            results = search.searchBloodType('O')
             return render_template("searchResults.html", results = results, searchtype = "blood type O", volume = 0,loginstatus=loginstatus,loginemployee=loginemployee)
         elif 'expirySubmit' in request.form:
             start = request.form['start']
             end = request.form['end']
-            results = VampireSystem().searchBloodExpiry(start, end)
+            results = search.searchBloodExpiry(start, end)
             return render_template("searchResults.html", results = results, searchtype = "expiry dates between " + start + " - " + end, volume = 0,loginstatus=loginstatus,loginemployee=loginemployee)
         elif 'volumeSubmit' in request.form:
             minimum = request.form['minimum']
             maximum = request.form['maximum']
-            results = VampireSystem().searchBloodVolume(minimum, maximum)
+            results = search.searchBloodVolume(minimum, maximum)
             return render_template("searchResults.html", results = results, searchtype = "volumes between " + minimum + " - " + maximum, volume = 1,loginstatus=loginstatus,loginemployee=loginemployee)
     return render_template("searchResults.html",loginstatus=loginstatus,loginemployee=loginemployee)
