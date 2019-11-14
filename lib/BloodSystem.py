@@ -70,11 +70,10 @@ class BloodSystem():
 
 	def getExpiredBlood(self):
 		expiredBlood = []
-		with open(bloodDir, "r") as json_file:
-			data = json.load(json_file)
+		data = self.getFactoryBlood()
 		now = datetime.now()
-		for b in data['blood']:
-			d = datetime.strptime(b["expiry_date"], "%Y-%m-%d")
+		for b in data:
+			d = datetime.strptime(b.expiryDate, "%Y-%m-%d")
 			if d < now:
 				expiredBlood.append(b)
 		return expiredBlood
