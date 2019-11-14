@@ -44,76 +44,76 @@ class VampireSystem:
 		self.requestSent[type] = True
 		return self.requestSent
 
-	def logout_user(self):
-		with open(userDir, 'r') as f:
-			datastore = json.load(f)
-		for element in datastore["user"]:
-			if element["login"] == "True":
-				element["login"] = "False"
-				with open(userDir, 'w') as f:
-					f.write(json.dumps(datastore,indent= 4))
-				print("HI YYYYY")
-				return "You have successfully logged out"
-		return ""
-
-
-	def check_user(self, email, password):
-		user = ""
-		with open(userDir, 'r') as f:
-			datastore = json.load(f)
-		for element in datastore["user"]:
-			if element["email"] == email and element["password"] == password:
-				element["login"] = "True"
-				with open(userDir, 'w') as f:
-					f.write(json.dumps(datastore,indent= 4))
-				return ""
-			else:
-				message = "You have entered an invalid email/password"
-		return "You have entered an invalid email/password"
-
-	def check_login(self):
-		with open(userDir, 'r') as f:
-			datastore = json.load(f)
-			for element in datastore["user"]:
-				if element["login"] == "True":
-					return True
-		return False
-
-	def check_employeeLogin(self):
-		with open(userDir, 'r') as f:
-			datastore = json.load(f)
-			for element in datastore["user"]:
-				if element["login"] == "True" and element["role"] == "Employee":
-					return True
-		return False
-
-	def getEmployees(self, data) :
-		for e in data:
-			object = Employee(e['email'], e['password'])
-			addEmployee(object);
-
-	def getUsers(self):
-		users = []
-		with open(userDir,"r") as json_file:
-			data = json.load(json_file)
-		for u in data['user']:
-			object = User(u['username'],u['email'],u['password'],u['name'],u['role'])
-			users.append(object)
-		return users
-
-	def get_username(self):
-		with open(userDir, 'r') as f:
-			datastore = json.load(f)
-		for element in datastore["user"]:
-			if element["login"] == "True":
-				return element["username"]
-
-	def get_user_email(self):
-		with open(userDir, 'r') as f:
-			datastore = json.load(f)
-			for element in datastore["user"]:
-				if element["login"] == "True":
-					return element["email"]
+	# def logout_user(self):
+	# 	with open(userDir, 'r') as f:
+	# 		datastore = json.load(f)
+	# 	for element in datastore["user"]:
+	# 		if element["login"] == "True":
+	# 			element["login"] = "False"
+	# 			with open(userDir, 'w') as f:
+	# 				f.write(json.dumps(datastore,indent= 4))
+	# 			print("HI YYYYY")
+	# 			return "You have successfully logged out"
+	# 	return ""
+	#
+	#
+	# def check_user(self, email, password):
+	# 	user = ""
+	# 	with open(userDir, 'r') as f:
+	# 		datastore = json.load(f)
+	# 	for element in datastore["user"]:
+	# 		if element["email"] == email and element["password"] == password:
+	# 			element["login"] = "True"
+	# 			with open(userDir, 'w') as f:
+	# 				f.write(json.dumps(datastore,indent= 4))
+	# 			return ""
+	# 		else:
+	# 			message = "You have entered an invalid email/password"
+	# 	return "You have entered an invalid email/password"
+	#
+	# def check_login(self):
+	# 	with open(userDir, 'r') as f:
+	# 		datastore = json.load(f)
+	# 		for element in datastore["user"]:
+	# 			if element["login"] == "True":
+	# 				return True
+	# 	return False
+	#
+	# def check_employeeLogin(self):
+	# 	with open(userDir, 'r') as f:
+	# 		datastore = json.load(f)
+	# 		for element in datastore["user"]:
+	# 			if element["login"] == "True" and element["role"] == "Employee":
+	# 				return True
+	# 	return False
+	#
+	# def getEmployees(self, data) :
+	# 	for e in data:
+	# 		object = Employee(e['email'], e['password'])
+	# 		addEmployee(object);
+	#
+	# def getUsers(self):
+	# 	users = []
+	# 	with open(userDir,"r") as json_file:
+	# 		data = json.load(json_file)
+	# 	for u in data['user']:
+	# 		object = User(u['username'],u['email'],u['password'],u['name'],u['role'])
+	# 		users.append(object)
+	# 	return users
+	#
+	# def get_username(self):
+	# 	with open(userDir, 'r') as f:
+	# 		datastore = json.load(f)
+	# 	for element in datastore["user"]:
+	# 		if element["login"] == "True":
+	# 			return element["username"]
+	#
+	# def get_user_email(self):
+	# 	with open(userDir, 'r') as f:
+	# 		datastore = json.load(f)
+	# 		for element in datastore["user"]:
+	# 			if element["login"] == "True":
+	# 				return element["email"]
 
 	def getDeliveredBlood(self) :
 		deliveredBlood = []
@@ -145,27 +145,27 @@ class VampireSystem:
 					with open(bloodDir, 'w') as file:
 						file.write(json.dumps(datastore, indent = 4))
 
-	def getTestedBlood(self) :
-		deliveredBlood = self.getDeliveredBlood()
-		testedBlood = []
-		for b in deliveredBlood:
-			if b.testStatus== "tested":
-				testedBlood.append(b)
-		return testedBlood
+	# def getTestedBlood(self) :
+	# 	deliveredBlood = self.getDeliveredBlood()
+	# 	testedBlood = []
+	# 	for b in deliveredBlood:
+	# 		if b.testStatus== "tested":
+	# 			testedBlood.append(b)
+	# 	return testedBlood
+	#
+	# def getNotTestedBlood(self) :
+	# 	deliveredBlood = self.getDeliveredBlood()
+	# 	notTestedBlood = []
+	# 	for b in deliveredBlood:
+	# 		if b.testStatus == "not-tested":
+	# 			notTestedBlood.append(b)
+	# 	return notTestedBlood
 
-	def getNotTestedBlood(self) :
-		deliveredBlood = self.getDeliveredBlood()
-		notTestedBlood = []
-		for b in deliveredBlood:
-			if b.testStatus == "not-tested":
-				notTestedBlood.append(b)
-		return notTestedBlood
 
-
-	def getMedicalFacility(self, data) :
-		for m in data:
-			object = MedicalFacility(m['name'])
-			addMedicalFacility(object)
+	# def getMedicalFacility(self, data) :
+	# 	for m in data:
+	# 		object = MedicalFacility(m['name'])
+	# 		addMedicalFacility(object)
 
 	def updateDeliveredStatus(self, mf_req, newStatus) :
 		#remove the req and chg status of blood
@@ -241,23 +241,72 @@ class VampireSystem:
 				mf_requests.append(object)
 		return mf_requests
 
-	def sortRequests(self, object) :
-		for m in self._medicalFacilities:
-			if (m.getName() == object.getName()) :
-				m.addRequest(object)
-				return;
+	# # def sortRequests(self, object) :
+	# 	for m in self._medicalFacilities:
+	# 		if (m.getName() == object.getName()) :
+	# 			m.addRequest(object)
+	# 			return;
 
-	def findLowBloodTypes(self) :
-		blood = calculateAllBloodType()
-		lowBlood = {}
-		for k in blood.keys():
-		    if blood[k] < 500:
-		        lowBlood[k] = blood[k]
-		return lowBlood
+	# def calculateFactoryBloodType(self, bloodType) :
+	# 	sum = 0;
+	# 	factoryBlood = BloodSystem().getFactoryBlood()
+	# 	for b in factoryBlood:
+	# 	    if (bloodType == b.type) :
+	# # 	        sum += int(b.quantity)
+	# # 	return sum
+	#
+	# def findLowBloodTypes(self) :
+	# 	blood = calculateAllBloodType()
+	# 	lowBlood = {}
+	# 	for k in blood.keys():
+	# 	    if blood[k] < 500:
+	# 	        lowBlood[k] = blood[k]
+	# 	return lowBlood
+	#
+	# def makeRequest(self, bloodtype, quantity, sent) :
+	# 	object = Requests(sent, bloodtype, quantity)
+	# 	if (sent == 'VampireCompany') :
+	# 		addVampireRequests(object)
+	# 	else:
+	# 		sortRequests(object)
 
-	def makeRequest(self, bloodtype, quantity, sent) :
-		object = Requests(sent, bloodtype, quantity)
-		if (sent == 'VampireCompany') :
-			addVampireRequests(object)
-		else:
-			sortRequests(object)
+	# def searchBloodType(self, bloodtype) :
+	# 	results = []
+	# 	factoryBlood = BloodSystem().getFactoryBlood()
+	# 	for blood in factoryBlood:
+	# 	    if blood.type == bloodtype:
+	# 	        results.append(blood)
+	# 	return results
+	#
+	# def searchBloodExpiry(self, start, end) :
+	# 	startYear = start[:4]
+	# 	startMonth = start[5:7]
+	# 	startDay = start[8:]
+	# 	endYear = end[:4]
+	# 	endMonth = end[5:7]
+	# 	endDay = end[8:]
+	# 	newStart = startYear + startMonth + startDay
+	# 	newStart = int(newStart)
+	# 	newEnd = endYear + endMonth + endDay
+	# 	newEnd = int(newEnd)
+	# 	results = []
+	# 	factoryBlood =  BloodSystem().getFactoryBlood()
+	# 	for blood in factoryBlood:
+	# 	    year = blood.expiryDate[:4]
+	# 	    month = blood.expiryDate[5:7]
+	# 	    day = blood.expiryDate[8:]
+	# 	    date = year + month + day
+	# 	    date = int(date)
+	# 	    if (date >= newStart and date <= newEnd):
+	# 	        results.append(blood)
+	# 	return results
+	#
+	# def searchBloodVolume(self, minimum, maximum) :
+	#     minimum = int(minimum)
+	#     maximum = int(maximum)
+	#     results = {}
+	#     for b in self.bloodTypes:
+	#         sum = self.calculateFactoryBloodType(b)
+	#         if ( sum >= minimum and sum <= maximum):
+	#             results[b] = sum
+	#     return results

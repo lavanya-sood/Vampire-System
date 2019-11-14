@@ -1,4 +1,5 @@
-
+{% extends 'base.html' %}
+{% block body %}
 <head>
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css"
     integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47"
@@ -83,11 +84,11 @@
     <tbody>
       {% for n in range(blood|length) %}
       <tr>
-        <td>{{blood[n].donor_name}}
+        <td>{{blood[n].donorName}}
         <td>{{blood[n].type}}
         <td>{{blood[n].quantity}}
-        <td>{{blood[n].input_date}}  
-        <td>{{blood[n].expiry_date}}
+        <td>{{blood[n].inputDate}}  
+        <td>{{blood[n].expiryDate}}
         <td>{{blood[n].source}} 
         {%if title == "Expired Blood"%}
           <td><button class="button-error pure-button" name = "delete" value = {{n}}>Delete</button>
@@ -101,3 +102,4 @@
   </table></div>
 
 </body>
+{% endblock %}

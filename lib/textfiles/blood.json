@@ -56,17 +56,6 @@
             "delivered_status": ""
         },
         {
-            "donor_name": "Coles",
-            "type": "O",
-            "quantity": 500,
-            "expiry_date": "2019-12-10",
-            "input_date": "2019-09-07",
-            "test_status": "tested",
-            "source": "Alexandria Hospital",
-            "id": 5,
-            "delivered_status": ""
-        },
-        {
             "donor_name": "Nichols",
             "type": "B",
             "quantity": 250,
@@ -138,7 +127,7 @@
             "quantity": 500,
             "expiry_date": "2019-12-01",
             "input_date": "",
-            "test_status": "added",
+            "test_status": "tested",
             "source": "Batmobile",
             "id": 12,
             "delivered_status": ""
@@ -243,17 +232,6 @@
             "delivered_status": ""
         },
         {
-            "donor_name": "Scott",
-            "type": "A",
-            "quantity": 250,
-            "expiry_date": "2019-12-25",
-            "input_date": "2019-10-03",
-            "test_status": "tested",
-            "source": "Newtown Hospital",
-            "id": 22,
-            "delivered_status": ""
-        },
-        {
             "donor_name": "Harrison",
             "type": "O",
             "quantity": 500,
@@ -302,7 +280,7 @@
             "type": "A",
             "quantity": 500,
             "expiry_date": "2019-10-10",
-            "input_date": "",
+            "input_date": "2019-11-14",
             "test_status": "tested",
             "source": "Coogee Hospital",
             "id": 27,
@@ -313,7 +291,7 @@
             "type": "O",
             "quantity": 500,
             "expiry_date": "2019-12-10",
-            "input_date": "",
+            "input_date": "2019-11-14",
             "test_status": "not-tested",
             "source": "Batmobile",
             "id": 28,

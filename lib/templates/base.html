@@ -58,16 +58,32 @@ body {
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       {% if loginemployee %}
+        
         <li class="nav-item active">
-          <a class="nav-link" href= {{url_for('logout')}}>Check Database <span class="sr-only">(current)</span></a>
+          
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Inventory </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href= {{url_for('inventory')}}>View inventory</a>
+            <a class="dropdown-item" href= {{url_for('warning')}}>Check Warnings</a>
+          </div>
+        </li>
+
+        <li class="nav-item active">
+          <a class="nav-link" href= {{url_for('delivered')}}>Check deliveries <span class="sr-only">(current)</span></a>
+        </li>
+         <li class="nav-item active">
+          <a class="nav-link" href= {{url_for('requests')}}>View Requests <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" href= {{url_for('logout')}}>Logout <span class="sr-only">(current)</span></a>
         </li>
       {% elif loginstatus %}
       	<li class="nav-item active">
-        	<a class="nav-link" href= {{url_for('logout')}}>Make Request <span class="sr-only">(current)</span></a>
+        	<a class="nav-link" href= {{url_for('search')}}> Search Database <span class="sr-only">(current)</span></a>
       	</li>
+        <li class="nav-item active">
+          <a class="nav-link" href= {{url_for('logout')}}>Logout <span class="sr-only">(current)</span></a>
+        </li>
       {% else %}
       <li class="nav-item active">
         <a class="nav-link" href= {{url_for('login')}}>Login <span class="sr-only">(current)</span></a>

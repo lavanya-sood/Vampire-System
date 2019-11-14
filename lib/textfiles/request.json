@@ -5,14 +5,14 @@
             "type": "O",
             "quantity": 500,
             "id": 0,
-            "status": ""
+            "status": "yes"
         },
         {
             "medical_facility": "Randwick Hospital",
             "type": "A",
             "quantity": 250,
             "id": 1,
-            "status": ""
+            "status": "yes"
         },
         {
             "medical_facility": "Newtown Hospital",
