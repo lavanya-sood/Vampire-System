@@ -15,10 +15,11 @@ medicalFacilityDir = currDir + "/lib/textfiles/medicalFacility.json"
 userDir = currDir + "/lib/textfiles/userData.json"
 
 class BloodSystem():
-    requestSent = {}
+	requestSent = {}
 	bloodTypes = ["A", "B", "AB", "O"]
-	for type in bloodTypes:
-		requestSent[type] = False
+	
+	# for type in bloodTypes:
+	# 	requestSent[type] = False
 
 
 	def getRequestSent(self):
@@ -27,8 +28,6 @@ class BloodSystem():
 	def updateRequestSent(self, type):
 		self.requestSent[type] = True
 		return self.requestSent
-
-	bloodTypes = ["A", "B", "AB", "O"]
 
 	def getFactoryBlood(self):
 		factoryBlood = []

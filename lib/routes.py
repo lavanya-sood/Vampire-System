@@ -22,11 +22,6 @@ def welcome():
     if (UserSystem().check_employeeLogin() == True):
         loginemployee = True
 
-    bloodTypes = ["A", "B", "AB", "O"]
-	for type in bloodTypes:
-		requestSent[type] = False
-    VampireSystem  = VampireSystem
-    #session['url'] = url_for('welcome')
     return render_template("welcome.html",loginstatus=loginstatus,loginemployee=loginemployee)
 
 @app.route('/inventory', methods=['POST', 'GET'])
@@ -147,8 +142,7 @@ def warning():
 
     lowBlood = BloodSystem().getLowBlood()
     normalBlood = BloodSystem().getNormalBlood()
-    requestSent = Blood
-    System().getRequestSent()
+    requestSent = BloodSystem().getRequestSent()
     if request.method == "POST":
         type = request.form['request']
         requestSent = BloodSystem().updateRequestSent(type)
