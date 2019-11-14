@@ -13,7 +13,7 @@
             "email": "buffy@gmail.com",
             "name": "Vampire Employee",
             "password": "buffy",
-            "login": "False",
+            "login": "True",
             "role": "Employee"
         },
         {
@@ -45,7 +45,7 @@
             "email": "coogee@gmail.com",
             "name": "Coogee Hospital",
             "password": "coogeeh",
-            "login": "False",
+            "login": "True",
             "role": "facility"
         },
         {

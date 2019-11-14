@@ -56,17 +56,6 @@
             "delivered_status": ""
         },
         {
-            "donor_name": "Coles",
-            "type": "O",
-            "quantity": 500,
-            "expiry_date": "2019-12-10",
-            "input_date": "2019-09-07",
-            "test_status": "tested",
-            "source": "Alexandria Hospital",
-            "id": 5,
-            "delivered_status": ""
-        },
-        {
             "donor_name": "Nichols",
             "type": "B",
             "quantity": 250,
@@ -240,17 +229,6 @@
             "test_status": "tested",
             "source": "Kingsford Hospital",
             "id": 21,
-            "delivered_status": ""
-        },
-        {
-            "donor_name": "Scott",
-            "type": "A",
-            "quantity": 250,
-            "expiry_date": "2019-12-25",
-            "input_date": "2019-10-03",
-            "test_status": "tested",
-            "source": "Newtown Hospital",
-            "id": 22,
             "delivered_status": ""
         },
         {
