@@ -5,6 +5,17 @@
   integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47"
   crossorigin="anonymous">
   <style>
+        .body {
+          text-align: center;
+        }
+        #searchformid {
+          margin-top: 20px;
+        }
+
+        #results {
+          margin-left: 70px;
+        }
+
         .button-secondary,
         .button-error {
             color: white;
@@ -24,6 +35,12 @@
         .selected {
           border: 1px solid #0000ff;
         }
+
+        .button-warning {
+          background: rgb(110, 3, 3); /* this is an orange */
+          color: white;
+        }
+
   </style>
   <script>
     function selectBloodType() {
@@ -137,7 +154,7 @@
   </script>
 </head>
 <body>
-  <form method = "POST">
+  <form method = "POST" id="searchformid">
   <button class="button-xlarge button-secondary pure-button" id = "type" type = "button" onClick = selectBloodType()>By Type</button>
   <button class="button-xlarge button-secondary pure-button" id = "expiry" type = "button" onClick = selectExpiryDate()>By Expiry Date</button>
   <button class="button-xlarge button-secondary pure-button" id = "volume" type = "button"onClick = selectVolume()>By Volume</button>
@@ -151,6 +168,7 @@
       <td>Expiry Date (Year-Month-Day)</td>
       <td>Quantity (mL) </td>
       <td>From</td>
+      <td> Request Blood </td>
     </thead>
     <tbody>
       {% for n in range(results | length) %}
@@ -160,6 +178,7 @@
         <td>{{results[n].expiryDate}}
         <td>{{results[n].quantity}}
         <td>{{results[n].source}}
+        <td> <button class="button-warning pure-button" name = "request" value = {{results[n]}}>Request</button>
       </tr>
       {% endfor %}
     </tbody>

@@ -112,6 +112,12 @@ def delivered():
 #  requests from medical facilities
 @app.route('/requests', methods=['GET', 'POST'])
 def requests():
+    loginstatus = False
+    loginemployee = False
+    if(UserSystem().check_login() == True):
+        loginstatus = True
+    if (UserSystem().check_employeeLogin() == True):
+        loginemployee = True
     mf_requests = VampireSystem().getMedicalFacilityRequests()
     #factoryBlood = BloodSystem().getFactoryBlood()
     if request.method == "POST":
