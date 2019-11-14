@@ -20,7 +20,6 @@ userDir = currDir + "/lib/textfiles/userData.json"
 class VampireSystem:
 	blood = []
 
-
 	def __init__(self,blood):
 		self._blood = blood
 
