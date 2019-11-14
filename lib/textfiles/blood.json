@@ -138,7 +138,7 @@
             "quantity": 500,
             "expiry_date": "2019-12-01",
             "input_date": "",
-            "test_status": "added",
+            "test_status": "tested",
             "source": "Batmobile",
             "id": 12,
             "delivered_status": ""
@@ -202,7 +202,7 @@
             "donor_name": "Coles",
             "type": "O",
             "quantity": 500,
-            "expiry_date": "2019-12-10",
+            "expiry_date": "2019-12-31",
             "input_date": "2019-09-07",
             "test_status": "tested",
             "source": "Kingston Hospital",

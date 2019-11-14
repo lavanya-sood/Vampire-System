@@ -195,13 +195,26 @@ class VampireSystem:
 		today = date.today()
 		datenow = today.strftime("%Y-%m-%d")
 		list = []
-		# check expiry date in string
+		# get blood that matches the exact amount
 		for n in factoryBlood:
 			if (n.type == type and n.quantity == quantity and n.id not in id
 			and n.expiryDate > datenow and n.deliveredStatus != "yes"):
 				id.append(n.id)
-				list.append(n.id)
-				return "yes",id,list
+				list.append(n)
+		# get the blood with latest expiry date
+		newlist = []
+		if len(list) > 0:
+			min = list[0].expiryDate
+			newlist.append(list[0].id)
+
+		for n in list:
+			if n.expiryDate < min:
+				newlist.clear()
+				min = n.expiryDate
+				newlist.append(n.id)
+		if len(list) > 0:
+			return "yes",id,newlist
+
 		# calculate how many packets needed
 		req_qtt = quantity
 		for n in factoryBlood:
