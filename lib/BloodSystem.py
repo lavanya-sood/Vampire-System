@@ -75,34 +75,6 @@ class BloodSystem():
 		return blood
 
 
-	def sortBloodbyQuantity(self):
-		blood = self.getFactoryBlood()
-		n = len(blood)
-		for i in range(n) :
-			for j in range(0, n-i-1):
-				if blood[j].quantity > blood[j+1].quantity :
-					blood[j], blood[j+1] = blood[j+1], blood[j]
-		return blood
-
-
-	def sortBloodbyExpiryDate(self):
-		blood = self.getFactoryBlood()
-		n = len(blood)
-		for i in range(n) :
-			for j in range(0, n-i-1):
-				if blood[j].expiryDate > blood[j+1].expiryDate :
-					blood[j], blood[j+1] = blood[j+1], blood[j]
-		return blood
-
-	def sortBloodbyAddedDate(self):
-		blood = self.getFactoryBlood()
-		n = len(blood)
-		for i in range(n) :
-			for j in range(0, n-i-1):
-				if blood[j].inputDate > blood[j+1].inputDate :
-					blood[j], blood[j+1] = blood[j+1], blood[j]
-		return blood
-
 	def deletefromBloodInventory(self, index):
 		with open(bloodDir, 'r') as f:
 			datastore = json.load(f)

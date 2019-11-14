@@ -6,6 +6,7 @@ from lib.VampireSystem import VampireSystem
 from lib.UserSystem import UserSystem
 from lib.BloodSystem import BloodSystem
 from lib.Search import Search
+from lib.Sort import Sort
 from flask_login import LoginManager,login_user, current_user, login_required, logout_user
 import json
 import os
@@ -25,10 +26,6 @@ def welcome():
 
 @app.route('/inventory', methods=['POST', 'GET'])
 def inventory():
-    # if (System().check_login() == False):
-    #     session['url'] = url_for('inventory')
-    #     remessy = "You were redirected to login"
-    #     return redirect(url_for('login',remess=remessy))
     loginstatus = False
     loginemployee = False
     if(UserSystem().check_login() == True):
@@ -39,15 +36,17 @@ def inventory():
     if request.method == "POST":
         if "view_order" in request.form:
             order = request.form["view_order"]
+            factoryBlood = BloodSystem().getFactoryBlood()
+            sort = Sort(factoryBlood)
             if order == "date_added":
                 title = "View Inventory by Date Added"
-                blood =  BloodSystem().sortBloodbyAddedDate()
+                blood =  sort.sortBloodbyAddedDate()
             elif order == "expiry_date":
                 title = "View Inventory by Expiry Date"
-                blood = BloodSystem().sortBloodbyExpiryDate()
+                blood = sort.sortBloodbyExpiryDate()
             elif order == "quantity":
                 title = "View Inventory by Quantity"
-                blood = BloodSystem().sortBloodbyQuantity()
+                blood = sort.sortBloodbyQuantity()
             elif order == "blood_type":
                 title = "View Inventory by Blood Type"
                 blood = BloodSystem().getBloodQuantitybyType()
