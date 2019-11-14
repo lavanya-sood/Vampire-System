@@ -19,6 +19,11 @@ def welcome():
         loginstatus = True
     if (UserSystem().check_employeeLogin() == True):
         loginemployee = True
+
+    bloodTypes = ["A", "B", "AB", "O"]
+	for type in bloodTypes:
+		requestSent[type] = False
+    VampireSystem  = VampireSystem
     #session['url'] = url_for('welcome')
     return render_template("welcome.html",loginstatus=loginstatus,loginemployee=loginemployee)
 
@@ -87,7 +92,7 @@ def delivered():
         loginstatus = True
     if (UserSystem().check_employeeLogin() == True):
         loginemployee = True
-         
+
     #shows list of blood + respective action button
     deliveredBlood = VampireSystem().getDeliveredBlood()
     if request.method == "POST":
@@ -142,10 +147,11 @@ def warning():
 
     lowBlood = BloodSystem().getLowBlood()
     normalBlood = BloodSystem().getNormalBlood()
-    requestSent = VampireSystem().getRequestSent()
+    requestSent = Blood
+    System().getRequestSent()
     if request.method == "POST":
         type = request.form['request']
-        requestSent = VampireSystem().updateRequestSent(type)
+        requestSent = BloodSystem().updateRequestSent(type)
     return render_template("warning.html", lowBlood = lowBlood,
     normalBlood = normalBlood, requestSent = requestSent ,loginstatus=loginstatus,loginemployee=loginemployee)
 
@@ -168,7 +174,7 @@ def register():
         newusername = request.form["username"]
         newname = request.form["name"]
         role = request.form["role"]
-        
+
         print(role)
         if newemail is "" or newpassword is "" or newusername is "" or newname is "" :
             return render_template("signup.html", message="Complete all the fields in the form")
