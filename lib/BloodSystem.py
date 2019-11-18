@@ -15,7 +15,19 @@ medicalFacilityDir = currDir + "/lib/textfiles/medicalFacility.json"
 userDir = currDir + "/lib/textfiles/userData.json"
 
 class BloodSystem():
+	requestSent = {}
 	bloodTypes = ["A", "B", "AB", "O"]
+	
+	# for type in bloodTypes:
+	# 	requestSent[type] = False
+
+
+	def getRequestSent(self):
+		return self.requestSent
+
+	def updateRequestSent(self, type):
+		self.requestSent[type] = True
+		return self.requestSent
 
 	def getFactoryBlood(self):
 		factoryBlood = []
@@ -58,8 +70,6 @@ class BloodSystem():
 
 	def getExpiredBlood(self):
 		expiredBlood = []
-		# with open(bloodDir, "r") as json_file:
-		# 	data = json.load(json_file)
 		data = self.getFactoryBlood()
 		now = datetime.now()
 		for b in data:
@@ -72,35 +82,6 @@ class BloodSystem():
 		blood = []
 		for type in self.bloodTypes:
 			blood.append(dict(type=type, quantity=self.getQuantity(type)))
-		return blood
-
-
-	def sortBloodbyQuantity(self):
-		blood = self.getFactoryBlood()
-		n = len(blood)
-		for i in range(n) :
-			for j in range(0, n-i-1):
-				if blood[j].quantity > blood[j+1].quantity :
-					blood[j], blood[j+1] = blood[j+1], blood[j]
-		return blood
-
-
-	def sortBloodbyExpiryDate(self):
-		blood = self.getFactoryBlood()
-		n = len(blood)
-		for i in range(n) :
-			for j in range(0, n-i-1):
-				if blood[j].expiryDate > blood[j+1].expiryDate :
-					blood[j], blood[j+1] = blood[j+1], blood[j]
-		return blood
-
-	def sortBloodbyAddedDate(self):
-		blood = self.getFactoryBlood()
-		n = len(blood)
-		for i in range(n) :
-			for j in range(0, n-i-1):
-				if blood[j].inputDate > blood[j+1].inputDate :
-					blood[j], blood[j+1] = blood[j+1], blood[j]
 		return blood
 
 	def deletefromBloodInventory(self, index):
