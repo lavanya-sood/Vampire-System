@@ -164,7 +164,7 @@ def warning():
     lowBlood = BloodSystem().getLowBlood()
     normalBlood = BloodSystem().getNormalBlood()
     requestSent = Blood
-    System().getRequestSent()
+    BloodSystem().getRequestSent()
     if request.method == "POST":
         type = request.form['request']
         requestSent = BloodSystem().updateRequestSent(type)

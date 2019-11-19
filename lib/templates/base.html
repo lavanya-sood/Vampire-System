@@ -19,7 +19,9 @@
 
 body {
 	text-align:center;
-	background-color: black;
+	background-image: url("../static/img/websitebg.png");
+  background-repeat: none;
+  background-size: 100%;
 	color: white;
 	margin-top: 5px !important;
 	height: 100%;
@@ -43,13 +45,17 @@ body {
 #welcome {
   font-size: 100px;
 }
+#logo-pic {
+  width: 30%;
+}
 
 </style>
 </head>
 
 <body> 
-<h1>  Blood System </h1>
-<h5> Vampire pvt ltd.</h5>
+
+<a class="pure-menu-heading pure-menu-link" href="{{url_for('welcome')}}"> <img src="../static/img/ManagementSystem.png" id = "logo-pic"> </a>
+
 <nav class="navbar navbar-expand-lg navbar-dark" id = "navbarinfo">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
