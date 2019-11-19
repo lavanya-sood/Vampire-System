@@ -87,10 +87,14 @@ def inventory():
 def login():
     message = ""
     email = ""
+    # role = None
     if request.method == 'POST':
         email = request.form["email"]
         password = request.form["password"]
-        message = UserSystem().check_user(email, password)
+        if "role" not in request.form:
+            return render_template("login.html", message="You need to select a role")
+        role = request.form["role"]
+        message = UserSystem().check_user(email, password, role)
         if message is "":
             print("LOGGED IN----")
             return redirect(url_for('welcome'))
@@ -190,6 +194,9 @@ def register():
         newpassword = request.form["password"]
         newusername = request.form["username"]
         newname = request.form["name"]
+        if "role" not in request.form:
+            return render_template("signup.html", message="You need to select a role")
+
         role = request.form["role"]
 
         print(role)
