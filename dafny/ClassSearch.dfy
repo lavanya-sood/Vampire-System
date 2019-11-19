@@ -2,12 +2,11 @@ class Search
 {
 
   var bloodTypes: array<string>;
-  var bloodExpiryDates: array<int>;
   
   predicate Valid()
   reads this;
   {
-    bloodTypes != null && bloodExpiryDates != null
+    bloodTypes != null
   }
   
   predicate hasType(a: seq<string>, bloodType: string)
@@ -29,8 +28,6 @@ class Search
   {
     bloodTypes := new string[3];
     bloodTypes[0], bloodTypes[1], bloodTypes[2] := "A", "AB", "A";
-    bloodExpiryDates := new int[4];
-    bloodExpiryDates[0], bloodExpiryDates[1], bloodExpiryDates[2], bloodExpiryDates[3] := 20190820, 20190525, 20190907, 20191015;
   }
   
   method sumBloodQuantity (blood: array<int>) returns (amount: int)
@@ -45,6 +42,89 @@ class Search
     invariant amount == sum(blood, i)
     {
       amount := amount + blood[i];
+      i := i + 1;
+    }
+  }
+  
+  predicate sorted(a: array<int>, l: int, u: int)
+  reads a
+  requires a != null
+  {
+    forall i, j :: 0 <= l <= i <= j <= u < a.Length ==> a[i] <= a[j]
+  }
+
+  predicate partitioned(a: array<int>, i: int)
+  reads a
+  requires a != null
+  {
+    forall k, k' :: 0 <= k <= i < k' < a.Length ==> a[k] <= a[k']
+  }
+
+  method BubbleSort(a: array<int>)
+  requires Valid(); ensures Valid();
+  modifies a;
+  requires a != null
+  ensures sorted(a, 0, a.Length-1)
+  {
+    var i := a.Length - 1;
+    while(i > 0)
+      invariant i < 0 ==> a.Length == 0 // ask
+      invariant sorted(a, i, a.Length-1)
+      invariant partitioned(a, i)
+      {
+        var j := 0;
+        while (j < i)
+          invariant 0 < i < a.Length && 0 <= j <= i
+          invariant sorted(a, i, a.Length-1)
+          invariant partitioned(a, i)
+          invariant forall k :: 0 <= k <= j ==> a[k] <= a[j]
+          {
+            if(a[j] > a[j+1])
+              {
+                a[j], a[j+1] := a[j+1], a[j];
+              }
+              j := j + 1;
+          }
+          i := i -1;
+      }
+  }
+
+  method findLimits(a: array<int>, start: int, end: int) returns (minimum: int, maximum: int)
+  requires Valid(); ensures Valid()
+  requires a != null
+  requires sorted(a, 0, a.Length)
+  requires end >= start
+  ensures 0<=minimum<=a.Length
+  ensures maximum <= a.Length && maximum >= minimum
+  ensures minimum == a.Length ==> forall k: int :: 0<=k<a.Length ==> a[k] < start
+  ensures forall k: int :: 0<=k<minimum ==> a[k] < start
+  ensures forall k: int :: 0<=k<maximum ==> a[k] <= end
+  {
+    minimum := a.Length;
+    maximum := a.Length;
+  
+    var i := 0;
+  
+    while (i < a.Length) 
+    invariant 0 <= i <= a.Length
+    invariant forall k: int :: 0<=k<i ==> a[k] < start
+    {
+      if (a[i] >= start) {
+        minimum := i;
+        break;
+      }
+      i := i + 1;
+    }
+  
+    i := 0;
+    while (i < a.Length) 
+    invariant 0 <= i <= a.Length
+    invariant forall k: int :: 0<=k<i ==> a[k] <= end
+    {
+      if (a[i] > end) {
+        maximum := i;
+        break;
+      }
       i := i + 1;
     }
   }
@@ -74,40 +154,6 @@ class Search
     result := temp[..j];
   }
   
-  // need to add verification, super lost for this one :( 
-  method searchBetweenRanges(blood: array<int>, start: int, end: int) returns (result: seq<int>)
-  requires Valid(); ensures Valid();
-  requires blood != null;
-  {
-    var temp := new int[blood.Length];
-    var i := 0;
-    var j := 0;
-    while (i < blood.Length && j < blood.Length) 
-    invariant 0 <= i <= blood.Length
-    invariant 0 <= j <= blood.Length
-    {
-      if (blood[i] >= start && blood[i] <= end) {
-        temp[j] := blood[i];
-        j := j + 1;
-      }
-      i := i + 1;
-    }
-    result := temp[..j];
-  }
-  
-  method searchByExpiry(start: int, end: int) returns (result: seq<int>)
-  requires Valid(); ensures Valid();
-  {
-    result := searchBetweenRanges(bloodExpiryDates, start, end);
-  }
-  
-  method searchByVolume(blood: array<int>, minimum: int, maximum: int) returns (result: seq<int>)
-  requires Valid(); ensures Valid();
-  requires blood != null;
-  {
-    result := searchBetweenRanges(blood, minimum, maximum);
-  }
-  
   method testSearchByType() 
   requires Valid(); ensures Valid();
   {
@@ -124,17 +170,24 @@ class Search
     assert hasType(answer3, "B");
   }
   
-  // need to add verification
   method testSearchByExpiry()
   requires Valid(); ensures Valid();
   {
-    var searchExpiry1 := searchByExpiry(20180101, 20200101);
-    var searchExpiry2 := searchByExpiry(20190525, 20190525);
-    var searchExpiry3 := searchByExpiry(20190501, 20190530);
-    var searchExpiry4 := searchByExpiry(20180101, 20181010);
+    var bloodExpiryDates := new int[4];
+    bloodExpiryDates[0], bloodExpiryDates[1], bloodExpiryDates[2], bloodExpiryDates[3] := 20190820, 20190525, 20190907, 20191015;
+  
+    BubbleSort(bloodExpiryDates);
+    assert sorted(bloodExpiryDates, 0, bloodExpiryDates.Length);
+    
+    var minimum, maximum := findLimits(bloodExpiryDates, 20180101, 20200101);
+    assert forall k: int :: 0<=k<minimum ==> bloodExpiryDates[k] < 20180101;
+    assert forall k: int :: 0<=k<maximum ==> bloodExpiryDates[k] <= 20200101;
+    
+    minimum, maximum := findLimits(bloodExpiryDates, 20180101, 20181010);
+    assert forall k: int :: 0<=k<minimum ==> bloodExpiryDates[k] < 20180101;
+    assert forall k: int :: 0<=k<maximum ==> bloodExpiryDates[k] <= 20181010;
   }
   
-  // add verification for searching between ranges
   method testSearchByVolume()
   requires Valid(); ensures Valid();
   {
@@ -148,10 +201,26 @@ class Search
     assert totalVolumeB == sum(B, B.Length);
   
     var bloodSum := new int[2];
-    bloodSum[0], bloodSum[1] := totalVolumeA, totalVolumeB;
-    // add verification below
-    var searchVolume1 := searchByVolume(bloodSum, 0, 2000);
-    var searchVolume2 := searchByVolume(bloodSum, 500, 1000);
-    var searchVolume3 := searchByVolume(bloodSum, 750, 2000);
+    bloodSum[0], bloodSum[1] := totalVolumeB, totalVolumeA;
+    
+    BubbleSort(bloodSum);
+    assert sorted(bloodSum, 0, bloodSum.Length);
+    
+    var minimum, maximum := findLimits(bloodSum, 0, 2000);
+    assert forall k: int :: 0<=k<minimum ==> bloodSum[k] < 0;
+    assert forall k: int :: 0<=k<maximum ==> bloodSum[k] <= 2000;
+    
+    minimum, maximum := findLimits(bloodSum, 500, 1000);
+    assert forall k: int :: 0<=k<minimum ==> bloodSum[k] < 500;
+    assert forall k: int :: 0<=k<maximum ==> bloodSum[k] <= 1000;
+    
+    minimum, maximum := findLimits(bloodSum, 750, 2000);
+    assert forall k: int :: 0<=k<minimum ==> bloodSum[k] < 750;
+    assert forall k: int :: 0<=k<maximum ==> bloodSum[k] <= 2000;
+    
+    minimum, maximum := findLimits(bloodSum, 8000, 8000);
+    assert forall k: int :: 0<=k<minimum ==> bloodSum[k] < 8000;
+    assert forall k: int :: 0<=k<maximum ==> bloodSum[k] <= 8000;
+    
   }
 }
