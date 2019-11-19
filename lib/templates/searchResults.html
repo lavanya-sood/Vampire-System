@@ -41,6 +41,10 @@
           color: white;
         }
 
+        .inputbox {
+          color: black;
+        }
+
   </style>
 
 </head>
@@ -150,6 +154,7 @@
         
         var startExpiry = document.createElement("INPUT");
         startExpiry.setAttribute("type", "date");
+        startExpiry.setAttribute("class", "inputbox");
         startExpiry.name = "start";
         div.appendChild(startExpiry);
         
@@ -159,6 +164,7 @@
         
         var endExpiry = document.createElement("INPUT");
         endExpiry.setAttribute("type", "date");
+        endExpiry.setAttribute("class", "inputbox");
         endExpiry.name = "end";
         div.appendChild(endExpiry); 
         
@@ -186,11 +192,13 @@
         
         var minimum = document.createElement("INPUT");
         minimum.setAttribute("placeholder", "Min Volume");
+        minimum.setAttribute("class", "inputbox");
         minimum.name = "minimum";
         fieldset.appendChild(minimum);
         
         var maximum = document.createElement("INPUT");
         maximum.setAttribute("placeholder", "Max Volume");
+        maximum.setAttribute("class", "inputbox");
         maximum.name = "maximum";
         fieldset.appendChild(maximum);
         
