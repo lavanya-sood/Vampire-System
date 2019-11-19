@@ -232,17 +232,6 @@
             "delivered_status": "no"
         },
         {
-            "donor_name": "Johnson",
-            "type": "A",
-            "quantity": 500,
-            "expiry_date": "2019-12-11",
-            "input_date": "2019-06-07",
-            "test_status": "tested",
-            "source": "Balmain Hospital",
-            "id": 24,
-            "delivered_status": "no"
-        },
-        {
             "donor_name": "Leo",
             "type": "B",
             "quantity": 250,
