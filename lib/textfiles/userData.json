@@ -45,7 +45,7 @@
             "email": "coogee@gmail.com",
             "name": "Coogee Hospital",
             "password": "coogeeh",
-            "login": "True",
+            "login": "False",
             "role": "facility"
         },
         {
