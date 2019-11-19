@@ -74,45 +74,7 @@ class VampireSystem:
 				b['status'] = newStatus
 				with open(requestDir, 'w') as file:
 					file.write(json.dumps(data, indent = 4))
-	# check if request can be fulfilled
-	def checkRequest(self,type,quantity,id):
-		factoryBlood = BloodSystem().getFactoryBlood()
-		count = 0
-		today = date.today()
-		datenow = today.strftime("%Y-%m-%d")
-		list = []
-		# get blood that matches the exact amount
-		for n in factoryBlood:
-			if (n.type == type and n.quantity == quantity and n.id not in id
-			and n.expiryDate > datenow and n.deliveredStatus != "yes"):
-				id.append(n.id)
-				list.append(n)
-		# get the blood with latest expiry date
-		newlist = []
-		if len(list) > 0:
-			min = list[0].expiryDate
-			newlist.append(list[0].id)
 
-		for n in list:
-			if n.expiryDate < min:
-				newlist.clear()
-				min = n.expiryDate
-				newlist.append(n.id)
-		if len(list) > 0:
-			return "yes",id,newlist
-
-		# calculate how many packets needed
-		req_qtt = quantity
-		for n in factoryBlood:
-				if (n.type == type and req_qtt >= n.quantity and n.id not in id
-					and req_qtt > 0 and n.expiryDate > datenow and n.deliveredStatus != "yes"):
-					count = count + 1;
-					req_qtt = req_qtt - n.quantity
-					id.append(n.id)
-					list.append(n.id)
-		if (count > 0 and req_qtt == 0):
-			return "yes",id,list
-		return "no",id,list
 
 	def getMedicalFacilityRequests(self) :
 		mf_requests = []
@@ -121,7 +83,7 @@ class VampireSystem:
 			data = json.load(json_file)
 		for b in data['request']:
 			if (b['status'] == ""):
-				fulfil,id,list = self.checkRequest(b['type'], b['quantity'],id)
+				fulfil,id,list = BloodSystem().checkRequest(b['type'], b['quantity'],id)
 				print (list)
 				object = Request(b['medical_facility'], b['type'], b['quantity'], fulfil,list,b['id'])
 				mf_requests.append(object)

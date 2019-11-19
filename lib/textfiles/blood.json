@@ -144,17 +144,6 @@
             "delivered_status": "no"
         },
         {
-            "donor_name": "John",
-            "type": "AB",
-            "quantity": 250,
-            "expiry_date": "2019-12-13",
-            "input_date": "2019-09-07",
-            "test_status": "tested",
-            "source": "Coogee Hospital",
-            "id": 14,
-            "delivered_status": ""
-        },
-        {
             "donor_name": "Louisa",
             "type": "A",
             "quantity": 250,
