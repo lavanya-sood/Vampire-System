@@ -90,13 +90,12 @@ body {
 <form class="pure-form pure-form-stacked"  method = "POST">
  <h1> Login </h1>
     <fieldset> 
-    	<div class="pure-control-group">
+    	  <div class="pure-control-group">
         <!-- <label for="email">Email</label> -->
-        <h4> Login as</h4>
-        <input type="radio" name="loginuser" value="Employee"> Employee 
-        <input type="radio" name="loginuser" value="facility"> Medical Facility<br>
+        <h4 > Login as </h4>
+        <input id="role_users" type="radio" name="role" value="Employee"> Employee
+        <input type="radio" name="role" value="facility"> Medical Facility<br>
         </div>
-        <div class="pure-control-group">
         <!-- <label for="email">Email</label> -->
         <h4> Email</h4>
         <input name="email" type="text" placeholder="Email" class = "pure-input-rounded">

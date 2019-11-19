@@ -19,7 +19,7 @@
             "type": "AB",
             "quantity": 250,
             "id": 2,
-            "status": ""
+            "status": "yes"
         },
         {
             "medical_facility": "Alexandria Hospital",
@@ -47,14 +47,14 @@
             "type": "A",
             "quantity": 750,
             "id": 6,
-            "status": ""
+            "status": "no"
         },
         {
             "medical_facility": "Coogee Hospital",
             "type": "AB",
             "quantity": 1000,
             "id": 7,
-            "status": ""
+            "status": "no"
         },
         {
             "medical_facility": "Kingston Hospital",
