@@ -42,6 +42,57 @@
         }
 
   </style>
+
+</head>
+<body>
+  <form method = "POST" id="searchformid">
+  <button class="button-xlarge button-secondary pure-button" id = "type" type = "button" onClick = selectBloodType()>By Type</button>
+  <button class="button-xlarge button-secondary pure-button" id = "expiry" type = "button" onClick = selectExpiryDate()>By Expiry Date</button>
+  <button class="button-xlarge button-secondary pure-button" id = "volume" type = "button"onClick = selectVolume()>By Volume</button>
+  <div id = "search"></div>
+  {% if results|length != 0 and volume == 0 %}
+  <p> Results for {{ searchtype }} </p>
+  <table class="pure-table" id = results>
+    <thead>
+      <td>Type</td>
+      <td>Input Date (Year-Month-Day)</td>
+      <td>Expiry Date (Year-Month-Day)</td>
+      <td>Quantity (mL) </td>
+      <td>From</td>
+      <td> Request Blood </td>
+    </thead>
+    <tbody>
+      {% for n in range(results | length) %}
+      <tr>
+        <td>{{results[n].type}}
+        <td>{{results[n].inputDate}}
+        <td>{{results[n].expiryDate}}
+        <td>{{results[n].quantity}}
+        <td>{{results[n].source}}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </form>
+  </table>
+  {% elif volume == 1 and results|length != 0%}
+     <p> Results for {{ searchtype }} </p>
+     <table class="pure-table" id = results>
+     <thead>
+       <td>Type</td>
+       <td>Quantity (mL) </td>
+     </thead>
+     <tbody>
+      {% for key, value in results.items() %}
+      <tr>
+        <td>{{key}}
+        <td>{{value}}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </form>
+  </table>
+  {% endif %}
+</body>
   <script>
     function selectBloodType() {
         var type = document.getElementById("type");
@@ -151,56 +202,11 @@
         submit.value = "Submit"
         fieldset.appendChild(submit);
      }
+
+     function clickRequest() {
+        //console.log(document.getElementById("request-button").value);
+        console.log("HEY");
+     }
+
   </script>
-</head>
-<body>
-  <form method = "POST" id="searchformid">
-  <button class="button-xlarge button-secondary pure-button" id = "type" type = "button" onClick = selectBloodType()>By Type</button>
-  <button class="button-xlarge button-secondary pure-button" id = "expiry" type = "button" onClick = selectExpiryDate()>By Expiry Date</button>
-  <button class="button-xlarge button-secondary pure-button" id = "volume" type = "button"onClick = selectVolume()>By Volume</button>
-  <div id = "search"></div>
-  {% if results|length != 0 and volume == 0 %}
-  <p> Results for {{ searchtype }} </p>
-  <table class="pure-table" id = results>
-    <thead>
-      <td>Type</td>
-      <td>Input Date (Year-Month-Day)</td>
-      <td>Expiry Date (Year-Month-Day)</td>
-      <td>Quantity (mL) </td>
-      <td>From</td>
-      <td> Request Blood </td>
-    </thead>
-    <tbody>
-      {% for n in range(results | length) %}
-      <tr>
-        <td>{{results[n].type}}
-        <td>{{results[n].inputDate}}
-        <td>{{results[n].expiryDate}}
-        <td>{{results[n].quantity}}
-        <td>{{results[n].source}}
-        <td> <button class="button-warning pure-button" name = "request" value = {{results[n]}}>Request</button>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </form>
-  </table>
-  {% elif volume == 1 and results|length != 0%}
-     <p> Results for {{ searchtype }} </p>
-     <table class="pure-table" id = results>
-     <thead>
-       <td>Type</td>
-       <td>Quantity (mL) </td>
-     </thead>
-     <tbody>
-      {% for key, value in results.items() %}
-      <tr>
-        <td>{{key}}
-        <td>{{value}}
-      </tr>
-      {% endfor %}
-    </tbody>
-  </form>
-  </table>
-  {% endif %}
-</body>
 {% endblock %}

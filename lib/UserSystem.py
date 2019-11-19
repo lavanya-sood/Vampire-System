@@ -29,12 +29,12 @@ class UserSystem:
 				return "You have successfully logged out"
 		return ""
 
-	def check_user(self, email, password):
+	def check_user(self, email, password,role):
 		user = ""
 		with open(userDir, 'r') as f:
 			datastore = json.load(f)
 		for element in datastore["user"]:
-			if element["email"] == email and element["password"] == password:
+			if element["email"] == email and element["password"] == password and element["role"] == role:
 				element["login"] = "True"
 				with open(userDir, 'w') as f:
 					f.write(json.dumps(datastore,indent= 4))
