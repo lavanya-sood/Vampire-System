@@ -22,6 +22,20 @@ class Search
     if (index == 0) then 0 else sum(s, index-1) + s[index-1]
   }
   
+  predicate sorted(a: array<int>, l: int, u: int)
+  reads a
+  requires a != null
+  {
+    forall i, j :: 0 <= l <= i <= j <= u < a.Length ==> a[i] <= a[j]
+  }
+
+  predicate partitioned(a: array<int>, i: int)
+  reads a
+  requires a != null
+  {
+    forall k, k' :: 0 <= k <= i < k' < a.Length ==> a[k] <= a[k']
+  }
+  
   constructor ()
   ensures Valid();
   modifies this;
@@ -45,20 +59,6 @@ class Search
       i := i + 1;
     }
   }
-  
-  predicate sorted(a: array<int>, l: int, u: int)
-  reads a
-  requires a != null
-  {
-    forall i, j :: 0 <= l <= i <= j <= u < a.Length ==> a[i] <= a[j]
-  }
-
-  predicate partitioned(a: array<int>, i: int)
-  reads a
-  requires a != null
-  {
-    forall k, k' :: 0 <= k <= i < k' < a.Length ==> a[k] <= a[k']
-  }
 
   method BubbleSort(a: array<int>)
   requires Valid(); ensures Valid();
@@ -80,31 +80,23 @@ class Search
           invariant forall k :: 0 <= k <= j ==> a[k] <= a[j]
           {
             if(a[j] > a[j+1])
-              {
-                a[j], a[j+1] := a[j+1], a[j];
-              }
+            { a[j], a[j+1] := a[j+1], a[j]; }
               j := j + 1;
           }
           i := i -1;
       }
   }
-
-  method findLimits(a: array<int>, start: int, end: int) returns (minimum: int, maximum: int)
+  
+  method findLowerLimit(a: array<int>, start: int) returns (minimum: int)
   requires Valid(); ensures Valid()
   requires a != null
   requires sorted(a, 0, a.Length)
-  requires end >= start
   ensures 0<=minimum<=a.Length
-  ensures maximum <= a.Length && maximum >= minimum
   ensures minimum == a.Length ==> forall k: int :: 0<=k<a.Length ==> a[k] < start
   ensures forall k: int :: 0<=k<minimum ==> a[k] < start
-  ensures forall k: int :: 0<=k<maximum ==> a[k] <= end
   {
     minimum := a.Length;
-    maximum := a.Length;
-  
     var i := 0;
-  
     while (i < a.Length) 
     invariant 0 <= i <= a.Length
     invariant forall k: int :: 0<=k<i ==> a[k] < start
@@ -115,8 +107,17 @@ class Search
       }
       i := i + 1;
     }
-  
-    i := 0;
+  }
+
+  method findUpperLimit(a: array<int>, end: int) returns (maximum: int)
+  requires Valid(); ensures Valid()
+  requires a != null
+  requires sorted(a, 0, a.Length)
+  ensures 0<= maximum <= a.Length
+  ensures forall k: int :: 0<=k<maximum ==> a[k] <= end
+  {
+    maximum := a.Length;
+    var i := 0;
     while (i < a.Length) 
     invariant 0 <= i <= a.Length
     invariant forall k: int :: 0<=k<i ==> a[k] <= end
@@ -179,11 +180,13 @@ class Search
     BubbleSort(bloodExpiryDates);
     assert sorted(bloodExpiryDates, 0, bloodExpiryDates.Length);
     
-    var minimum, maximum := findLimits(bloodExpiryDates, 20180101, 20200101);
+    var minimum := findLowerLimit(bloodExpiryDates, 20180101);
+    var maximum := findUpperLimit(bloodExpiryDates, 20200101);
     assert forall k: int :: 0<=k<minimum ==> bloodExpiryDates[k] < 20180101;
     assert forall k: int :: 0<=k<maximum ==> bloodExpiryDates[k] <= 20200101;
     
-    minimum, maximum := findLimits(bloodExpiryDates, 20180101, 20181010);
+    minimum := findLowerLimit(bloodExpiryDates, 20180101);
+    maximum := findUpperLimit(bloodExpiryDates, 20181010);
     assert forall k: int :: 0<=k<minimum ==> bloodExpiryDates[k] < 20180101;
     assert forall k: int :: 0<=k<maximum ==> bloodExpiryDates[k] <= 20181010;
   }
@@ -206,19 +209,23 @@ class Search
     BubbleSort(bloodSum);
     assert sorted(bloodSum, 0, bloodSum.Length);
     
-    var minimum, maximum := findLimits(bloodSum, 0, 2000);
+    var minimum := findLowerLimit(bloodSum, 0);
+    var maximum := findUpperLimit(bloodSum, 2000);
     assert forall k: int :: 0<=k<minimum ==> bloodSum[k] < 0;
     assert forall k: int :: 0<=k<maximum ==> bloodSum[k] <= 2000;
     
-    minimum, maximum := findLimits(bloodSum, 500, 1000);
+    minimum := findLowerLimit(bloodSum, 500);
+    maximum := findUpperLimit(bloodSum, 1000);
     assert forall k: int :: 0<=k<minimum ==> bloodSum[k] < 500;
     assert forall k: int :: 0<=k<maximum ==> bloodSum[k] <= 1000;
     
-    minimum, maximum := findLimits(bloodSum, 750, 2000);
+    minimum := findLowerLimit(bloodSum, 750);
+    maximum := findUpperLimit(bloodSum, 2000);
     assert forall k: int :: 0<=k<minimum ==> bloodSum[k] < 750;
     assert forall k: int :: 0<=k<maximum ==> bloodSum[k] <= 2000;
     
-    minimum, maximum := findLimits(bloodSum, 8000, 8000);
+    minimum := findLowerLimit(bloodSum, 8000);
+    maximum := findUpperLimit(bloodSum, 8000);
     assert forall k: int :: 0<=k<minimum ==> bloodSum[k] < 8000;
     assert forall k: int :: 0<=k<maximum ==> bloodSum[k] <= 8000;
     
