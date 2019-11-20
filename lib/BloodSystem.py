@@ -38,24 +38,31 @@ class BloodSystem():
                 factoryBlood.append(object)
         return factoryBlood
 
-    def getQuantity(self):
-        blood = self.getFactoryBlood()
-        search = Search(blood)
-        A = search.searchBloodType("A")
-        B = search.searchBloodType("B")
-        AB = search.searchBloodType("AB")
-        O = search.searchBloodType("O")
-        sumA = search.sumBloodQuantity(A)
-        sumB = search.sumBloodQuantity(B)
-        sumAB = search.sumBloodQuantity(AB)
-        sumO = search.sumBloodQuantity(O)
-        bloodTypeQuantity = {}
-        bloodTypeQuantity["A"] = sumA
-        bloodTypeQuantity["B"] = sumB
-        bloodTypeQuantity["AB"] = sumAB
-        bloodTypeQuantity["O"] = sumO
-        return bloodTypeQuantity
-
+    # def getQuantity(self):
+    #     blood = self.getFactoryBlood()
+    #     search = Search(blood)
+    #     A = search.searchBloodType("A")
+    #     B = search.searchBloodType("B")
+    #     AB = search.searchBloodType("AB")
+    #     O = search.searchBloodType("O")
+    #     sumA = search.sumBloodQuantity(A)
+    #     sumB = search.sumBloodQuantity(B)
+    #     sumAB = search.sumBloodQuantity(AB)
+    #     sumO = search.sumBloodQuantity(O)
+    #     bloodTypeQuantity = {}
+    #     bloodTypeQuantity["A"] = sumA
+    #     bloodTypeQuantity["B"] = sumB
+    #     bloodTypeQuantity["AB"] = sumAB
+    #     bloodTypeQuantity["O"] = sumO
+    #     return bloodTypeQuantity
+    def getQuantity(self, type):
+        sum = 0
+        blood = self.getFactoryBlood();
+        for b in blood:
+            if b.type == type:
+                sum = sum + int(b.quantity)
+        return sum
+    
     def getLowBlood(self,blood):
         low = {}
         for type in self.bloodTypes:
@@ -76,12 +83,11 @@ class BloodSystem():
         return False
 
     def getExpiredBlood(self):
+        blood = self.getFactoryBlood()
         expiredBlood = []
-        with open(bloodDir, "r") as json_file:
-            data = json.load(json_file)
         now = datetime.now()
-        for b in data['blood']:
-            d = datetime.strptime(b["expiry_date"], "%Y-%m-%d")
+        for b in blood:
+            d = datetime.strptime(b.expiryDate, "%Y-%m-%d")
             if d < now:
                 expiredBlood.append(b)
         return expiredBlood
