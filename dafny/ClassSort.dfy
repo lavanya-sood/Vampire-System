@@ -9,12 +9,13 @@ class Sort
     a != null
   }
     
-  constructor ()
+  constructor (input: array<int>)
+  requires input != null;
   ensures Valid();
   modifies this;
+  ensures a == input;
   {
-    a := new int[5];
-    a[0], a[1], a[2], a[3], a[4] := 20190211, 20200120, 20191203, 20191127, 20200101;
+    a := input;
   }
 
   predicate sorted(a: array<int>, l: int, u: int)
@@ -59,18 +60,27 @@ class Sort
           i := i - 1;
       }
   }
-  
-  method vertify()
-  requires Valid(); ensures Valid();
-  modifies a
-  {
-
-    print a[..], '\n';
-    BubbleSort();
-    print a[..], '\n';
-  }
     
 }
 
-
+method main (){
+    var a := new int[5];
+    a[0], a[1], a[2], a[3], a[4] := 20190211, 20200120, 20191203, 20191127, 20200101;
+    assert a[0] == 20190211;
+    assert a[1] == 20200120;
+    assert a[2] == 20191203;
+    assert a[3] == 20191127;
+    assert a[4] == 20200101;
+    var sort := new Sort(a);
+    assert sort.a[0] == 20190211;
+    assert sort.a[1] == 20200120;
+    assert sort.a[2] == 20191203;
+    assert sort.a[3] == 20191127;
+    assert sort.a[4] == 20200101;
+    assert sort.a.Length == 5;
+    assert !sort.sorted(sort.a, 0, sort.a.Length - 1);
+    sort.BubbleSort();  
+    assert sort.sorted(sort.a, 0, sort.a.Length - 1);
+    
+}
 
