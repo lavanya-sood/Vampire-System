@@ -69,6 +69,20 @@
             "quantity": 250,
             "id": 9,
             "status": ""
+        },
+        {
+            "medical_facility": "Coogee Hospital",
+            "type": "B",
+            "quantity": 250,
+            "id": 10,
+            "status": "no"
+        },
+        {
+            "medical_facility": "Coogee Hospital",
+            "type": "A",
+            "quantity": 500,
+            "id": 11,
+            "status": ""
         }
     ]
 }

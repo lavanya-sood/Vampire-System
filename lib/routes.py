@@ -6,7 +6,6 @@ from lib.VampireSystem import VampireSystem
 from lib.UserSystem import UserSystem
 from lib.BloodSystem import BloodSystem
 from lib.Search import Search
-from lib.Sort import Sort
 from lib.Blood import Blood
 from flask_login import LoginManager,login_user, current_user, login_required, logout_user
 import json
@@ -14,9 +13,14 @@ import os
 
 currDir = os.getcwd()
 bloodDir = currDir + "/lib/textfiles/blood.json"
-
+blooddata = []
 #notes: change system to VampireSystem and copy methods from seng2021
-blood = []
+with open(bloodDir, "r") as json_file:
+    data = json.load(json_file)
+    for b in data["blood"]:
+        object = Blood(b['donor_name'], b['type'], b['quantity'], b['expiry_date'], b['input_date'], b['test_status'], b['source'], b['id'],b['delivered_status'])
+        blooddata.append(object)
+print (blooddata)
 
 @app.route('/')
 def welcome():
@@ -37,7 +41,7 @@ def welcome():
         if b['input_date'] == "":
             object = Blood(b['donor_name'], b['type'], b['quantity'], b['expiry_date'], b['input_date'], b['test_status'], b['source'], b['id'],b['delivered_status'])
             blood.append(object)
-    v = VampireSystem(blood)
+    v = VampireSystem(blooddata)
 #session['url'] = url_for('welcome')
     return render_template("welcome.html",loginstatus=loginstatus,loginemployee=loginemployee)
 
@@ -57,17 +61,15 @@ def inventory():
     if request.method == "POST":
         if "view_order" in request.form:
             order = request.form["view_order"]
-            factoryBlood = BloodSystem().getFactoryBlood()
-            sort = Sort(factoryBlood)
             if order == "date_added":
                 title = "View Inventory by Date Added"
-                blood =  sort.sortBloodbyAddedDate()
+                blood =  BloodSystem().sortBloodbyAddedDate()
             elif order == "expiry_date":
                 title = "View Inventory by Expiry Date"
-                blood = sort.sortBloodbyExpiryDate()
+                blood = BloodSystem().sortBloodbyExpiryDate()
             elif order == "quantity":
                 title = "View Inventory by Quantity"
-                blood = sort.sortBloodbyQuantity()
+                blood = BloodSystem().sortBloodbyQuantity()
             elif order == "blood_type":
                 title = "View Inventory by Blood Type"
                 blood = BloodSystem().getBloodQuantitybyType()
@@ -87,14 +89,10 @@ def inventory():
 def login():
     message = ""
     email = ""
-    # role = None
     if request.method == 'POST':
         email = request.form["email"]
         password = request.form["password"]
-        if "role" not in request.form:
-            return render_template("login.html", message="You need to select a role")
-        role = request.form["role"]
-        message = UserSystem().check_user(email, password, role)
+        message = UserSystem().check_user(email, password)
         if message is "":
             print("LOGGED IN----")
             return redirect(url_for('welcome'))
@@ -114,23 +112,22 @@ def delivered():
         loginemployee = True
 
     #shows list of blood + respective action button
-    deliveredBlood = VampireSystem(blood).getDeliveredBlood()
+    deliveredBlood = VampireSystem(blooddata).getDeliveredBlood()
     if request.method == "POST":
         if "add" in request.form:
             date = datetime.date(datetime.now())
             index = int(request.form['add'])
             #changed updating status to added, instead the input_date is added with the current date
             deliveredBlood[index].setInputDate(date)
-            VampireSystem(blood).updateInputDate(deliveredBlood[index])
+            VampireSystem(blooddata).updateInputDate(deliveredBlood[index])
             #dump to file, retrieve again
-            deliveredBlood = VampireSystem(blood).getDeliveredBlood()
+            deliveredBlood = VampireSystem(blooddata).getDeliveredBlood()
         elif "send" in request.form:
             index = request.form['send']
             #coded for now: will change status to tested
             index = int(request.form['send'])
             deliveredBlood[index].setTestStatus("tested")
-            VampireSystem(blood).updateBloodStatus(deliveredBlood[index], "tested")
-            deliveredBlood = VampireSystem(blood).getDeliveredBlood()
+            VampireSystem(blooddata).updateBloodStatus(deliveredBlood[index], "added")
     #when add is clicked: add to factory (change status to added) reload page
     #when send is clicked: delete from list OR change status to tested
     return render_template("delivered.html", deliveredBlood = deliveredBlood,loginstatus=loginstatus,loginemployee=loginemployee)
@@ -144,17 +141,17 @@ def requests():
         loginstatus = True
     if (UserSystem().check_employeeLogin() == True):
         loginemployee = True
-    mf_requests = VampireSystem(blood).getMedicalFacilityRequests()
+    mf_requests = VampireSystem(blooddata).getMedicalFacilityRequests()
     #factoryBlood = BloodSystem().getFactoryBlood()
     if request.method == "POST":
         if "send" in request.form:
             index = int(request.form['send'])
-            VampireSystem(blood).updateDeliveredStatus(mf_requests[index],"yes")
-            mf_requests = VampireSystem(blood).getMedicalFacilityRequests()
+            VampireSystem(blooddata).updateDeliveredStatus(mf_requests[index],"yes")
+            mf_requests = VampireSystem(blooddata).getMedicalFacilityRequests()
         elif "decline" in request.form:
             index = int(request.form['decline'])
-            VampireSystem(blood).updateDeliveredStatus(mf_requests[index],"no")
-            mf_requests = VampireSystem(blood).getMedicalFacilityRequests()
+            VampireSystem(blooddata).updateDeliveredStatus(mf_requests[index],"no")
+            mf_requests = VampireSystem(blooddata).getMedicalFacilityRequests()
     return render_template("requests.html",mf_requests = mf_requests,loginstatus=loginstatus,loginemployee=loginemployee)
 
 @app.route('/warning', methods=['GET', 'POST'])
@@ -165,13 +162,11 @@ def warning():
         loginstatus = True
     if (UserSystem().check_employeeLogin() == True):
         loginemployee = True
-    blood = BloodSystem().getQuantity()
-    #dict of each blood type: quantity
-    #if isLowBlood(type,dict,val) add to a dict of low blood types
-    #isNormal blood add to dict of normal bloods
-    lowBlood = BloodSystem().getLowBlood(blood)
-    normalBlood = BloodSystem().getNormalBlood(blood)
-    requestSent = BloodSystem().getRequestSent()
+
+    lowBlood = BloodSystem().getLowBlood()
+    normalBlood = BloodSystem().getNormalBlood()
+    requestSent = Blood
+    System().getRequestSent()
     if request.method == "POST":
         type = request.form['request']
         requestSent = BloodSystem().updateRequestSent(type)
@@ -196,9 +191,6 @@ def register():
         newpassword = request.form["password"]
         newusername = request.form["username"]
         newname = request.form["name"]
-        if "role" not in request.form:
-            return render_template("signup.html", message="You need to select a role")
-
         role = request.form["role"]
 
         print(role)

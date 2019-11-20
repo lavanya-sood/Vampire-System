@@ -18,41 +18,38 @@ userDir = currDir + "/lib/textfiles/userData.json"
 
 
 class VampireSystem:
-	blood = []
+	#blood =
 
 	def __init__(self,blood):
 		self._blood = blood
 
 	def getDeliveredBlood(self) :
 		deliveredBlood = []
-		with open(bloodDir, "r") as json_file:
-			data = json.load(json_file)
-		for b in data['blood']:
-			if b['input_date'] == "":
-				object = Blood(b['donor_name'], b['type'], b['quantity'], b['expiry_date'], b['input_date'], b['test_status'], b['source'], b['id'],b['delivered_status'])
-				deliveredBlood.append(object)
+		for b in self._blood:
+			if b.inputDate == "":
+				deliveredBlood.append(b)
 		return deliveredBlood
 
 	def updateBloodStatus(self, blood, newStatus) :
 		with open(bloodDir, 'r') as f:
 			datastore = json.load(f)
-			for element in datastore["blood"]:
-				if element["id"] == blood.id:
-					element['test_status'] = newStatus
-					with open(bloodDir, 'w') as file:
-						file.write(json.dumps(datastore, indent = 4))
-					break
+		for element in datastore["blood"]:
+			if element["id"] == blood.id:
+				element['test_status'] = newStatus
+				with open(bloodDir, 'w') as file:
+					file.write(json.dumps(datastore, indent = 4))
+				break
 
 
 	def updateInputDate(self, blood) :
 		date = str(datetime.date(datetime.now()))
 		with open(bloodDir, 'r') as f:
 			datastore = json.load(f)
-			for element in datastore["blood"]:
-				if element["id"] == blood.id:
-					element['input_date'] = date
-					with open(bloodDir, 'w') as file:
-						file.write(json.dumps(datastore, indent = 4))
+		for element in datastore["blood"]:
+			if element["id"] == blood.id:
+				element['input_date'] = date
+				with open(bloodDir, 'w') as file:
+					file.write(json.dumps(datastore, indent = 4))
 
 	def updateDeliveredStatus(self, mf_req, newStatus) :
 		#remove the req and chg status of blood
@@ -62,12 +59,12 @@ class VampireSystem:
 		if newStatus == "yes":
 			with open(bloodDir, 'r') as f:
 				datastore = json.load(f)
-				for element in datastore["blood"]:
-					if (element["id"] in blood_id):
-						datastore["blood"].remove(element)
-						#element['delivered_status'] = newStatus
-						with open(bloodDir, 'w') as file:
-							file.write(json.dumps(datastore, indent = 4))
+			for element in datastore["blood"]:
+				if (element["id"] in blood_id):
+					datastore["blood"].remove(element)
+					#element['delivered_status'] = newStatus
+					with open(bloodDir, 'w') as file:
+						file.write(json.dumps(datastore, indent = 4))
 		with open(requestDir, "r") as json_file:
 			data = json.load(json_file)
 		for b in data['request']:
