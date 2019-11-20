@@ -50,6 +50,7 @@ class VampireSystem:
 				element['input_date'] = date
 				with open(bloodDir, 'w') as file:
 					file.write(json.dumps(datastore, indent = 4))
+				break
 
 	def updateDeliveredStatus(self, mf_req, newStatus) :
 		#remove the req and chg status of blood
