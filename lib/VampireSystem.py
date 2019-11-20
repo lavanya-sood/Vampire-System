@@ -41,6 +41,7 @@ class VampireSystem:
 					element['test_status'] = newStatus
 					with open(bloodDir, 'w') as file:
 						file.write(json.dumps(datastore, indent = 4))
+					break
 
 
 	def updateInputDate(self, blood) :

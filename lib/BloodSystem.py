@@ -3,6 +3,7 @@ from datetime import datetime
 from lib.user import User
 from lib.Blood import Blood
 from lib.Request import Request
+from lib.Search import Search
 import json
 import os
 import ast
@@ -37,27 +38,42 @@ class BloodSystem():
                 factoryBlood.append(object)
         return factoryBlood
 
-    def getLowBlood(self):
-        dict = {}
-        for type in self.bloodTypes:
-            if (int(self.getQuantity(type)) < 3000):
-                dict[type] = self.getQuantity(type)
-        return dict
+    def getQuantity(self):
+        blood = self.getFactoryBlood()
+        search = Search(blood)
+        A = search.searchBloodType("A")
+        B = search.searchBloodType("B")
+        AB = search.searchBloodType("AB")
+        O = search.searchBloodType("O")
+        sumA = search.sumBloodQuantity(A)
+        sumB = search.sumBloodQuantity(B)
+        sumAB = search.sumBloodQuantity(AB)
+        sumO = search.sumBloodQuantity(O)
+        bloodTypeQuantity = {}
+        bloodTypeQuantity["A"] = sumA
+        bloodTypeQuantity["B"] = sumB
+        bloodTypeQuantity["AB"] = sumAB
+        bloodTypeQuantity["O"] = sumO
+        return bloodTypeQuantity
 
-    def getNormalBlood(self):
-        dict = {}
+    def getLowBlood(self,blood):
+        low = {}
         for type in self.bloodTypes:
-            if (int(self.getQuantity(type)) >= 3000):
-                dict[type] = self.getQuantity(type)
-        return dict
+            if(self.hasLowBlood(blood, 1000, type)):
+                low[type] = blood[type]
+        return low
 
-    def getQuantity(self, type):
-        sum = 0
-        blood = self.getFactoryBlood();
-        for b in blood:
-            if b.type == type:
-                sum = sum + int(b.quantity)
-        return sum
+    def getNormalBlood(self,blood):
+        low = {}
+        for type in self.bloodTypes:
+            if(self.hasLowBlood(blood, 1000, type) == False):
+                low[type] = blood[type]
+        return low
+
+    def hasLowBlood(self, blood, val, key):
+        if (blood[key] < val):
+                return True
+        return False
 
     def getExpiredBlood(self):
         expiredBlood = []
