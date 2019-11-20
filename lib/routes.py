@@ -20,7 +20,7 @@ with open(bloodDir, "r") as json_file:
     for b in data["blood"]:
         object = Blood(b['donor_name'], b['type'], b['quantity'], b['expiry_date'], b['input_date'], b['test_status'], b['source'], b['id'],b['delivered_status'])
         blooddata.append(object)
-print (blooddata)
+
 
 @app.route('/')
 def welcome():

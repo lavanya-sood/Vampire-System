@@ -92,41 +92,6 @@ class BloodSystem():
             blood.append(dict(type=type, quantity=self.getQuantity(type)))
         return blood
 
-
-    def sortBloodbyQuantity(self):
-        with open(bloodDir, "r") as json_file:
-            data = json.load(json_file)
-        blood = data['blood']
-        n = len(blood)
-        for i in range(n) :
-            for j in range(0, n-i-1):
-                if blood[j]["quantity"] > blood[j+1]["quantity"] :
-                    blood[j], blood[j+1] = blood[j+1], blood[j]
-        return blood
-
-
-    def sortBloodbyExpiryDate(self):
-        with open(bloodDir, "r") as json_file:
-            data = json.load(json_file)
-        blood = data['blood']
-        n = len(blood)
-        for i in range(n) :
-            for j in range(0, n-i-1):
-                if blood[j]["expiry_date"] > blood[j+1]["expiry_date"] :
-                    blood[j], blood[j+1] = blood[j+1], blood[j]
-        return blood
-
-    def sortBloodbyAddedDate(self):
-        with open(bloodDir, "r") as json_file:
-            data = json.load(json_file)
-        blood = data['blood']
-        n = len(blood)
-        for i in range(n):
-            for j in range(0, n-i-1):
-                if blood[j]["input_date"] > blood[j+1]["input_date"] :
-                    blood[j], blood[j+1] = blood[j+1], blood[j]
-        return blood
-
     def deletefromBloodInventory(self, index):
         with open(bloodDir, 'r') as f:
             datastore = json.load(f)
