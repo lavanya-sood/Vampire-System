@@ -80,9 +80,7 @@ def inventory():
 
         elif "delete" in request.form:
             index = int(request.form["delete"])
-            print ("index is ", index)
             expired_blood = BloodSystem().getExpiredBlood()
-            factoryBlood = BloodSystem().getFactoryBlood()
             BloodSystem().deletefromBloodInventory(expired_blood[index].id)
 
             expired_blood = BloodSystem().getExpiredBlood()
