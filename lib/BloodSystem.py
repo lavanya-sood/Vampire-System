@@ -98,13 +98,16 @@ class BloodSystem():
             blood.append(dict(type=type, quantity=self.getQuantity(type)))
         return blood
 
-    def deletefromBloodInventory(self, index):
+    def deletefromBloodInventory(self, id):
+        i = 0;
         with open(bloodDir, 'r') as f:
             datastore = json.load(f)
-            del datastore["blood"][index]
-
-            with open(bloodDir, 'w') as file:
-                file.write(json.dumps(datastore, indent = 4))
+            for b in datastore['blood']:
+                if b["id"] == id:
+                    del datastore["blood"][i]
+                    with open(bloodDir, 'w') as file:
+                        file.write(json.dumps(datastore, indent = 4))
+                i = i + 1
 
     # check if request can be fulfilled
     def checkRequest(self,type,quantity,id):
