@@ -126,8 +126,10 @@ def delivered():
             #changed updating status to added, instead the input_date is added with the current date
             deliveredBlood[index].setInputDate(date)
             VampireSystem(blooddata).updateInputDate(deliveredBlood[index])
+            VampireSystem(blooddata).updateBloodStatus(deliveredBlood[index], "added")
+            deliveredBlood = BloodSystem().retrieveBloodAgain()
+
             #dump to file, retrieve again
-            deliveredBlood = VampireSystem(blooddata).getDeliveredBlood()
         elif "send" in request.form:
             index = request.form['send']
             #coded for now: will change status to tested
