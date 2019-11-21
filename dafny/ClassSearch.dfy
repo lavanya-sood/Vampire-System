@@ -158,14 +158,17 @@ class Search
   method testSearchByType() 
   requires Valid(); ensures Valid();
   {
+    // Test1: multiple results
     var answer1 := searchByBloodType("A");
     assert |answer1| == multiset(bloodTypes[..])["A"];
     assert hasType(answer1, "A");
-      
+    
+    // Test2: only one result
     var answer2 := searchByBloodType("AB");
     assert |answer2| == multiset(bloodTypes[..])["AB"];
     assert hasType(answer2, "AB");
       
+    // Test3: no results
     var answer3 := searchByBloodType("B");
     assert |answer3| == multiset(bloodTypes[..])["B"];
     assert hasType(answer3, "B");
@@ -180,11 +183,13 @@ class Search
     BubbleSort(bloodExpiryDates);
     assert sorted(bloodExpiryDates, 0, bloodExpiryDates.Length);
     
+    // Test1: contains results
     var minimum := findLowerLimit(bloodExpiryDates, 20180101);
     var maximum := findUpperLimit(bloodExpiryDates, 20200101);
     assert forall k: int :: 0<=k<minimum ==> bloodExpiryDates[k] < 20180101;
     assert forall k: int :: 0<=k<maximum ==> bloodExpiryDates[k] <= 20200101;
     
+    // Test2: contains no results
     minimum := findLowerLimit(bloodExpiryDates, 20180101);
     maximum := findUpperLimit(bloodExpiryDates, 20181010);
     assert forall k: int :: 0<=k<minimum ==> bloodExpiryDates[k] < 20180101;
@@ -209,21 +214,27 @@ class Search
     BubbleSort(bloodSum);
     assert sorted(bloodSum, 0, bloodSum.Length);
     
+    // More indepth testing for findLowerLimit and findUpperLimit
+    
+    // Test1: contains all elements from orignal array
     var minimum := findLowerLimit(bloodSum, 0);
     var maximum := findUpperLimit(bloodSum, 2000);
     assert forall k: int :: 0<=k<minimum ==> bloodSum[k] < 0;
     assert forall k: int :: 0<=k<maximum ==> bloodSum[k] <= 2000;
     
+    // Test2: contains one element from oginal array
     minimum := findLowerLimit(bloodSum, 500);
     maximum := findUpperLimit(bloodSum, 1000);
     assert forall k: int :: 0<=k<minimum ==> bloodSum[k] < 500;
     assert forall k: int :: 0<=k<maximum ==> bloodSum[k] <= 1000;
     
+    // Test3: contains some elements
     minimum := findLowerLimit(bloodSum, 750);
     maximum := findUpperLimit(bloodSum, 2000);
     assert forall k: int :: 0<=k<minimum ==> bloodSum[k] < 750;
     assert forall k: int :: 0<=k<maximum ==> bloodSum[k] <= 2000;
     
+    // Test4: contains no elements from original array
     minimum := findLowerLimit(bloodSum, 8000);
     maximum := findUpperLimit(bloodSum, 8000);
     assert forall k: int :: 0<=k<minimum ==> bloodSum[k] < 8000;
