@@ -30,25 +30,27 @@ class VampireSystem:
 				deliveredBlood.append(b)
 		return deliveredBlood
 
+	#set new status for given blood object and save into JSON
 	def updateBloodStatus(self, blood, newStatus) :
 		with open(bloodDir, 'r') as f:
-			datastore = json.load(f)
-		for element in datastore["blood"]:
-			if element["id"] == blood.id:
-				element['test_status'] = newStatus
-				with open(bloodDir, 'w') as file:
+			datastore = json.load(f) #grab from JSON
+		for element in datastore["blood"]: #loop through all blood
+			if element["id"] == blood.id: #find correct one with id
+				element['test_status'] = newStatus #set new status
+				with open(bloodDir, 'w') as file: #put into JSON
 					file.write(json.dumps(datastore, indent = 4))
 				break
 
 
+	#set new input date for given blood object and save into JSON
 	def updateInputDate(self, blood) :
 		date = str(datetime.date(datetime.now()))
 		with open(bloodDir, 'r') as f:
-			datastore = json.load(f)
-		for element in datastore["blood"]:
-			if element["id"] == blood.id:
-				element['input_date'] = date
-				with open(bloodDir, 'w') as file:
+			datastore = json.load(f) #grab from JSON
+		for element in datastore["blood"]: #loop through all blood
+			if element["id"] == blood.id: #find correct one with id
+				element['input_date'] = date #set new status
+				with open(bloodDir, 'w') as file: #put into JSON
 					file.write(json.dumps(datastore, indent = 4))
 				break
 

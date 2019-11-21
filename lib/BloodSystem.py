@@ -28,6 +28,7 @@ class BloodSystem():
         self.requestSent[type] = True
         return self.requestSent
 
+    #load blood data and only retrieve blood with status 'added'
     def getFactoryBlood(self):
         factoryBlood = []
         with open(bloodDir, "r") as json_file:
@@ -38,23 +39,37 @@ class BloodSystem():
                 factoryBlood.append(object)
         return factoryBlood
 
-    # def getQuantity(self):
-    #     blood = self.getFactoryBlood()
-    #     search = Search(blood)
-    #     A = search.searchBloodType("A")
-    #     B = search.searchBloodType("B")
-    #     AB = search.searchBloodType("AB")
-    #     O = search.searchBloodType("O")
-    #     sumA = search.sumBloodQuantity(A)
-    #     sumB = search.sumBloodQuantity(B)
-    #     sumAB = search.sumBloodQuantity(AB)
-    #     sumO = search.sumBloodQuantity(O)
-    #     bloodTypeQuantity = {}
-    #     bloodTypeQuantity["A"] = sumA
-    #     bloodTypeQuantity["B"] = sumB
-    #     bloodTypeQuantity["AB"] = sumAB
-    #     bloodTypeQuantity["O"] = sumO
-    #     return bloodTypeQuantity
+    #load blood data and only retrieve blood with status not being 'added'
+    def  retrieveBloodAgain(self):
+        deliveredBlood = []
+        with open(bloodDir, "r") as json_file:
+            data = json.load(json_file)
+        for b in data['blood']:
+            if b['input_date'] == "":
+                object = Blood(b['donor_name'], b['type'], b['quantity'], b['expiry_date'], b['input_date'], b['test_status'], b['source'], b['id'],b['delivered_status'])
+                deliveredBlood.append(object)
+        return deliveredBlood
+
+    #create and return a dict matching each blood type to their quantity using search
+    def getAllQuantity(self):
+        blood = self.getFactoryBlood()
+        search = Search(blood)
+        A = search.searchBloodType("A")
+        B = search.searchBloodType("B")
+        AB = search.searchBloodType("AB")
+        O = search.searchBloodType("O")
+        sumA = search.sumBloodQuantity(A)
+        sumB = search.sumBloodQuantity(B)
+        sumAB = search.sumBloodQuantity(AB)
+        sumO = search.sumBloodQuantity(O)
+        bloodTypeQuantity = {}
+        bloodTypeQuantity["A"] = sumA
+        bloodTypeQuantity["B"] = sumB
+        bloodTypeQuantity["AB"] = sumAB
+        bloodTypeQuantity["O"] = sumO
+        return bloodTypeQuantity
+
+    #get quantity for one particular blood type
     def getQuantity(self, type):
         sum = 0
         blood = self.getFactoryBlood();
@@ -62,7 +77,8 @@ class BloodSystem():
             if b.type == type:
                 sum = sum + int(b.quantity)
         return sum
-    
+
+    #create and return a dictionary of blood types and quantities that have below 1000ml left
     def getLowBlood(self,blood):
         low = {}
         for type in self.bloodTypes:
@@ -70,6 +86,7 @@ class BloodSystem():
                 low[type] = blood[type]
         return low
 
+    #create and return a dictionary of blood types and quantities that have over 1000ml left
     def getNormalBlood(self,blood):
         low = {}
         for type in self.bloodTypes:
@@ -77,6 +94,7 @@ class BloodSystem():
                 low[type] = blood[type]
         return low
 
+    #returns boolean and checks if given blood type is below 1000ml limit
     def hasLowBlood(self, blood, val, key):
         if (blood[key] < val):
                 return True

@@ -133,7 +133,8 @@ def delivered():
             #coded for now: will change status to tested
             index = int(request.form['send'])
             deliveredBlood[index].setTestStatus("tested")
-            VampireSystem(blooddata).updateBloodStatus(deliveredBlood[index], "added")
+            VampireSystem(blooddata).updateBloodStatus(deliveredBlood[index], "tested")
+            deliveredBlood = BloodSystem().retrieveBloodAgain()
     #when add is clicked: add to factory (change status to added) reload page
     #when send is clicked: delete from list OR change status to tested
     return render_template("delivered.html", deliveredBlood = deliveredBlood,loginstatus=loginstatus,loginemployee=loginemployee)
@@ -168,11 +169,10 @@ def warning():
         loginstatus = True
     if (UserSystem().check_employeeLogin() == True):
         loginemployee = True
-
-    lowBlood = BloodSystem().getLowBlood()
-    normalBlood = BloodSystem().getNormalBlood()
-    requestSent = Blood
-    System().getRequestSent()
+    blood = BloodSystem().getAllQuantity()
+    lowBlood = BloodSystem().getLowBlood(blood)
+    normalBlood = BloodSystem().getNormalBlood(blood)
+    requestSent = BloodSystem().getRequestSent()
     if request.method == "POST":
         type = request.form['request']
         requestSent = BloodSystem().updateRequestSent(type)
