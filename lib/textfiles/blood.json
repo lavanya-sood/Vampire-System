@@ -1,28 +1,6 @@
 {
     "blood": [
         {
-            "donor_name": "Harry",
-            "type": "O",
-            "quantity": 500,
-            "expiry_date": "2020-02-10",
-            "input_date": "",
-            "test_status": "not-tested",
-            "source": "Coogee Hospital",
-            "id": 0,
-            "delivered_status": ""
-        },
-        {
-            "donor_name": "John",
-            "type": "AB",
-            "quantity": 500,
-            "expiry_date": "2019-10-13",
-            "input_date": "",
-            "test_status": "tested",
-            "source": "Coogee Hospital",
-            "id": 1,
-            "delivered_status": ""
-        },
-        {
             "donor_name": "Lim",
             "type": "B",
             "quantity": 250,
@@ -182,7 +160,7 @@
             "quantity": 500,
             "expiry_date": "2019-12-31",
             "input_date": "",
-            "test_status": "not-tested",
+            "test_status": "added",
             "source": "Kingston Hospital",
             "id": 18,
             "delivered_status": ""
@@ -196,17 +174,6 @@
             "test_status": "added",
             "source": "Kingston Hospital",
             "id": 19,
-            "delivered_status": ""
-        },
-        {
-            "donor_name": "Elisa",
-            "type": "AB",
-            "quantity": 500,
-            "expiry_date": "2019-12-10",
-            "input_date": "2019-11-09",
-            "test_status": "added",
-            "source": "Balmain Hospital",
-            "id": 20,
             "delivered_status": ""
         },
         {
@@ -225,7 +192,7 @@
             "type": "O",
             "quantity": 500,
             "expiry_date": "2019-10-10",
-            "input_date": "",
+            "input_date": "2019-11-21",
             "test_status": "tested",
             "source": "Batmobile",
             "id": 23,
@@ -281,7 +248,7 @@
             "quantity": 500,
             "expiry_date": "2019-09-10",
             "input_date": "",
-            "test_status": "not-tested",
+            "test_status": "added",
             "source": "Newtown Hospital",
             "id": 29,
             "delivered_status": ""

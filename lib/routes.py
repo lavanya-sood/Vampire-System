@@ -166,11 +166,10 @@ def warning():
         loginstatus = True
     if (UserSystem().check_employeeLogin() == True):
         loginemployee = True
-
-    lowBlood = BloodSystem().getLowBlood()
-    normalBlood = BloodSystem().getNormalBlood()
-    requestSent = Blood
-    System().getRequestSent()
+    blood = BloodSystem().getBQuantity()
+    lowBlood = BloodSystem().getLowBlood(blood)
+    normalBlood = BloodSystem().getNormalBlood(blood)
+    requestSent = BloodSystem().getRequestSent()
     if request.method == "POST":
         type = request.form['request']
         requestSent = BloodSystem().updateRequestSent(type)

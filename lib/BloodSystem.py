@@ -38,23 +38,24 @@ class BloodSystem():
                 factoryBlood.append(object)
         return factoryBlood
 
-    # def getQuantity(self):
-    #     blood = self.getFactoryBlood()
-    #     search = Search(blood)
-    #     A = search.searchBloodType("A")
-    #     B = search.searchBloodType("B")
-    #     AB = search.searchBloodType("AB")
-    #     O = search.searchBloodType("O")
-    #     sumA = search.sumBloodQuantity(A)
-    #     sumB = search.sumBloodQuantity(B)
-    #     sumAB = search.sumBloodQuantity(AB)
-    #     sumO = search.sumBloodQuantity(O)
-    #     bloodTypeQuantity = {}
-    #     bloodTypeQuantity["A"] = sumA
-    #     bloodTypeQuantity["B"] = sumB
-    #     bloodTypeQuantity["AB"] = sumAB
-    #     bloodTypeQuantity["O"] = sumO
-    #     return bloodTypeQuantity
+    def getBQuantity(self):
+        blood = self.getFactoryBlood()
+        search = Search(blood)
+        A = search.searchBloodType("A")
+        B = search.searchBloodType("B")
+        AB = search.searchBloodType("AB")
+        O = search.searchBloodType("O")
+        sumA = search.sumBloodQuantity(A)
+        sumB = search.sumBloodQuantity(B)
+        sumAB = search.sumBloodQuantity(AB)
+        sumO = search.sumBloodQuantity(O)
+        bloodTypeQuantity = {}
+        bloodTypeQuantity["A"] = sumA
+        bloodTypeQuantity["B"] = sumB
+        bloodTypeQuantity["AB"] = sumAB
+        bloodTypeQuantity["O"] = sumO
+        return bloodTypeQuantity
+
     def getQuantity(self, type):
         sum = 0
         blood = self.getFactoryBlood();
