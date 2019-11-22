@@ -64,6 +64,7 @@ class Sort
 }
 
 method main (){
+    // test 1
     var a := new int[5];
     a[0], a[1], a[2], a[3], a[4] := 20190211, 20200120, 20191203, 20191127, 20200101;
     assert a[0] == 20190211;
@@ -84,5 +85,23 @@ method main (){
     // array is sorted
     assert sort.sorted(sort.a, 0, sort.a.Length - 1);
     
+    // test 2
+    var a1 := new int[5];
+    a1[0], a1[1], a1[2], a1[3], a1[4] := 20130111, 20100913, 20210203, 20191230, 20200101;
+    assert a1[0] == 20130111;
+    assert a1[1] == 20100913;
+    assert a1[2] == 20210203;
+    assert a1[3] == 20191230;
+    assert a1[4] == 20200101;
+    var sort1 := new Sort(a1);
+    assert sort1.a[0] == 20130111;
+    assert sort1.a[1] == 20100913;
+    assert sort1.a[2] == 20210203;
+    assert sort1.a[3] == 20191230;
+    assert sort1.a[4] == 20200101;
+    assert sort1.a.Length == 5;
+    assert !sort1.sorted(sort1.a, 0, sort1.a.Length - 1);
+    sort1.BubbleSort();  
+    assert sort1.sorted(sort1.a, 0, sort1.a.Length - 1);
 }
 
