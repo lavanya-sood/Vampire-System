@@ -270,7 +270,7 @@
             "quantity": 500,
             "expiry_date": "2019-09-10",
             "input_date": "",
-            "test_status": "added",
+            "test_status": "tested",
             "source": "Newtown Hospital",
             "id": 29,
             "delivered_status": ""
