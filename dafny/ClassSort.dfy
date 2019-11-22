@@ -78,8 +78,10 @@ method main (){
     assert sort.a[3] == 20191127;
     assert sort.a[4] == 20200101;
     assert sort.a.Length == 5;
+    // array unsorted before calling Bubblesort()
     assert !sort.sorted(sort.a, 0, sort.a.Length - 1);
     sort.BubbleSort();  
+    // array is sorted
     assert sort.sorted(sort.a, 0, sort.a.Length - 1);
     
 }
