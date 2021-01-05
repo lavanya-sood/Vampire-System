@@ -1,4 +1,4 @@
-# Vampire System - SENG2011-Project
+# Vampire System
 
 This is a database system developed for a hypothetical organization Vampire PVT. LTD. in order to manage their blood supplies. This was done as a part of the SENG2011 Group Project
 
